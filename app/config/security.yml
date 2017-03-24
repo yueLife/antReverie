@@ -27,17 +27,15 @@ security:
                 path:     /
 
     access_control:
-        - { path: ^/login$,    role: ROLE_ANON }
-        - { path: ^/register,  role: ROLE_ANON }
-        - { path: ^/resetting, role: ROLE_ANON }
-        - { path: ^/public,    role: ROLE_ANON }
+        - { path: ^/login$,    role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register,  role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/public,    role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin,     role: ROLE_ADMIN }
         - { path: ^/words,     role: ROLE_WORDS }
         - { path: ^/goods,     role: ROLE_GOODS }
 
     role_hierarchy:
-        ROLE_ANON:  IS_AUTHENTICATED_ANONYMOUSLY
-        ROLE_LOGIN: IS_AUTHENTICATED_FULLY
         ROLE_USER:  ROLE_USER
         ROLE_ADMIN: ROLE_SUPER_ADMIN
         ROLE_WORDS: [ROLE_WORDS, ROLE_SUPER_ADMIN]

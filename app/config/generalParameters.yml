@@ -1,0 +1,17 @@
+parameters:
+    twigArguments:
+        # WEB MESSAGE VARIABLE
+        GLOBAL_TITLE: "Joywell ShangHai"
+        # CSS FILES VARIABLE
+        APPS:          "Metronic/apps/"
+        GLOBAL:        "Metronic/global/"
+        LAYOUTS:       "Metronic/layouts/"
+        PAGES:         "Metronic/pages/"
+        PUBLIC_CSS:    "bundles/public/css/"
+        PUBLIC_IMAGES: "bundles/public/images/"
+        PUBLIC_JS:     "bundles/public/js/"
+        AVATARS:       "Uploads/avatars/"
+        ADMIN_CSS:     "bundles/admin/css/"
+        ADMIN_IMAGES:  "bundles/admin/images/"
+        ADMIN_JS:      "bundles/admin/js/"
+        ICONFONT:      "//at.alicdn.com/t/font_wdeyg8ygg575jyvi.css"

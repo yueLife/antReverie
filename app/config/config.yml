@@ -1,5 +1,6 @@
 imports:
     - { resource: parameters.yml }
+    - { resource: generalParameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
 
@@ -34,6 +35,7 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals: "%twigArguments%"
 
 # Assetic Configuration
 assetic:

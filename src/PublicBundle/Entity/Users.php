@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="sy_users")
  * @ORM\Entity(repositoryClass="PublicBundle\Entity\UsersRepository")
  */
-class Users
+class Users extends BaseUser
 {
     /**
      * @var integer

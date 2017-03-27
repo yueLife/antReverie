@@ -26,7 +26,7 @@
         </div>
         <div class="col-md-6 login-container bs-reset">
             <div class="login-content">
-                {#<h1> {{ GLOBAL_TITLE_CH }}登录 </h1>#}
+                <h1> {{ GLOBAL_TITLE_CH }}登录 </h1>
                 <form action="{{ path("fos_user_security_check") }}" class="login-form" method="post">
                     {% if error %}
                         {{ messages.alertClose('danger', error|trans({}, 'FOSUserBundle'), 'login-alert') }}

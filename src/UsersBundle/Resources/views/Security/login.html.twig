@@ -1,7 +1,8 @@
 {% extends "PublicBundle:Layouts:securityLayout.html.twig" %}
 
 {% block securityContent %}
-<h1> {{ GLOBAL_TITLE_CH }} 登录 </h1>
+<h1> {{ GLOBAL_TITLE_CH }}登录 </h1>
+<p> {{ WEB_INTRODUCE }} </p>
 <form action="{{ path("fos_user_security_check") }}" class="login-form" method="post">
     {% if error %}
         {{ messages.alertClose('danger', error|trans({}, 'FOSUserBundle'), 'login-alert') }}

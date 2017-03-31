@@ -19,11 +19,8 @@
 <div class="clearfix"></div>
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
-    {#{{ knp_menu_get('PublicBundle:Builder:mainMenu', {'currentClass': 'active'}) }}#}
-    {% set menuItem = knp_menu_get('PublicBundle:Builder:sidebarMenu') %}
-    {{ dump(menuItem) }}
-    {{ dump(app.user) }}
-    {#{{ render(controller('PublicBundle:Public:getSideBar', { 'route': app.request.get('_route') })) }}#}
+    {% set menu = knp_menu_get('sidebar', [], {'role': app.user.roles.0}) %}
+    {{ knp_menu_render(menu, {'template': 'PublicBundle:Menus:sidebarMenu.html.twig', 'currentClass': 'active', 'ancestorClass': 'start active open'}) }}
     <div class="page-content-wrapper">
         <div class="page-content">
             {% block contentHeader %}

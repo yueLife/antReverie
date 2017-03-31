@@ -1,0 +1,37 @@
+{% extends 'knp_menu.html.twig' %}
+
+{% block root %}
+    {% set listAttributes = item.childrenAttributes %}
+    <div class="page-sidebar-wrapper">
+        <div class="page-sidebar navbar-collapse collapse">
+            {{ block('list') -}}
+        </div>
+    </div>
+{% endblock %}
+
+{% block list %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+        <ul class="{% if item.children.0.hasChildren %}page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200{% else %}sub-menu{% endif %}">
+            {{ block('children') }}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block linkElement %}
+    <li class="nav-item start {% if matcher.isCurrent(item) %}active open{%- endif %}">
+        <a href="{{ item.uri }}" class="nav-link ">
+            <i class="iconfont icon-{{ item.getExtra('icon') }}"></i>
+            <span class="title">{{ block('label') }}</span>
+            {% if matcher.isCurrent(item) %}<span class="selected"></span>{%- endif %}
+        </a>
+    </li>
+{% endblock %}
+
+{% block spanElement %}
+    <a href="javascript:;" class="nav-link nav-toggle">
+        <i class="iconfont icon-{{ item.getExtra('icon') }}"></i>
+        <span class="title">{{ block('label') }}</span>
+        <span class="selected"></span>
+        <span class="arrow{% for child in item.children if matcher.isCurrent(child) %} open{% endfor %}"></span>
+    </a>
+{% endblock %}

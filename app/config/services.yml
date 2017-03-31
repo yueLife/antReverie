@@ -4,6 +4,10 @@ parameters:
     #parameter_name: value
 
 services:
-    #service_name:
-    #    class: AppBundle\Directory\ClassName
-    #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+    # Knp-Menu-Bundle
+    app.menu_builder:
+        class: PublicBundle\Menu\MenuBuilder
+        arguments: [@knp_menu.factory, @doctrine]
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+            - { name: knp_menu.menu_builder, method: createSidebarMenu, alias: sidebar }

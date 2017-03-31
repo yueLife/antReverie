@@ -18,7 +18,7 @@ security:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
-#                csrf_provider: security.csrf.token_manager
+                csrf_provider: security.csrf.token_manager
             logout:       true
             anonymous:    true
             remember_me:
@@ -31,12 +31,13 @@ security:
         - { path: ^/register,  role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/public,    role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/profile,   role: ROLE_USER }
         - { path: ^/admin,     role: ROLE_ADMIN }
-        - { path: ^/words,     role: ROLE_WORDS }
-        - { path: ^/goods,     role: ROLE_GOODS }
+#        - { path: ^/words,     role: ROLE_WORDS }
+#        - { path: ^/goods,     role: ROLE_GOODS }
 
     role_hierarchy:
         ROLE_USER:  ROLE_USER
         ROLE_ADMIN: ROLE_SUPER_ADMIN
-        ROLE_WORDS: [ROLE_WORDS, ROLE_SUPER_ADMIN]
-        ROLE_GOODS: [ROLE_GOODS, ROLE_SUPER_ADMIN]
+#        ROLE_WORDS: [ROLE_WORDS, ROLE_SUPER_ADMIN]
+#        ROLE_GOODS: [ROLE_GOODS, ROLE_SUPER_ADMIN]

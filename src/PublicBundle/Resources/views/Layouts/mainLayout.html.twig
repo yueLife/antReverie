@@ -24,7 +24,7 @@
     <div class="page-content-wrapper">
         <div class="page-content">
             {% block contentHeader %}
-                {#{{ render(controller('HuoBundle:Home:getContentHeader')) }}#}
+                {% include "PublicBundle:Header:pageHeader.html.twig" %}
             {% endblock %}
             <div id="content-body">
                 {% block content %}{% endblock %}

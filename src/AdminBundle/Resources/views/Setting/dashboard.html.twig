@@ -1,0 +1,13 @@
+{% extends "PublicBundle:Layouts:mainLayout.html.twig" %}
+
+{% block content %}
+    <!-- BEGIN DASHBOARD STATS 1-->
+    <div class="row">
+        {{ layouts.dashboard('用户', '1111', '#', 'user-group', 'blue') }}
+        {{ layouts.dashboard('平台', '2222', '#', 'platform', 'red') }}
+        {{ layouts.dashboard('品牌', '4444', '#', 'brand', 'green') }}
+        {{ layouts.dashboard('店铺', '8888', '#', 'shop', 'purple') }}
+    </div>
+    <div class="clearfix"></div>
+    <!-- END DASHBOARD STATS 1-->
+{% endblock %}

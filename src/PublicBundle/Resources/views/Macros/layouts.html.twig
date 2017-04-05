@@ -1,0 +1,31 @@
+{#Admin Dashboard#}
+{% macro dashboard(name, value, href, icon, color) %}
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <a class="dashboard-stat dashboard-stat-v2 {{ color }}" href="#">
+            <div class="visual">
+                <i class="iconfont icon-{{ icon }}"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <span data-counter="counterup" data-value="{{ value }}">0</span>
+                </div>
+                <div class="desc"> 总{{ name }}数 </div>
+            </div>
+        </a>
+    </div>
+{% endmacro dashboard %}
+
+{#Global Alert Message#}
+{% macro alertSkip(type, msg, url, class) %}
+    <div class="alert alert-{{ type }} {{ class|default('display-hide') }}">
+        <p> {{ msg }} </p>
+        <p>3 秒后跳转！<a href="{{ path(url) }}">立即前往&gt;&gt;</a></p>
+    </div>
+{% endmacro alertSkip %}
+
+{% macro alertClose(type, msg, class) %}
+    <div class="alert alert-{{ type }} {{ class|default('display-hide') }}">
+        <button class="close" data-close="alert"></button>
+        <p> {{ msg }} </p>
+    </div>
+{% endmacro alertClose %}

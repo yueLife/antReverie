@@ -5,9 +5,9 @@
 <p> {{ WEB_INTRODUCE }} </p>
 <form action="{{ path("fos_user_security_check") }}" class="login-form" method="post">
     {% if error %}
-        {{ messages.alertClose('danger', error|trans({}, 'FOSUserBundle'), 'login-alert') }}
+        {{ layouts.alertClose('danger', error|trans({}, 'FOSUserBundle'), 'login-alert') }}
     {% else %}
-        {{ messages.alertClose('danger', null, 'display-hide login-alert') }}
+        {{ layouts.alertClose('danger', null, 'display-hide login-alert') }}
     {% endif %}
     {{ forms.input('hidden', null, ' ', '_csrf_token', csrf_token) }}
     <div class="row">

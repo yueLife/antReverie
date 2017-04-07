@@ -52,9 +52,9 @@ class GoodsFiles
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_del", type="boolean")
+     * @ORM\Column(name="del", type="boolean")
      */
-    private $isDel = false;
+    private $del = false;
 
     /**
      * @var string
@@ -65,7 +65,7 @@ class GoodsFiles
 
     public function __construct()
     {
-        $this->uploadTime = $this->uploadTime = date('Y/m/d H:i:s', time());
+        $this->uploadTime = date('Y/m/d H:i:s', time());
     }
 
     /**
@@ -171,26 +171,26 @@ class GoodsFiles
     }
 
     /**
-     * Set isDel
+     * Set del
      *
-     * @param boolean $isDel
+     * @param boolean $del
      * @return GoodsFiles
      */
-    public function setIsDel($isDel)
+    public function setDel($del)
     {
-        $this->isDel = $isDel;
+        $this->del = $del;
 
         return $this;
     }
 
     /**
-     * Get isDel
+     * Get del
      *
      * @return boolean 
      */
-    public function getIsDel()
+    public function getDel()
     {
-        return $this->isDel;
+        return $this->del;
     }
 
     /**

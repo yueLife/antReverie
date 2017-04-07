@@ -20,12 +20,15 @@ class PublicController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $goodsFilesEm = $em->getRepository('GoodsBundle:GoodsFiles');
+        $styleTypesEm = $em->getRepository('GoodsBundle:StyleTypes');
         $uid = $this->getUser()->getId();
-        $goodsFilesInfo = $goodsFilesEm->findByUid($uid);
+        $goodsFilesInfo = $goodsFilesEm->findBy(array('uid' => $uid, 'del' => false));
+        $styleTypesInfo = $styleTypesEm->findBy(array('shopId' => 1, 'del' => false));
 
         return array(
             'name' => 'file',
             'goodsFiles' => $goodsFilesInfo,
+            'styleTypes' => $styleTypesInfo,
         );
     }
 
@@ -37,7 +40,7 @@ class PublicController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $goodsFilesEm = $em->getRepository('GoodsBundle:GoodsFiles');
-        $goodsFilesInfo = $goodsFilesEm->findAll();
+        $goodsFilesInfo = $goodsFilesEm->findByDel(false);
 
         return array(
             'name' => 'file',

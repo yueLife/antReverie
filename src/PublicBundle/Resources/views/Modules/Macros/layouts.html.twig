@@ -1,4 +1,4 @@
-{#Admin Dashboard#}
+{# Admin Dashboard #}
 {% macro dashboard(name, value, href, icon, color) %}
     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <a class="dashboard-stat dashboard-stat-v2 {{ color }}" href="#">
@@ -15,7 +15,7 @@
     </div>
 {% endmacro dashboard %}
 
-{#Global Alert Message#}
+{# Global Alert Message #}
 {% macro alertSkip(type, msg, url, class) %}
     <div class="alert alert-{{ type }} {{ class|default('display-hide') }}">
         <p> {{ msg }} </p>

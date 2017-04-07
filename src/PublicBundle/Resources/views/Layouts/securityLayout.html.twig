@@ -1,4 +1,4 @@
-{% extends "PublicBundle:Layouts:baseLayout.html.twig" %}
+{% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
 {% block pageLevelPlugins %}
     <link rel="stylesheet" href="{{ asset(GLOBAL~'plugins/select2/css/select2.min.css') }}" type="text/css" />
@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-xs-7 bs-reset">
                             <div class="login-copyright text-right">
-                                <p> Copyright © {{ "now" | date("Y") }} {{ GLOBAL_TITLE }} {% include "PublicBundle::Footer/version.html.twig" %} </p>
+                                <p> Copyright © {{ "now" | date("Y") }} {{ GLOBAL_TITLE }} {% include "PublicBundle::Modules/Footers/version.html.twig" %} </p>
                             </div>
                         </div>
                     </div>

@@ -5,6 +5,8 @@ namespace PublicBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use PublicBundle\Controller\UploadController as Upload;
 
@@ -22,9 +24,10 @@ class HomeController extends Controller
     /**
      * @Route("/upload", name="upload")
      */
-    public function uploadAction(Request $request)
+    public function uploadAction()
     {
-        $upload_handler = new Upload();
-        return new JsonResponse(array('state' => 'success'));
+        $url = 'goods/';
+        $uploadData = new Upload($url);
+        return new JsonResponse($uploadData->response);
     }
 }

@@ -10035,6 +10035,7 @@ Customized Progress Bars
 .progress {
   border: 0;
   background-image: none;
+  background-color: #cccccc;
   filter: none;
   box-shadow: none;
   -webkit-box-shadow: none;

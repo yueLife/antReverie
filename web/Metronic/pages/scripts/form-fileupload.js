@@ -3,7 +3,7 @@ var FormFileUpload = function () {
         //main function to initiate the module
         init: function () {
 
-             // Initialize the jQuery File Upload widget:
+            // Initialize the jQuery File Upload widget:
             $('#fileupload').fileupload({
                 disableImageResize: false,
                 autoUpload: false,
@@ -11,45 +11,45 @@ var FormFileUpload = function () {
                 maxFileSize: 5000000,
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
                 // Uncomment the following to send cross-domain cookies:
-                //xhrFields: {withCredentials: true},
+                //xhrFields: {withCredentials: true},                
             });
 
             // Enable iframe cross-domain access via redirect option:
-            // $('#fileupload').fileupload(
-            //     'option',
-            //     'redirect',
-            //     window.location.href.replace(
-            //         /\/[^\/]*$/,
-            //         '/cors/result.html?%s'
-            //     )
-            // );
+            $('#fileupload').fileupload(
+                'option',
+                'redirect',
+                window.location.href.replace(
+                    /\/[^\/]*$/,
+                    '/cors/result.html?%s'
+                )
+            );
 
             // Upload server status check for browsers with CORS support:
-            // if ($.support.cors) {
-            //     $.ajax({
-            //         type: 'HEAD'
-            //     }).fail(function () {
-            //         $('<div class="alert alert-danger"/>')
-            //             .text('Upload server currently unavailable - ' +
-            //                     new Date())
-            //             .appendTo('#fileupload');
-            //     });
-            // }
+            if ($.support.cors) {
+                $.ajax({
+                    type: 'HEAD'
+                }).fail(function () {
+                    $('<div class="alert alert-danger"/>')
+                        .text('Upload server currently unavailable - ' +
+                            new Date())
+                        .appendTo('#fileupload');
+                });
+            }
 
             // Load & display existing files:
-            // $('#fileupload').addClass('fileupload-processing');
-            // $.ajax({
-            //     // Uncomment the following to send cross-domain cookies:
-            //     //xhrFields: {withCredentials: true},
-            //     url: $('#fileupload').attr("action"),
-            //     dataType: 'json',
-            //     context: $('#fileupload')[0]
-            // }).always(function () {
-            //     $(this).removeClass('fileupload-processing');
-            // }).done(function (result) {
-            //     $(this).fileupload('option', 'done')
-            //     .call(this, $.Event('done'), {result: result});
-            // });
+            $('#fileupload').addClass('fileupload-processing');
+            $.ajax({
+                // Uncomment the following to send cross-domain cookies:
+                //xhrFields: {withCredentials: true},
+                url: $('#fileupload').attr("action"),
+                dataType: 'json',
+                context: $('#fileupload')[0]
+            }).always(function () {
+                $(this).removeClass('fileupload-processing');
+            }).done(function (result) {
+                $(this).fileupload('option', 'done')
+                    .call(this, $.Event('done'), {result: result});
+            });
         }
 
     };

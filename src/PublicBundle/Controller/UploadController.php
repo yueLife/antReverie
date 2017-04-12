@@ -10,6 +10,8 @@ use PublicBundle\Vendor\UploadHandler;
 
 class UploadController extends UploadHandler
 {
+    protected $maxFile = 5 * 1024 * 1024;
+
     // 24
     protected $error_messages = array(
         1 => '上传的文件超过了php.ini中的upload_max_filesize指令',
@@ -20,10 +22,10 @@ class UploadController extends UploadHandler
         7 => '无法将文件写入磁盘',
         8 => '一个PHP扩展名停止文件上传',
         'post_max_size' => '上传的文件超过了php.ini中的post_max_size伪指令',
-        'max_file_size' => '文件太大',
-        'min_file_size' => '文件太小',
-        'accept_file_types' => '该文件格式不支持上传',
-        'max_number_of_files' => '最大文件数超出',
+        'max_file_size' => '单文件不允许超过5MB',
+        'min_file_size' => '单文件太小',
+        'accept_file_types' => '该文件格式不允许上传',
+        'max_number_of_files' => '单次最大上传文件个数为10个',
         'max_width' => '图像超出最大宽度',
         'min_width' => '图像需要最小宽度',
         'max_height' => '图像超过最大高度',
@@ -37,14 +39,6 @@ class UploadController extends UploadHandler
     {
         parent::__construct();
     }
-
-//    //460
-//    protected function get_unique_filename($file_path, $name, $size, $type, $error,
-//                                           $index, $content_range) {
-//        $ext = pathinfo($name, PATHINFO_EXTENSION);
-//        $name = $this->url.'_'.date('YmdHis',time()).'_'.uniqid().'.'.$ext;
-//        return $name;
-//    }
 
     // 1128
     protected function body($str)

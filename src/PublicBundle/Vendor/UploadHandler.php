@@ -17,6 +17,7 @@ class UploadHandler extends Controller
 {
 
     protected $file = '/Uploads/data/';
+    protected $maxFile = 10 * 1024 * 1024; // 10 MiB
     protected $options;
 
     // PHP File Upload error message codes:
@@ -90,14 +91,14 @@ class UploadHandler extends Controller
             'download_via_php' => false,
             // Read files in chunks to avoid memory limits when download_via_php
             // is enabled, set to 0 to disable chunked reading of files:
-            'readfile_chunk_size' => 10 * 1024 * 1024, // 10 MiB
+            'readfile_chunk_size' => 10 * 1024 * 1024,
             // Defines which files can be displayed inline when downloaded:
             'inline_file_types' => '/\.(gif|jpe?g|png)$/i',
             // Defines which files (based on their names) are accepted for upload:
             'accept_file_types' => '/.+$/i',
             // The php.ini settings upload_max_filesize and post_max_size
             // take precedence over the following max_file_size setting:
-            'max_file_size' => null,
+            'max_file_size' => $this->maxFile,
             'min_file_size' => 1,
             // The maximum number of files for the upload directory:
             'max_number_of_files' => null,

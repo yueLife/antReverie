@@ -96,7 +96,6 @@
                                             <i class="iconfont icon-ban-circle"></i>
                                             <span> 取消上传 </span>
                                         </button>
-                                        <span class="fileupload-process"> </span>
                                     </div>
                                     <div class="col-lg-6 fileupload-progress fade">
                                         <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -117,7 +116,7 @@
                         <tr class="template-upload fade">
                             <td>
                                 <span class="name">{%=file.name%}</span>
-                                <strong class="error text-danger label label-danger"></strong>
+                                <strong class="error label label-danger"></strong>
                             </td>
                             <td>
                                 <span class="size">Processing...</span>
@@ -218,42 +217,27 @@
                     disableImageResize: false,
                     autoUpload: false,
                     disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-                    maxFileSize: 5000000,
-                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png|csv|xlsx?)$/i,
+                    maxFileSize: 5*1024*1024,
+                    acceptFileTypes: /(\.|\/)(csv|xlsx?)$/i,
 //                    maxNumberOfFiles: 10,
                     messages: {
-                        maxNumberOfFiles: '超出最大允许上传文件个数(10个)',
-                        acceptFileTypes: '该文件格式不支持',
+                        maxNumberOfFiles: '单次最大上传文件个数为10个',
+                        acceptFileTypes: '该文件格式不允许上传',
                         maxFileSize: '单文件不允许超过5MB',
                         minFileSize: '单文件过小',
                         unknownError: '未知错误'
                     }
                 });
 
-                // Upload server status check for browsers with CORS support:
+                // 上传支持CORS的浏览器的服务器状态检查：
                 if ($.support.cors) {
                     $.ajax({
                         type: 'HEAD'
                     }).fail(function () {
                         $('<div class="alert alert-danger"/>')
-                            .text('Upload server currently unavailable - ' +
-                                new Date())
-                            .appendTo('#fileupload');
+                            .text('上传服务器当前不可用 - ' + new Date()).appendTo('#fileupload');
                     });
                 }
-
-                // Load & display existing files:
-                $('#fileupload').addClass('fileupload-processing');
-                $.ajax({
-                    // Uncomment the following to send cross-domain cookies:
-                    //xhrFields: {withCredentials: true},
-                    url: $('#fileupload').attr("action"),
-                    dataType: 'json',
-                    context: $('#fileupload')[0]
-                }).always(function () {
-                    $(this).removeClass('fileupload-processing');
-                }).done(function (result) {
-                });
             }
         });
     </script>

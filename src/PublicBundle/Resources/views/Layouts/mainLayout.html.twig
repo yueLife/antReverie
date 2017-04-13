@@ -1,5 +1,7 @@
 {% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
+{% use "PublicBundle::Modules/Blocks/header.html.twig" %}
+
 {% block themeLayoutStyles %}
     <link rel="stylesheet" href="{{ asset(LAYOUTS~'layout4/css/layout.min.css') }}"  type="text/css" />
     <link rel="stylesheet" href="{{ asset(LAYOUTS~'layout4/css/themes/light.min.css') }}" type="text/css" id="style_color" />
@@ -8,7 +10,7 @@
 
 {% block body %}
 <body class="page-container-bg-solid page-sidebar-closed-hide-logo page-header-fixed page-sidebar-fixed page-footer-fixed">
-    {% include "PublicBundle::Modules/Headers/header.html.twig" %}
+    {% block mainHeader %}{{ parent() }}{% endblock %}
     <div class="clearfix"></div>
     <!-- BEGIN CONTAINER -->
     <div class="page-container">
@@ -17,7 +19,7 @@
         <div class="page-content-wrapper">
             <div class="page-content">
                 {% block contentHeader %}
-                    {% include "PublicBundle::Modules/Headers/pageHeader.html.twig" %}
+                    {% block pageHeader %}{{ parent() }}{% endblock %}
                 {% endblock %}
                 <div id="content-body">
                     {% block content %}{% endblock %}

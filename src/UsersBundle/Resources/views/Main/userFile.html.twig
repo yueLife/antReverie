@@ -1,12 +1,12 @@
-{% extends "PublicBundle::Layouts/datatableLayout.html.twig" %}
+{% extends "PublicBundle::Layouts/mainLayout.html.twig" %}
 
 {% use 'PublicBundle::Modules/Blocks/upload.html.twig' %}
+{% use 'PublicBundle::Modules/Blocks/datatable.html.twig' %}
 
 {% block pageLevelPluginsStyle %}
     {{ parent() }}
-    {% block uploadStyle %}
-        {{ parent() }}
-    {% endblock %}
+    {% block datatableStyle %}{{ parent() }}{% endblock %}
+    {% block uploadStyle %}{{ parent() }}{% endblock %}
 {% endblock %}
 
 {% block content %}
@@ -36,7 +36,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for file in goodsFiles if file.id > 800%}
+                        {% for file in goodsFiles %}
                             <tr>
                                 <td>{{ file.id }}</td>
                                 <td>{{ file.oldname }}</td>
@@ -71,26 +71,22 @@
             </div>
         </div>
     </div>
-    {% block uploadModal %}
-        {{ parent() }}
-    {% endblock %}
+    {% block uploadModal %}{{ parent() }}{% endblock %}
 {% endblock %}
 
 {% block pageLevelPluginsScript %}
     {{ parent() }}
-    {% block uploadScript %}
-        {{ parent() }}
-    {% endblock %}
+    {% block datatableScript %}{{ parent() }}{% endblock %}
+    {% block uploadScript %}{{ parent() }}{% endblock %}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    {% block datatableJavascripts %}{{ parent() }}{% endblock %}
+    {% block uploadJavascripts %}{{ parent() }}{% endblock %}
     <script type="text/javascript">
         $(function(){
             datatable($('.my-files-table'));
         });
     </script>
-    {% block uploadJavascripts %}
-        {{ parent() }}
-    {% endblock %}
 {% endblock %}

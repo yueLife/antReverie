@@ -150,32 +150,32 @@
             $('#file-upload-modal').on('hidden.bs.modal', function (e) {
                 $('.files .template-download').remove();
             });
-            function uploadLayout() {
-                $('#fileupload').fileupload({
-                    disableImageResize: false,
-                    autoUpload: false,
-                    disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-                    maxFileSize: 5*1024*1024,
-                    acceptFileTypes: /(\.|\/)(csv|xlsx?)$/i,
-                    messages: {
-                        maxNumberOfFiles: '单次最大上传文件个数为10个',
-                        acceptFileTypes: '该文件格式不允许上传',
-                        maxFileSize: '单文件不允许超过5MB',
-                        minFileSize: '单文件过小',
-                        unknownError: '未知错误'
-                    }
-                });
-
-                // 上传支持CORS的浏览器的服务器状态检查：
-                if ($.support.cors) {
-                    $.ajax({
-                        type: 'HEAD'
-                    }).fail(function () {
-                        $('<div class="alert alert-danger"/>')
-                            .text('上传服务器当前不可用 - ' + new Date()).appendTo('#fileupload');
-                    });
-                }
-            }
         });
+        function uploadLayout() {
+            $('#fileupload').fileupload({
+                disableImageResize: false,
+                autoUpload: false,
+                disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+                maxFileSize: 5*1024*1024,
+                acceptFileTypes: /(\.|\/)(csv|xlsx?)$/i,
+                messages: {
+                    maxNumberOfFiles: '单次最大上传文件个数为10个',
+                    acceptFileTypes: '该文件格式不允许上传',
+                    maxFileSize: '单文件不允许超过5MB',
+                    minFileSize: '单文件过小',
+                    unknownError: '未知错误'
+                }
+            });
+
+            // 上传支持CORS的浏览器的服务器状态检查：
+            if ($.support.cors) {
+                $.ajax({
+                    type: 'HEAD'
+                }).fail(function () {
+                    $('<div class="alert alert-danger"/>')
+                        .text('上传服务器当前不可用 - ' + new Date()).appendTo('#fileupload');
+                });
+            }
+        }
     </script>
 {% endblock %}

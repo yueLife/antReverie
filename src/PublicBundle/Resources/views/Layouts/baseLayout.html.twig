@@ -36,10 +36,12 @@
 {% import "PublicBundle::Modules/Macros/forms.html.twig" as forms %}
 {% import "PublicBundle::Modules/Macros/layouts.html.twig" as layouts %}
 
+{% use "PublicBundle::Modules/Blocks/footer.html.twig" %}
+
 {% block body %}{% endblock %}
 
 {% block footer %}
-    {% include("PublicBundle::Modules/Footers/footer.html.twig") %}
+    {% block mainFooter %}{{ parent() }}{% endblock %}
 {% endblock %}
 
 <!-- BEGIN CORE PLUGINS -->

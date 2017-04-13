@@ -1,0 +1,17 @@
+{% block mainFooter %}
+    <!-- BEGIN FOOTER -->
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            Copyright © {{ "now" | date("Y") }} {{ GLOBAL_TITLE }} Incorporated. All Rights Reserved. {{ VERSION }}
+        </div>
+    </div>
+    <!-- END FOOTER -->
+{% endblock %}
+
+{% block shortFooter %}
+    <div class="col-xs-7 bs-reset">
+        <div class="login-copyright text-right">
+            <p> Copyright © {{ "now" | date("Y") }} {{ GLOBAL_TITLE }} {{ VERSION }} </p>
+        </div>
+    </div>
+{% endblock %}

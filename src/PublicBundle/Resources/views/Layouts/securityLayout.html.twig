@@ -50,11 +50,7 @@
                             {#</li>#}
                             {#</ul>#}
                         </div>
-                        <div class="col-xs-7 bs-reset">
-                            <div class="login-copyright text-right">
-                                <p> Copyright © {{ "now" | date("Y") }} {{ GLOBAL_TITLE }} {% include "PublicBundle::Modules/Footers/version.html.twig" %} </p>
-                            </div>
-                        </div>
+                        {% block shortFooter %}{{ parent() }}{% endblock %}
                     </div>
                 </div>
             </div>

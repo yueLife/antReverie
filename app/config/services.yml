@@ -11,3 +11,13 @@ services:
         tags:
             - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
             - { name: knp_menu.menu_builder, method: createSidebarMenu, alias: sidebar }
+
+    # FileUtil
+    FileUtilService:
+        class: PublicBundle\Services\FileUtilService
+        arguments: []
+
+    #UploadHandle
+    UploadHandlerService:
+        class: PublicBundle\Services\UploadHandlerService
+        arguments: []

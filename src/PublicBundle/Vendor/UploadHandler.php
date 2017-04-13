@@ -1,7 +1,10 @@
 <?php
-
-namespace PublicBundle\Vendor;
-/*
+/**
+ * Created by PhpStorm.
+ * User: Yue
+ * Date: 2017/4/10
+ * Time: 16:14
+ *
  * jQuery File Upload Plugin PHP Class
  * https://github.com/blueimp/jQuery-File-Upload
  *
@@ -11,6 +14,9 @@ namespace PublicBundle\Vendor;
  * Licensed under the MIT license:
  * https://opensource.org/licenses/MIT
  */
+
+namespace PublicBundle\Vendor;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class UploadHandler extends Controller

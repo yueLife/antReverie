@@ -18,6 +18,7 @@ group:
 "Bad credentials.": 用户名或密码不正确。
 "Bad credentials.": 用户名或密码不正确。
 "User account is disabled.": 当前用户已被禁用。
+"User account has expired.": 当前用户已失效。
 
 security:
     login:

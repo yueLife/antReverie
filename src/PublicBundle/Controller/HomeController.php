@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Yue
+ * Date: 2017/3/24
+ * Time: 14:22
+ */
 
 namespace PublicBundle\Controller;
 
@@ -8,7 +14,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use PublicBundle\Controller\UploadController as Upload;
 use PublicBundle\Entity\UploadFiles;
 
 class HomeController extends Controller
@@ -27,13 +32,14 @@ class HomeController extends Controller
      */
     public function uploadAction()
     {
-        $uploadData = new Upload();
+        $uploadData =  $this->get('UploadHandlerService');
         $data = $uploadData->response['files'][0];
 
         if (empty($data->error)) {
             $filename = 'file_'.uniqid().'.'.pathinfo($data->name, PATHINFO_EXTENSION);
             $root = $_SERVER['DOCUMENT_ROOT'].'/Uploads/';
-            if (rename($root.'data/'.$data->name, $root.'goods/'.$filename)) {
+            $fileUtil = $this->get('FileUtilService');
+            if ($fileUtil->moveFile($root.'data/'.$data->name, $root.'goods/'.$filename)) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $newFile = new UploadFiles();
                 $newFile->setUid($this->getUser()->getId())->setFilename($filename)->setOldname($data->name);

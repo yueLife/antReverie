@@ -1,14 +1,16 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Yue
+ * Date: 2017/4/13
+ * Time: 14:10
+ */
 
-namespace PublicBundle\Controller;
+namespace PublicBundle\Services;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
 use PublicBundle\Vendor\UploadHandler;
 
-class UploadController extends UploadHandler
+class UploadHandlerService extends UploadHandler
 {
     protected $maxFile = 5 * 1024 * 1024;
 

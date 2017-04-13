@@ -15,9 +15,7 @@ services:
     # FileUtil
     FileUtilService:
         class: PublicBundle\Services\FileUtilService
-        arguments: []
 
     #UploadHandle
     UploadHandlerService:
         class: PublicBundle\Services\UploadHandlerService
-        arguments: []

@@ -8,12 +8,11 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use UsersBundle\Entity\Users;
 
 /**
- * UploadFiles
+ * FilesEntity
  *
- * @ORM\Table(name="sy_upload_files")
- * @ORM\Entity(repositoryClass="PublicBundle\Entity\UploadFilesRepository")
+ * @ORM\Entity(repositoryClass="PublicBundle\Entity\FilesEntityRepository")
  */
-class UploadFiles
+class FilesEntity
 {
     /**
      * @var integer
@@ -49,7 +48,7 @@ class UploadFiles
     /**
      * @var string
      *
-     * @ORM\Column(name="uploadtime", type="string", length=255)
+     * @ORM\Column(name="uploadTime", type="string", length=255)
      */
     private $uploadTime;
 
@@ -59,6 +58,13 @@ class UploadFiles
      * @ORM\Column(name="del", type="boolean")
      */
     private $del = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="state", type="string", length=255)
+     */
+    private $state = 'unread';
 
 
     public function __construct(Users $user)
@@ -70,7 +76,7 @@ class UploadFiles
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -81,7 +87,7 @@ class UploadFiles
      * Set user
      *
      * @param \UsersBundle\Entity\Users $user
-     * @return UploadFiles
+     * @return FilesEntity
      */
     public function setUser(\UsersBundle\Entity\Users $user = null)
     {
@@ -104,7 +110,7 @@ class UploadFiles
      * Set filename
      *
      * @param string $filename
-     * @return UploadFiles
+     * @return FilesEntity
      */
     public function setFilename($filename)
     {
@@ -127,7 +133,7 @@ class UploadFiles
      * Set oldname
      *
      * @param string $oldname
-     * @return UploadFiles
+     * @return FilesEntity
      */
     public function setOldname($oldname)
     {
@@ -150,7 +156,7 @@ class UploadFiles
      * Set uploadTime
      *
      * @param string $uploadTime
-     * @return UploadFiles
+     * @return FilesEntity
      */
     public function setUploadTime($uploadTime)
     {
@@ -173,7 +179,7 @@ class UploadFiles
      * Set del
      *
      * @param boolean $del
-     * @return UploadFiles
+     * @return FilesEntity
      */
     public function setDel($del)
     {
@@ -190,5 +196,28 @@ class UploadFiles
     public function getDel()
     {
         return $this->del;
+    }
+
+    /**
+     * Set state
+     *
+     * @param string $state
+     * @return FilesEntity
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
     }
 }

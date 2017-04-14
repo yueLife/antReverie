@@ -41,8 +41,8 @@ class HomeController extends Controller
             $fileUtil = $this->get('FileUtilService');
             if ($fileUtil->moveFile($root.'data/'.$data->name, $root.'goods/'.$filename)) {
                 $em = $this->getDoctrine()->getEntityManager();
-                $newFile = new UploadFiles();
-                $newFile->setUid($this->getUser()->getId())->setFilename($filename)->setOldname($data->name);
+                $newFile = new UploadFiles($this->getUser());
+                $newFile->setFilename($filename)->setOldname($data->name);
                 $em->persist($newFile);
                 $em->flush();
             }

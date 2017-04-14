@@ -3,6 +3,9 @@
 namespace GoodsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use UsersBundle\Entity\Users;
 
 /**
  * GoodsFiles
@@ -24,9 +27,10 @@ class GoodsFiles
     /**
      * @var integer
      *
-     * @ORM\Column(name="uid", type="integer")
+     * @ManyToOne(targetEntity="UsersBundle\Entity\Users")
+     * @JoinColumn(name="uid", referencedColumnName="id")
      */
-    private $uid;
+    private $user;
 
     /**
      * @var string
@@ -63,9 +67,10 @@ class GoodsFiles
      */
     private $state = 'unread';
 
-    public function __construct()
+    public function __construct(Users $user)
     {
         $this->uploadTime = date('Y/m/d H:i:s', time());
+        $this->user = $user;
     }
 
     /**
@@ -79,26 +84,26 @@ class GoodsFiles
     }
 
     /**
-     * Set uid
+     * Set user
      *
-     * @param integer $uid
+     * @param \UsersBundle\Entity\Users $user
      * @return GoodsFiles
      */
-    public function setUid($uid)
+    public function setUser(\UsersBundle\Entity\Users $user = null)
     {
-        $this->uid = $uid;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get uid
+     * Get user
      *
-     * @return integer 
+     * @return \UsersBundle\Entity\Users
      */
-    public function getUid()
+    public function getUser()
     {
-        return $this->uid;
+        return $this->user;
     }
 
     /**
@@ -117,7 +122,7 @@ class GoodsFiles
     /**
      * Get filename
      *
-     * @return string 
+     * @return string
      */
     public function getFilename()
     {
@@ -140,7 +145,7 @@ class GoodsFiles
     /**
      * Get oldname
      *
-     * @return string 
+     * @return string
      */
     public function getOldname()
     {
@@ -163,7 +168,7 @@ class GoodsFiles
     /**
      * Get uploadTime
      *
-     * @return string 
+     * @return string
      */
     public function getUploadTime()
     {
@@ -186,7 +191,7 @@ class GoodsFiles
     /**
      * Get del
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDel()
     {
@@ -205,7 +210,6 @@ class GoodsFiles
 
         return $this;
     }
-
     /**
      * Get state
      *

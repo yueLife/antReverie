@@ -2,8 +2,13 @@
 
 namespace UsersBundle\Entity;
 
-use FOS\UserBundle\Entity\User as BaseUser;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\JoinColumn;
+use FOS\UserBundle\Entity\User as BaseUser;
+use GoodsBundle\Entity\GoodsFiles;
 
 /**
  * Users
@@ -32,16 +37,8 @@ class Users extends BaseUser
     public function __construct()
     {
         parent::__construct();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
+        $this->uploadFiles = new ArrayCollection();
+        $this->goodsFiles = new ArrayCollection();
     }
 
     /**
@@ -66,5 +63,4 @@ class Users extends BaseUser
     {
         return $this->avatar;
     }
-
 }

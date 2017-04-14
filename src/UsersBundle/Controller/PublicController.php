@@ -8,13 +8,14 @@
 
 namespace UsersBundle\Controller;
 
+use PublicBundle\Entity\UploadFiles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/public")
+ * @Route("/user")
  */
 class PublicController extends Controller
 {
@@ -27,8 +28,7 @@ class PublicController extends Controller
         $em = $this->getDoctrine()->getManager();
         $goodsFilesEm = $em->getRepository('GoodsBundle:GoodsFiles');
         $styleTypesEm = $em->getRepository('GoodsBundle:StyleTypes');
-        $uid = $this->getUser()->getId();
-        $goodsFilesInfo = $goodsFilesEm->findBy(array('uid' => $uid, 'del' => false));
+        $goodsFilesInfo = $goodsFilesEm->findBy(array('user' => $this->getUser(), 'del' => false));
         $styleTypesInfo = $styleTypesEm->findBy(array('shopId' => 1, 'del' => false));
 
         return array(

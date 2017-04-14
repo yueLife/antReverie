@@ -29,6 +29,7 @@
                         <tr>
                             <th style="width:50px !important;">ID</th>
                             <th style="width:300px !important;">文件名</th>
+                            <th style="width:80px !important;">上传者</th>
                             <th style="width:150px !important;">上传时间</th>
                             <th style="width:50px !important;">状态</th>
                             <th style="width:100px !important;">操作</th>
@@ -40,6 +41,7 @@
                             <tr>
                                 <td>{{ file.id }}</td>
                                 <td>{{ file.oldname }}</td>
+                                <td>{{ file.user.username }}</td>
                                 <td>{{ file.uploadTime }}</td>
                                 <td>
                                     {% if file.state == 'read' %}

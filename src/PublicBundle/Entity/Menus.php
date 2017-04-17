@@ -22,9 +22,8 @@ class Menus
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="pid", type="smallint")
+     * @ORM\ManyToOne(targetEntity="Menus", inversedBy="children")
+     * @ORM\JoinColumn(name="pid", referencedColumnName ="id")
      */
     private $pid;
 
@@ -76,6 +75,17 @@ class Menus
      * @ORM\Column(name="sort", type="smallint")
      */
     private $sort;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Menus", mappedBy="pid")
+     */
+    private  $children;
+
+
+    public  function  __construct()
+    {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -85,29 +95,6 @@ class Menus
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set pid
-     *
-     * @param integer $pid
-     * @return Menus
-     */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-
-        return $this;
-    }
-
-    /**
-     * Get pid
-     *
-     * @return integer
-     */
-    public function getPid()
-    {
-        return $this->pid;
     }
 
     /**
@@ -126,7 +113,7 @@ class Menus
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {
@@ -149,7 +136,7 @@ class Menus
     /**
      * Get description
      *
-     * @return string
+     * @return string 
      */
     public function getDescription()
     {
@@ -172,7 +159,7 @@ class Menus
     /**
      * Get role
      *
-     * @return string
+     * @return string 
      */
     public function getRole()
     {
@@ -195,7 +182,7 @@ class Menus
     /**
      * Get action
      *
-     * @return string
+     * @return string 
      */
     public function getAction()
     {
@@ -218,7 +205,7 @@ class Menus
     /**
      * Get route
      *
-     * @return string
+     * @return string 
      */
     public function getRoute()
     {
@@ -241,7 +228,7 @@ class Menus
     /**
      * Get icon
      *
-     * @return string
+     * @return string 
      */
     public function getIcon()
     {
@@ -264,10 +251,66 @@ class Menus
     /**
      * Get sort
      *
-     * @return integer
+     * @return integer 
      */
     public function getSort()
     {
         return $this->sort;
+    }
+
+    /**
+     * Set pid
+     *
+     * @param \PublicBundle\Entity\Menus $pid
+     * @return Menus
+     */
+    public function setPid(\PublicBundle\Entity\Menus $pid = null)
+    {
+        $this->pid = $pid;
+
+        return $this;
+    }
+
+    /**
+     * Get pid
+     *
+     * @return \PublicBundle\Entity\Menus 
+     */
+    public function getPid()
+    {
+        return $this->pid;
+    }
+
+    /**
+     * Add children
+     *
+     * @param \PublicBundle\Entity\Menus $children
+     * @return Menus
+     */
+    public function addChild(\PublicBundle\Entity\Menus $children)
+    {
+        $this->children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \PublicBundle\Entity\Menus $children
+     */
+    public function removeChild(\PublicBundle\Entity\Menus $children)
+    {
+        $this->children->removeElement($children);
+    }
+
+    /**
+     * Get children
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }

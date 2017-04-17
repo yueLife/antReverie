@@ -2,13 +2,8 @@
 
 namespace UsersBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\JoinColumn;
 use FOS\UserBundle\Entity\User as BaseUser;
-use GoodsBundle\Entity\GoodsFiles;
 
 /**
  * Users
@@ -37,8 +32,6 @@ class Users extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->uploadFiles = new ArrayCollection();
-        $this->goodsFiles = new ArrayCollection();
     }
 
     /**

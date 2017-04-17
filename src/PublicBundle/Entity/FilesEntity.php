@@ -3,14 +3,10 @@
 namespace PublicBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 use UsersBundle\Entity\Users;
 
 /**
  * FilesEntity
- *
- * @ORM\Entity(repositoryClass="PublicBundle\Entity\FilesEntityRepository")
  */
 class FilesEntity
 {
@@ -21,50 +17,43 @@ class FilesEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var integer
      *
-     * @ManyToOne(targetEntity="UsersBundle\Entity\Users")
-     * @JoinColumn(name="uid", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="UsersBundle\Entity\Users")
+     * @ORM\JoinColumn(name="uid", referencedColumnName="id")
      */
-    private $user;
+    protected $user;
 
     /**
      * @var string
      *
      * @ORM\Column(name="filename", type="string", length=255)
      */
-    private $filename;
+    protected $filename;
 
     /**
      * @var string
      *
      * @ORM\Column(name="oldname", type="string", length=255)
      */
-    private $oldname;
+    protected $oldname;
 
     /**
      * @var string
      *
      * @ORM\Column(name="uploadTime", type="string", length=255)
      */
-    private $uploadTime;
+    protected $uploadTime;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="del", type="boolean")
      */
-    private $del = false;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="state", type="string", length=255)
-     */
-    private $state = 'unread';
+    protected $del = false;
 
 
     public function __construct(Users $user)
@@ -196,28 +185,5 @@ class FilesEntity
     public function getDel()
     {
         return $this->del;
-    }
-
-    /**
-     * Set state
-     *
-     * @param string $state
-     * @return FilesEntity
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
-
-        return $this;
-    }
-
-    /**
-     * Get state
-     *
-     * @return string
-     */
-    public function getState()
-    {
-        return $this->state;
     }
 }

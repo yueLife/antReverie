@@ -33,11 +33,11 @@ security:
         - { path: ^/public,    role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/profile,   role: ROLE_USER }
         - { path: ^/admin,     role: ROLE_ADMIN }
-#        - { path: ^/words,     role: ROLE_WORDS }
-#        - { path: ^/goods,     role: ROLE_GOODS }
+        - { path: ^/words,     role: ROLE_WORDS }
+        - { path: ^/goods,     role: ROLE_GOODS }
 
     role_hierarchy:
         ROLE_USER:  ROLE_USER
         ROLE_ADMIN: ROLE_SUPER_ADMIN
-#        ROLE_WORDS: [ROLE_WORDS, ROLE_SUPER_ADMIN]
-#        ROLE_GOODS: [ROLE_GOODS, ROLE_SUPER_ADMIN]
+        ROLE_WORDS: [ROLE_WORDS, ROLE_USER, ROLE_SUPER_ADMIN]
+        ROLE_GOODS: [ROLE_GOODS, ROLE_USER, ROLE_SUPER_ADMIN]

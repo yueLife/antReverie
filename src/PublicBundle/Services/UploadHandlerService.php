@@ -14,7 +14,6 @@ class UploadHandlerService extends UploadHandler
 {
     protected $maxFile = 5 * 1024 * 1024;
 
-    // 24
     protected $error_messages = array(
         1 => '上传的文件超过了php.ini中的upload_max_filesize指令',
         2 => '上传的文件超过HTML格式中指定的MAX_FILE_SIZE指令',
@@ -36,19 +35,28 @@ class UploadHandlerService extends UploadHandler
         'image_resize' => '无法调整图像大小',
     );
 
-    // 46
     public function __construct()
     {
         parent::__construct();
     }
 
-    // 1128
+    /**
+     * Echo Message on body
+     *
+     * @param string $str
+     * @return boolean
+     */
     protected function body($str)
     {
         return false;
     }
 
-    // 1180
+    /**
+     * Get File Type
+     *
+     * @param string $file_path
+     * @return string
+     */
     protected function get_file_type($file_path)
     {
         switch (strtolower(pathinfo($file_path, PATHINFO_EXTENSION))) {

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Yue
+ * Date: 2017/3/30
+ * Time: 12:01
+ */
 
 namespace PublicBundle\Menu;
 
@@ -26,37 +32,50 @@ class MenuBuilder
         return $menus;
     }
 
+    /**
+     * Create SideBar Menus
+     *
+     * @param array $options
+     * @return \Knp\Menu\ItemInterface $sidebar
+     */
     public function createSidebarMenu(array $options)
     {
+        krsort($options['role']);
+        $pMenus = Array();
+        foreach ($options['role'] as $role) {
+            $roleMenus = $this->doctrine->getManager()->createQuery(
+                "SELECT m FROM PublicBundle:Menus m WHERE m.action = 'sidebar' AND m.role = :role AND m.pid IS NULL ORDER BY m.sort ASC")
+                ->setParameter('role', $role)
+                ->getResult();
+            $pMenus = array_merge($pMenus, $roleMenus);
+        }
+
         $sidebar = $this->factory->createItem('sidebar');
-        $pMenusInfo = $this->setSidebarSql($options['role'], 0);
-        foreach ($pMenusInfo as $pKey => $pMenu) {
+        foreach ($pMenus as $pKey => $pMenu) {
             $this->addMenuChild($sidebar, $pKey, $pMenu)->setAttribute('class','nav-item');
-            $menusInfo = $this->setSidebarSql($options['role'], $pMenu->getId());
-            foreach ($menusInfo as $key => $menu) {
+            foreach ($pMenu->getChildren() as $key => $menu) {
                 $this->addMenuChild($sidebar[$pKey], $key, $menu);
             }
         }
         return $sidebar;
     }
 
-    private function setSidebarSql($role, $pid)
-    {
-        $menu = $this->doctrine->getManager()->createQuery(
-                "SELECT m FROM PublicBundle:Menus m WHERE m.action = 'sidebar' AND m.role = :role AND  m.pid = :pid ORDER BY m.sort ASC")
-            ->setParameters(array('role' => $role, 'pid' => $pid))
-            ->getResult();
-        return $menu;
-    }
-
-    private function addMenuChild($menu, $key, $arr)
+    /**
+     * Add menu child
+     *
+     * @param mixed $menu
+     * @param integer $key
+     * @param mixed $child
+     * @return mixed $menu
+     */
+    private function addMenuChild($menu, $key, $child)
     {
         $menu->addChild($key, array(
-            'route' => $arr->getRoute(),
-            'label' => $arr->getTitle(),
+            'route' => $child->getRoute(),
+            'label' => $child->getTitle(),
             'extras' => array(
-                'icon' => $arr->getIcon(),
-                'description' => $arr->getDescription(),
+                'icon' => $child->getIcon(),
+                'description' => $child->getDescription(),
             ),
         ));
         return $menu;

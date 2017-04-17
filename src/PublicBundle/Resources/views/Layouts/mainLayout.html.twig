@@ -14,7 +14,7 @@
     <div class="clearfix"></div>
     <!-- BEGIN CONTAINER -->
     <div class="page-container">
-        {% set menu = knp_menu_get('sidebar', [], {'role': app.user.roles.0}) %}
+        {% set menu = knp_menu_get('sidebar', [], {'role': app.user.roles}) %}
         {{ knp_menu_render(menu, {'template': 'PublicBundle::Modules/Menus/sidebarMenu.html.twig', 'currentClass': 'active', 'ancestorClass': 'start active open'}) }}
         <div class="page-content-wrapper">
             <div class="page-content">

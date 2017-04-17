@@ -11,10 +11,10 @@ namespace PublicBundle\Services;
 class FileUtilService {
 
     /**
-     * 建立文件夹
+     * Create dir
      *
      * @param string $aimUrl
-     * @return viod
+     * @return boolean
      */
     function createDir($aimUrl) {
         $aimUrl = str_replace('', '/', $aimUrl);
@@ -31,10 +31,10 @@ class FileUtilService {
     }
 
     /**
-     * 建立文件
+     * Create file
      *
      * @param string $aimUrl
-     * @param boolean $overWrite 该参数控制是否覆盖原文件
+     * @param boolean $overWrite
      * @return boolean
      */
     function createFile($aimUrl, $overWrite = false) {
@@ -50,11 +50,11 @@ class FileUtilService {
     }
 
     /**
-     * 移动文件夹
+     * Move dir
      *
      * @param string $oldDir
      * @param string $aimDir
-     * @param boolean $overWrite 该参数控制是否覆盖原文件
+     * @param boolean $overWrite
      * @return boolean
      */
     function moveDir($oldDir, $aimDir, $overWrite = false) {
@@ -87,11 +87,11 @@ class FileUtilService {
     }
 
     /**
-     * 移动文件
+     * Move file
      *
      * @param string $fileUrl
      * @param string $aimUrl
-     * @param boolean $overWrite 该参数控制是否覆盖原文件
+     * @param boolean $overWrite
      * @return boolean
      */
     function moveFile($fileUrl, $aimUrl, $overWrite = false) {
@@ -110,7 +110,7 @@ class FileUtilService {
     }
 
     /**
-     * 删除文件夹
+     * Delete Dir
      *
      * @param string $aimDir
      * @return boolean
@@ -137,7 +137,7 @@ class FileUtilService {
     }
 
     /**
-     * 删除文件
+     * Delete File
      *
      * @param string $aimUrl
      * @return boolean
@@ -152,11 +152,11 @@ class FileUtilService {
     }
 
     /**
-     * 复制文件夹
+     * Copy Dir
      *
      * @param string $oldDir
      * @param string $aimDir
-     * @param boolean $overWrite 该参数控制是否覆盖原文件
+     * @param boolean $overWrite
      * @return boolean
      */
     function copyDir($oldDir, $aimDir, $overWrite = false) {
@@ -185,11 +185,11 @@ class FileUtilService {
     }
 
     /**
-     * 复制文件
+     * Copy File
      *
      * @param string $fileUrl
      * @param string $aimUrl
-     * @param boolean $overWrite 该参数控制是否覆盖原文件
+     * @param boolean $overWrite
      * @return boolean
      */
     function copyFile($fileUrl, $aimUrl, $overWrite = false) {

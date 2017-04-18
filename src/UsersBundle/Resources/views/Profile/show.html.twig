@@ -18,7 +18,7 @@
             <div class="portlet light profile-sidebar-portlet bordered">
                 <!-- SIDEBAR USERPIC -->
                 <div class="profile-userpic">
-                    <img src="{{ asset(AVATARS~app.user.avatar|default('avatar.png')) }}" class="img-responsive" alt=""> </div>
+                    {#<img src="{{ asset(AVATARS~app.user.avatar|default('avatar.png')) }}" class="img-responsive" alt=""> </div>#}
                 <!-- END SIDEBAR USERPIC -->
                 <!-- SIDEBAR USER TITLE -->
                 <div class="profile-usertitle">
@@ -64,10 +64,8 @@
 {% block pageLevelPluginsScript %}
     <script src="{{ asset(GLOBAL~'plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}" type="text/javascript"></script>
     <script src="{{ asset(GLOBAL~'plugins/jquery.sparkline.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset(GLOBAL~'plugins/gmaps/gmaps.min.js') }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block pageLevelScripts %}
-    <script src="{{ asset(PAGES~'pages/scripts/profile.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset(PAGES~'scripts/timeline.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset(PAGES~'scripts/profile.min.js') }}" type="text/javascript"></script>
 {% endblock %}

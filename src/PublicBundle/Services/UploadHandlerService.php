@@ -41,7 +41,7 @@ class UploadHandlerService extends UploadHandler
     }
 
     /**
-     * Echo Message on body
+     * Echo information on the body
      *
      * @param string $str
      * @return boolean

@@ -33,7 +33,7 @@ class MenuBuilder
     }
 
     /**
-     * Create SideBar Menus
+     * Create the side menu bar
      *
      * @param array $options
      * @return \Knp\Menu\ItemInterface $sidebar
@@ -52,23 +52,23 @@ class MenuBuilder
 
         $sidebar = $this->factory->createItem('sidebar');
         foreach ($pMenus as $pKey => $pMenu) {
-            $this->addMenuChild($sidebar, $pKey, $pMenu)->setAttribute('class','nav-item');
+            $this->addSubMenuToMenu($sidebar, $pKey, $pMenu)->setAttribute('class','nav-item');
             foreach ($pMenu->getChildren() as $key => $menu) {
-                $this->addMenuChild($sidebar[$pKey], $key, $menu);
+                $this->addSubMenuToMenu($sidebar[$pKey], $key, $menu);
             }
         }
         return $sidebar;
     }
 
     /**
-     * Add menu child
+     * Add sub menu to the menu bar
      *
      * @param mixed $menu
      * @param integer $key
      * @param mixed $child
      * @return mixed $menu
      */
-    private function addMenuChild($menu, $key, $child)
+    private function addSubMenuToMenu($menu, $key, $child)
     {
         $menu->addChild($key, array(
             'route' => $child->getRoute(),

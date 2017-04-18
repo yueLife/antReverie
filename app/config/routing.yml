@@ -1,3 +1,8 @@
+words:
+    resource: "@WordsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 goods:
     resource: "@GoodsBundle/Controller/"
     type:     annotation

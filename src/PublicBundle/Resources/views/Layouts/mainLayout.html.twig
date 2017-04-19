@@ -10,7 +10,7 @@
 
 {% block body %}
 <body class="page-container-bg-solid page-sidebar-closed-hide-logo page-header-fixed page-sidebar-fixed page-footer-fixed">
-    {% block mainHeader %}{{ parent() }}{% endblock %}
+    {{ block('mainHeader') }}
     <div class="clearfix"></div>
     <!-- BEGIN CONTAINER -->
     <div class="page-container">
@@ -19,7 +19,7 @@
         <div class="page-content-wrapper">
             <div class="page-content">
                 {% block contentHeader %}
-                    {% block pageHeader %}{{ parent() }}{% endblock %}
+                    {{ block('pageHeader') }}
                 {% endblock %}
                 <div id="content-body">
                     {% block content %}{% endblock %}

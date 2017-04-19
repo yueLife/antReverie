@@ -5,8 +5,8 @@
 
 {% block pageLevelPluginsStyle %}
     {{ parent() }}
-    {% block datatableStyle %}{{ parent() }}{% endblock %}
-    {% block uploadStyle %}{{ parent() }}{% endblock %}
+    {{ block('datatableStyle') }}
+    {{ block('uploadStyle') }}
 {% endblock %}
 
 {% block content %}
@@ -68,21 +68,19 @@
             </div>
         </div>
     </div>
-    {% block uploadModal %}
-        {{ parent() }}
-    {% endblock %}
+    {{ block('uploadModal') }}
 {% endblock %}
 
 {% block pageLevelPluginsScript %}
     {{ parent() }}
-    {% block datatableScript %}{{ parent() }}{% endblock %}
-    {% block uploadScript %}{{ parent() }}{% endblock %}
+    {{ block('datatableScript') }}
+    {{ block('uploadScript') }}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    {% block datatableJavascripts %}{{ parent() }}{% endblock %}
-    {% block uploadJavascripts %}{{ parent() }}{% endblock %}
+    {{ block('datatableJavascripts') }}
+    {{ block('uploadJavascripts') }}
     <script type="text/javascript">
         $(function(){
             datatable($('.all-files-table'));

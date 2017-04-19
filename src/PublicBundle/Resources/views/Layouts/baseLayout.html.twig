@@ -19,6 +19,7 @@
     <!-- BEGIN THEME GLOBAL STYLES -->
     <link rel="stylesheet" href="{{ asset(GLOBAL~'css/components-rounded.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset(GLOBAL~'css/plugins.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset(PUBLIC_CSS~'global.css') }}" type="text/css">
     <!-- END THEME GLOBAL STYLES -->
 
     <!-- BEGIN PAGE LEVEL STYLES -->
@@ -41,7 +42,7 @@
 {% block body %}{% endblock %}
 
 {% block footer %}
-    {% block mainFooter %}{{ parent() }}{% endblock %}
+    {{ block('mainFooter') }}
 {% endblock %}
 
 <!-- BEGIN CORE PLUGINS -->

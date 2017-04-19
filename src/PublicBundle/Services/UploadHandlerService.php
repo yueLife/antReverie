@@ -10,10 +10,20 @@ namespace PublicBundle\Services;
 
 use PublicBundle\Vendor\UploadHandler;
 
+/**
+ * Class UploadHandlerService
+ * @package PublicBundle\Services
+ */
 class UploadHandlerService extends UploadHandler
 {
+    /**
+     * @var int
+     */
     protected $maxFile = 5 * 1024 * 1024;
 
+    /**
+     * @var array
+     */
     protected $error_messages = array(
         1 => '上传的文件超过了php.ini中的upload_max_filesize指令',
         2 => '上传的文件超过HTML格式中指定的MAX_FILE_SIZE指令',
@@ -35,6 +45,9 @@ class UploadHandlerService extends UploadHandler
         'image_resize' => '无法调整图像大小',
     );
 
+    /**
+     * UploadHandlerService constructor.
+     */
     public function __construct()
     {
         parent::__construct();

@@ -8,6 +8,10 @@
 
 namespace PublicBundle\Services;
 
+/**
+ * Class FileUtilService
+ * @package PublicBundle\Services
+ */
 class FileUtilService {
 
     /**

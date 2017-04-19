@@ -56,6 +56,10 @@ class FilesEntity
     protected $del = false;
 
 
+    /**
+     * FilesEntity constructor.
+     * @param Users $user
+     */
     public function __construct(Users $user)
     {
         $this->uploadTime = date('Y/m/d H:i:s', time());

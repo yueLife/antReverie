@@ -29,6 +29,9 @@ class Users extends BaseUser
      */
     protected $avatar = "avatar.png";
 
+    /**
+     * Users constructor.
+     */
     public function __construct()
     {
         parent::__construct();

@@ -63,6 +63,9 @@ class StyleTypes
      */
     private $del = false;
 
+    /**
+     * StyleTypes constructor.
+     */
     public function __construct()
     {
         $this->createTime = date('Y/m/d H:i:s', time());

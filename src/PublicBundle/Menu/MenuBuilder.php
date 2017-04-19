@@ -10,15 +10,27 @@ namespace PublicBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 
+/**
+ * Class MenuBuilder
+ * @package PublicBundle\Menu
+ */
 class MenuBuilder
 {
+    /**
+     * @var FactoryInterface
+     */
     private $factory;
+    /**
+     * @var Doctrine
+     */
     private $doctrine;
 
+
     /**
-     * @param FactoryInterface $factory
+     * MenuBuilder constructor.
      *
-     * Add any other dependency you need
+     * @param FactoryInterface $factory
+     * @param Doctrine $doctrine
      */
     public function __construct(FactoryInterface $factory, $doctrine)
     {
@@ -26,6 +38,10 @@ class MenuBuilder
         $this->doctrine = $doctrine;
     }
 
+    /**
+     * @param array $options
+     * @return \Knp\Menu\ItemInterface
+     */
     public function createMainMenu(array $options)
     {
         $menus = $this->factory->createItem('main');

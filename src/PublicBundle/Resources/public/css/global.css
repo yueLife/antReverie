@@ -4,8 +4,10 @@
  * Date: 2017/4/19
  * Time: 16:29
  */
-.fontSize12{ font-size: 12px !important; }
-.fontSize14{ font-size: 14px !important; }
-.fontSize16{ font-size: 16px !important; }
-.fontSize18{ font-size: 18px !important; }
-.fontSize20{ font-size: 20px !important; }
+.font-size-12{ font-size: 12px !important; }
+.font-size-14{ font-size: 14px !important; }
+.font-size-16{ font-size: 16px !important; }
+.font-size-18{ font-size: 18px !important; }
+.font-size-20{ font-size: 20px !important; }
+.border-none{ border: none !important; }
+.cursor-default{ cursor: default !important;}

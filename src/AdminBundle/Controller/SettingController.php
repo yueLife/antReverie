@@ -14,7 +14,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Class SettingController
+ *
  * @package AdminBundle\Controller
+ * @Route("/admin")
  */
 class SettingController extends Controller
 {

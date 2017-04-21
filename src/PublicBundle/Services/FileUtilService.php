@@ -17,8 +17,8 @@ class FileUtilService {
     /**
      * Create dir
      *
-     * @param string $aimUrl
-     * @return boolean
+     * @param String $aimUrl
+     * @return Boolean
      */
     function createDir($aimUrl) {
         $aimUrl = str_replace('', '/', $aimUrl);
@@ -37,9 +37,9 @@ class FileUtilService {
     /**
      * Create file
      *
-     * @param string $aimUrl
-     * @param boolean $overWrite
-     * @return boolean
+     * @param String $aimUrl
+     * @param Boolean $overWrite
+     * @return Boolean
      */
     function createFile($aimUrl, $overWrite = false) {
         if (file_exists($aimUrl) && $overWrite == false) {
@@ -56,10 +56,10 @@ class FileUtilService {
     /**
      * Move dir
      *
-     * @param string $oldDir
-     * @param string $aimDir
-     * @param boolean $overWrite
-     * @return boolean
+     * @param String $oldDir
+     * @param String $aimDir
+     * @param Boolean $overWrite
+     * @return Boolean
      */
     function moveDir($oldDir, $aimDir, $overWrite = false) {
         $aimDir = str_replace('', '/', $aimDir);
@@ -93,10 +93,10 @@ class FileUtilService {
     /**
      * Move file
      *
-     * @param string $fileUrl
-     * @param string $aimUrl
-     * @param boolean $overWrite
-     * @return boolean
+     * @param String $fileUrl
+     * @param String $aimUrl
+     * @param Boolean $overWrite
+     * @return Boolean
      */
     function moveFile($fileUrl, $aimUrl, $overWrite = false) {
         if (!file_exists($fileUrl)) {
@@ -116,8 +116,8 @@ class FileUtilService {
     /**
      * Delete Dir
      *
-     * @param string $aimDir
-     * @return boolean
+     * @param String $aimDir
+     * @return Boolean
      */
     function unlinkDir($aimDir) {
         $aimDir = str_replace('', '/', $aimDir);
@@ -143,8 +143,8 @@ class FileUtilService {
     /**
      * Delete File
      *
-     * @param string $aimUrl
-     * @return boolean
+     * @param String $aimUrl
+     * @return Boolean
      */
     function unlinkFile($aimUrl) {
         if (file_exists($aimUrl)) {
@@ -158,10 +158,10 @@ class FileUtilService {
     /**
      * Copy Dir
      *
-     * @param string $oldDir
-     * @param string $aimDir
-     * @param boolean $overWrite
-     * @return boolean
+     * @param String $oldDir
+     * @param String $aimDir
+     * @param Boolean $overWrite
+     * @return Boolean
      */
     function copyDir($oldDir, $aimDir, $overWrite = false) {
         $aimDir = str_replace('', '/', $aimDir);
@@ -191,10 +191,10 @@ class FileUtilService {
     /**
      * Copy File
      *
-     * @param string $fileUrl
-     * @param string $aimUrl
-     * @param boolean $overWrite
-     * @return boolean
+     * @param String $fileUrl
+     * @param String $aimUrl
+     * @param Boolean $overWrite
+     * @return Boolean
      */
     function copyFile($fileUrl, $aimUrl, $overWrite = false) {
         if (!file_exists($fileUrl)) {

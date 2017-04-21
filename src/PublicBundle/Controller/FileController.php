@@ -14,28 +14,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use PublicBundle\Entity\UploadFiles;
+
 /**
  * Class FileController
+ *
  * @package PublicBundle\Controller
+ * @Route("/files")
  */
 class FileController extends Controller
 {
     /**
-     * Deleting file method
-     *
-     * @Route("/deleteFile", name="deleteFile")
-     */
-    public function deleteFileAction(Request $request)
-    {
-        $data['id'] = $request->get('id');
-        $data['filename'] = $request->get('filename');
-        return new JsonResponse($data);
-    }
-
-    /**
      * File upload function
      *
-     * @Route("/uploadFile", name="uploadFile")
+     * @Route("/upload", name="uploadFile")
+     * @param Request $request
      */
     public function uploadFileAction(Request $request)
     {
@@ -58,5 +50,18 @@ class FileController extends Controller
         }
 
         return new JsonResponse($uploadData->response);
+    }
+
+    /**
+     * Deleting file method
+     *
+     * @Route("/delete", name="deleteFile")
+     * @param Request $request
+     */
+    public function deleteFileAction(Request $request)
+    {
+        $data['id'] = $request->get('id');
+        $data['filename'] = $request->get('filename');
+        return new JsonResponse($data);
     }
 }

@@ -5,12 +5,12 @@ namespace GoodsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * StyleTypes
+ * ShopModels
  *
- * @ORM\Table(name="sy_style_types")
- * @ORM\Entity(repositoryClass="GoodsBundle\Entity\StyleTypesRepository")
+ * @ORM\Table(name="sy_shop_models")
+ * @ORM\Entity(repositoryClass="GoodsBundle\Entity\ShopModelsRepository")
  */
-class StyleTypes
+class ShopModels
 {
     /**
      * @var integer
@@ -64,7 +64,7 @@ class StyleTypes
     private $del = false;
 
     /**
-     * StyleTypes constructor.
+     * ShopModels constructor.
      */
     public function __construct()
     {
@@ -85,7 +85,7 @@ class StyleTypes
      * Set shopId
      *
      * @param integer $shopId
-     * @return StyleTypes
+     * @return ShopModels
      */
     public function setShopId($shopId)
     {
@@ -108,7 +108,7 @@ class StyleTypes
      * Set title
      *
      * @param string $title
-     * @return StyleTypes
+     * @return ShopModels
      */
     public function setTitle($title)
     {
@@ -131,7 +131,7 @@ class StyleTypes
      * Set route
      *
      * @param string $route
-     * @return StyleTypes
+     * @return ShopModels
      */
     public function setRoute($route)
     {
@@ -154,7 +154,7 @@ class StyleTypes
      * Set style
      *
      * @param string $style
-     * @return StyleTypes
+     * @return ShopModels
      */
     public function setStyle($style)
     {
@@ -177,7 +177,7 @@ class StyleTypes
      * Set createTime
      *
      * @param string $createTime
-     * @return StyleTypes
+     * @return ShopModels
      */
     public function setCreateTime($createTime)
     {
@@ -200,7 +200,7 @@ class StyleTypes
      * Set del
      *
      * @param boolean $del
-     * @return StyleTypes
+     * @return ShopModels
      */
     public function setDel($del)
     {

@@ -30,17 +30,24 @@
                                 <th style="width:50px !important;">ID</th>
                                 <th style="width:300px !important;">文件名</th>
                                 <th style="width:50px !important;">状态</th>
-                                <th style="width:80px !important;">文件数据</th>
-                                <th style="width:150px !important;">上传时间</th>
-                                <th style="width:100px !important;">操作</th>
-                                <th style="width:500px !important;">功能</th>
+                                <th style="width:80px !important;">文件类型</th>
+                                <th style="width:130px !important;">上传时间</th>
+                                <th style="width:80px !important;">操作</th>
+                                {% spaceless %}
+                                {% if shopModels|length > 3 %}
+                                    {% set width = shopModels|length * 65 %}
+                                {% else %}
+                                    {% set width = 200 %}
+                                {% endif %}
+                                {% endspaceless -%}
+                                <th style="width:{{ width }}px !important;">功能</th>
                             </tr>
                         </thead>
                         <tbody>
                         {% for file in uploadFiles %}
                             <tr>
-                                <td>{{ file.id }}</td>
-                                <td data-filename="{{ file.filename }}">{{ file.oldname }}</td>
+                                <td> {{ file.id }} </td>
+                                <td data-filename="{{ file.filename }}"> {{ file.oldname }} </td>
                                 <td>
                                     {% if file.state == 'read' %}
                                         {% set state = 'success' %}
@@ -52,7 +59,7 @@
                                         {% set state = 'danger' %}
                                         {% set title = '错误' %}
                                     {% endif %}
-                                    <button type="button" class="btn btn-xs btn-{{ state }}">{{ title }}</button>
+                                    <button type="button" class="btn btn-xs btn-{{ state }}"> {{ title }} </button>
                                 </td>
                                 <td>
                                     {% if file.extension == 'goodsFile' %}
@@ -63,20 +70,20 @@
                                         禁词文件
                                     {% endif %}
                                 </td>
-                                <td>{{ file.uploadTime }}</td>
+                                <td> {{ file.uploadTime }} </td>
                                 <td>
-                                    <button type="button" class="btn btn-xs default red-stripe delete-file-btn">删除</button>
-                                    <button type="button" class="btn btn-xs default green-meadow-stripe">下载</button>
+                                    <button type="button" class="btn btn-xs default red-stripe delete-file-btn"> 删除</button>
+                                    <button type="button" class="btn btn-xs default green-meadow-stripe"> 下载 </button>
                                 </td>
                                 <td>
                                     {% if file.extension == 'goodsFile' %}
-                                        {% for func in styleTypes %}
-                                            <a href="#{{ func.route }}" class="btn btn-link btn-xs font-size-14">{{ func.title }}</a>
+                                        {% for m in shopModels %}
+                                        <a href="{{ path('displayModel', { 'id': file.id, 'route': m.route }) }}" class="btn btn-link btn-xs font-size-14"> {{ m.title }} </a>
                                         {% endfor %}
                                     {% elseif file.extension == 'wordsFile' %}
-                                        检测文件
+                                        <a href="#test" class="btn btn-link btn-xs font-size-14"> 检测文件 </a>
                                     {% elseif file.extension == 'unusedWordsFile' %}
-                                        禁词文件
+                                        <a href="#read" class="btn btn-link btn-xs font-size-14"> 读取文件 </a>
                                     {% endif %}
                                 </td>
                             </tr>

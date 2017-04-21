@@ -17,12 +17,12 @@ use PublicBundle\Vendor\UploadHandler;
 class UploadHandlerService extends UploadHandler
 {
     /**
-     * @var int
+     * @var Integer
      */
     protected $maxFile = 5 * 1024 * 1024;
 
     /**
-     * @var array
+     * @var Array
      */
     protected $error_messages = array(
         1 => '上传的文件超过了php.ini中的upload_max_filesize指令',
@@ -56,8 +56,8 @@ class UploadHandlerService extends UploadHandler
     /**
      * Echo information on the body
      *
-     * @param string $str
-     * @return boolean
+     * @param String $str
+     * @return Boolean
      */
     protected function body($str)
     {
@@ -67,8 +67,8 @@ class UploadHandlerService extends UploadHandler
     /**
      * Get File Type
      *
-     * @param string $file_path
-     * @return string
+     * @param String $file_path
+     * @return String
      */
     protected function get_file_type($file_path)
     {

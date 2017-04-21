@@ -8,7 +8,6 @@
 
 namespace UsersBundle\Controller;
 
-use PublicBundle\Entity\UploadFiles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,14 +25,13 @@ class PublicController extends Controller
     public function userFileAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $goodsFilesEm = $em->getRepository('GoodsBundle:GoodsFiles');
-        $styleTypesEm = $em->getRepository('GoodsBundle:StyleTypes');
-        $goodsFilesInfo = $goodsFilesEm->findBy(array('user' => $this->getUser(), 'del' => false));
-        $styleTypesInfo = $styleTypesEm->findBy(array('shopId' => 1, 'del' => false));
+        $uploadFilesEm = $em->getRepository('PublicBundle:UploadFiles');
+        $styleTypesInfo = $em->getRepository('GoodsBundle:StyleTypes')->findBy(array('shopId' => 1, 'del' => false));
+        $uploadFilesInfo = $uploadFilesEm->findByUser($this->getUser());
 
         return array(
             'name' => 'file',
-            'goodsFiles' => $goodsFilesInfo,
+            'uploadFiles' => $uploadFilesInfo,
             'styleTypes' => $styleTypesInfo,
         );
     }
@@ -45,12 +43,12 @@ class PublicController extends Controller
     public function userFilesAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $goodsFilesEm = $em->getRepository('GoodsBundle:GoodsFiles');
-        $goodsFilesInfo = $goodsFilesEm->findByDel(false);
+        $uploadFilesEm = $em->getRepository('PublicBundle:UploadFiles');
+        $uploadFilesInfo = $uploadFilesEm->findByDel(false);
 
         return array(
             'name' => 'file',
-            'goodsFiles' => $goodsFilesInfo,
+            'uploadFiles' => $uploadFilesInfo,
         );
     }
 }

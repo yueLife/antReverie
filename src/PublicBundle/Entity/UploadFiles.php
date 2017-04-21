@@ -64,7 +64,14 @@ class UploadFiles
      *
      * @ORM\Column(name="type", type="string", length=255)
      */
-    protected $fileType;
+    protected $fileType = null;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="extension", type="string", length=255)
+     */
+    protected $extension;
 
     /**
      * @var boolean
@@ -210,6 +217,29 @@ class UploadFiles
     }
 
     /**
+     * Set extension
+     *
+     * @param string $extension
+     * @return UploadFiles
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+
+        return $this;
+    }
+
+    /**
+     * Get extension
+     *
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    /**
      * Set del
      *
      * @param boolean $del
@@ -231,7 +261,6 @@ class UploadFiles
     {
         return $this->del;
     }
-
     /**
      * Set user
      *
@@ -244,10 +273,11 @@ class UploadFiles
 
         return $this;
     }
+
     /**
      * Get user
      *
-     * @return \UsersBundle\Entity\Users 
+     * @return \UsersBundle\Entity\Users
      */
     public function getUser()
     {

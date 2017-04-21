@@ -17,6 +17,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <form id="fileupload" action="{{ path('uploadFile') }}" method="POST" enctype="multipart/form-data">
+                                {% if chooseFile is defined and chooseFile %}
+                                {{ block('chooseFileType') }}
+                                {% endif %}
                                 <div class="row fileupload-buttonbar">
                                     <div class="col-lg-7">
                                         <span class="btn green fileinput-button">
@@ -120,6 +123,29 @@
     </div>
 {% endblock %}
 
+{% block chooseFileType %}
+    <div class="row fileupload-buttonbar">
+        <div class="col-lg-12">
+            <span> 选择上传文件类型 ：</span>
+            <div class="btn-group">
+                <button type="button" class="btn yellow dropdown-toggle fileType" data-toggle="dropdown" data-fileType="goodsFile"> <span> 货架文件 </span>
+                    <i class="iconfont icon-arrow-down font-size-12"></i>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <a href="javascript:;" data-fileType="goodsFile"> 货架文件 </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-fileType="wordsFile"> 检测文件 </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-fileType="unusedWordsFile"> 禁词文件 </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 {% block uploadScript %}
     <script src="{{ asset(GLOBAL~'plugins/fancybox/source/jquery.fancybox.pack.js') }}" type="text/javascript"></script>
     <script src="{{ asset(GLOBAL~'plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js') }}" type="text/javascript"></script>
@@ -140,9 +166,10 @@
 {% block uploadJavascripts %}
     <script type="text/javascript">
         $(function(){
-            uploadLayout();
+            uploadLayout('');
             $(document).on('click', '.fileupload-buttonbar .delete', function (e) {
                 $('.files .template-download').fadeOut();
+                console.log($('input[name="fileType"]').val());
             });
             $(document).on('click', '.files .delete', function (e) {
                 $(this).closest('tr').fadeOut();
@@ -150,14 +177,21 @@
             $('#file-upload-modal').on('hidden.bs.modal', function (e) {
                 $('.files .template-download').remove();
             });
+            $('a[data-fileType]').click(function(){
+                $('button.fileType').attr('data-fileType', $(this).attr('data-fileType')).find('span').html($(this).html());
+            })
         });
         function uploadLayout() {
-            $('#fileupload').fileupload({
+            $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+                var fileType = $('button.fileType').attr('data-fileType');
+                data.formData = {fileType: fileType};
+            }).fileupload({
                 disableImageResize: false,
                 autoUpload: false,
                 disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
                 maxFileSize: 5*1024*1024,
                 acceptFileTypes: /(\.|\/)(csv|xlsx?)$/i,
+
                 messages: {
                     maxNumberOfFiles: '单次最大上传文件个数为10个',
                     acceptFileTypes: '该文件格式不允许上传',
@@ -167,7 +201,7 @@
                 }
             });
 
-            // 上传支持CORS的浏览器的服务器状态检查：
+            // Upload support CORS browser server status check:
             if ($.support.cors) {
                 $.ajax({
                     type: 'HEAD'

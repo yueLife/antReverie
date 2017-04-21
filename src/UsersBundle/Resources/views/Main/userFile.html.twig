@@ -5,8 +5,8 @@
 
 {% block pageLevelPluginsStyle %}
     {{ parent() }}
-    {% block datatableStyle %}{{ parent() }}{% endblock %}
-    {% block uploadStyle %}{{ parent() }}{% endblock %}
+    {{ block('datatableStyle') }}
+    {{ block('uploadStyle') }}
 {% endblock %}
 
 {% block content %}
@@ -15,11 +15,11 @@
             <div class="portlet box blue">
                 <div class="portlet-title">
                     <div class="caption font-white">
-                        <i class="iconfont icon-file font-white"></i>
+                        <i class="iconfont icon-file font-size-20 font-white"></i>
                         <span class="caption-subject bold uppercase">我的文件</span>
                     </div>
                     <div class="actions">
-                        <a href="#file-upload-modal" class="btn btn-default btn-sm" data-toggle="modal">
+                        <a href="#file-upload-modal" class="btn btn-sm default btn-outline" data-toggle="modal">
                             <i class="iconfont icon-upload"></i> 文件上传 </a>
                     </div>
                 </div>
@@ -29,18 +29,18 @@
                             <tr>
                                 <th style="width:50px !important;">ID</th>
                                 <th style="width:300px !important;">文件名</th>
-                                <th style="width:150px !important;">上传时间</th>
                                 <th style="width:50px !important;">状态</th>
+                                <th style="width:80px !important;">文件数据</th>
+                                <th style="width:150px !important;">上传时间</th>
                                 <th style="width:100px !important;">操作</th>
                                 <th style="width:500px !important;">功能</th>
                             </tr>
                         </thead>
                         <tbody>
-                        {% for file in goodsFiles %}
+                        {% for file in uploadFiles %}
                             <tr>
                                 <td>{{ file.id }}</td>
-                                <td>{{ file.oldname }}</td>
-                                <td>{{ file.uploadTime }}</td>
+                                <td data-filename="{{ file.filename }}">{{ file.oldname }}</td>
                                 <td>
                                     {% if file.state == 'read' %}
                                         {% set state = 'success' %}
@@ -55,13 +55,29 @@
                                     <button type="button" class="btn btn-xs btn-{{ state }}">{{ title }}</button>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-xs default red-stripe">删除</button>
+                                    {% if file.extension == 'goodsFile' %}
+                                        货架文件
+                                    {% elseif file.extension == 'wordsFile' %}
+                                        检测文件
+                                    {% elseif file.extension == 'unusedWordsFile' %}
+                                        禁词文件
+                                    {% endif %}
+                                </td>
+                                <td>{{ file.uploadTime }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-xs default red-stripe delete-file-btn">删除</button>
                                     <button type="button" class="btn btn-xs default green-meadow-stripe">下载</button>
                                 </td>
                                 <td>
-                                    {% for type in styleTypes %}
-                                        <a href="#{{ type.route }}" class="btn btn-link">{{ type.title }}</a>
-                                    {% endfor %}
+                                    {% if file.extension == 'goodsFile' %}
+                                        {% for func in styleTypes %}
+                                            <a href="#{{ func.route }}" class="btn btn-link btn-xs font-size-14">{{ func.title }}</a>
+                                        {% endfor %}
+                                    {% elseif file.extension == 'wordsFile' %}
+                                        检测文件
+                                    {% elseif file.extension == 'unusedWordsFile' %}
+                                        禁词文件
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -71,22 +87,45 @@
             </div>
         </div>
     </div>
-    {% block uploadModal %}{{ parent() }}{% endblock %}
+    {% set chooseFile = true %}
+    {{ block('uploadModal') }}
 {% endblock %}
 
 {% block pageLevelPluginsScript %}
     {{ parent() }}
-    {% block datatableScript %}{{ parent() }}{% endblock %}
-    {% block uploadScript %}{{ parent() }}{% endblock %}
+    {{ block('datatableScript') }}
+    {{ block('uploadScript') }}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    {% block datatableJavascripts %}{{ parent() }}{% endblock %}
-    {% block uploadJavascripts %}{{ parent() }}{% endblock %}
+    {{ block('datatableJavascripts') }}
+    {{ block('uploadJavascripts') }}
     <script type="text/javascript">
         $(function(){
             datatable($('.my-files-table'));
+            $(document).on('click', '.delete-file-btn', function (event) {
+                var td = $(this).closest('tr').children('td');
+                var jsonData = {
+                    'id': td.eq(0).html(),
+                    'filename': td.eq(1).attr('data-filename'),
+                };
+
+                $.ajax({
+                    url: '{{ path('deleteFile') }}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: jsonData,
+                }).done(function (data) {
+                    console.log(data);
+                }).fail(function (data) {
+                    console.log("未知错误！");
+                });
+            });
+            $(document).on('click', '.exchange-table', function (event) {
+                $('.goods-table').toggleClass('display').toggleClass('display-hide');
+                $('.words-table').toggleClass('display').toggleClass('display-hide');
+            });
         });
     </script>
 {% endblock %}

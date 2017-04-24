@@ -55,7 +55,7 @@
         <!-- BEGIN PAGE TITLE -->
         <div class="page-title">
             <h1>{{ currentMenu.label }}
-                <small>{{ currentMenu.extras.description }}</small>
+                {#<small>{{ currentMenu.extras.description }}</small>#}
             </h1>
         </div>
         <!-- END PAGE TITLE -->
@@ -64,16 +64,14 @@
     <!-- BEGIN PAGE BREADCRUMB -->
     <ul class="page-breadcrumb breadcrumb">
         {% for key,breadcrumb in knp_menu_get_breadcrumbs_array(currentMenu) if key > 0 %}
+            <li>
             {% if currentMenu != breadcrumb.item %}
-                <li>
-                    <span style="color:#337ab7;">{{ breadcrumb.label }}</span>
-                    <i class="iconfont icon-circle"></i>
-                </li>
+                <span style="color:#337ab7;">{{ breadcrumb.label }}</span>
+                <i class="iconfont icon-circle"></i>
             {% else %}
-                <li>
-                    <span class="active">{{ breadcrumb.label }}</span>
-                </li>
+                <span class="active">{{ breadcrumb.label }}</span>
             {% endif %}
+            </li>
         {% endfor %}
     </ul>
     <!-- END PAGE BREADCRUMB -->

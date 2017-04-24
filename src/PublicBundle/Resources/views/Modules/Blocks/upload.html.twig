@@ -166,10 +166,9 @@
 {% block uploadJavascripts %}
     <script type="text/javascript">
         $(function(){
-            uploadLayout('');
+            uploadLayout();
             $(document).on('click', '.fileupload-buttonbar .delete', function (e) {
                 $('.files .template-download').fadeOut();
-                console.log($('input[name="fileType"]').val());
             });
             $(document).on('click', '.files .delete', function (e) {
                 $(this).closest('tr').fadeOut();

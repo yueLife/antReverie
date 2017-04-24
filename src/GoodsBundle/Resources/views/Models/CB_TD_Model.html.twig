@@ -1,1 +1,24 @@
-CB_TD
+{% extends "PublicBundle::Layouts/mainLayout.html.twig" %}
+
+{% block pageLevelPluginsStyle %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    CB_TD <br>
+    {{ id }} <br>
+    {{ route }}
+{% endblock %}
+
+{% block pageLevelPluginsScript %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function(){
+        });
+    </script>
+{% endblock %}

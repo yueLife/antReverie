@@ -1,9 +1,9 @@
 <?php
 
-namespace GoodsBundle;
+namespace ShelfBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class GoodsBundle extends Bundle
+class ShelfBundle extends Bundle
 {
 }

@@ -44,8 +44,24 @@ class MenuBuilder
      */
     public function createMainMenu(array $options)
     {
-        $menus = $this->factory->createItem('main');
-        return $menus;
+        krsort($options['role']);
+        $pMenus = Array();
+        foreach ($options['role'] as $role) {
+            $roleMenus = $this->doctrine->getManager()->createQuery(
+                "SELECT m FROM PublicBundle:Menus m WHERE m.action = 'sidebar' AND m.role = :role AND m.pid IS NULL ORDER BY m.sort ASC")
+                ->setParameter('role', $role)
+                ->getResult();
+            $pMenus = array_merge($pMenus, $roleMenus);
+        }
+
+        $sidebar = $this->factory->createItem('sidebar');
+        foreach ($pMenus as $pKey => $pMenu) {
+            $this->addSubMenuToMenu($sidebar, $pKey, $pMenu);
+            foreach ($pMenu->getChildren() as $key => $menu) {
+                $this->addSubMenuToMenu($sidebar[$pKey], $key, $menu);
+            }
+        }
+        return $sidebar;
     }
 
     /**
@@ -68,9 +84,18 @@ class MenuBuilder
 
         $sidebar = $this->factory->createItem('sidebar');
         foreach ($pMenus as $pKey => $pMenu) {
-            $this->addSubMenuToMenu($sidebar, $pKey, $pMenu)->setAttribute('class','nav-item');
+            $this->addSubMenuToMenu($sidebar, $pKey, $pMenu);
             foreach ($pMenu->getChildren() as $key => $menu) {
                 $this->addSubMenuToMenu($sidebar[$pKey], $key, $menu);
+                switch ($menu->getRoute()) {
+                    case 'displayModel':
+                        $sidebar[$pKey][$key]->seturi('#display-model-modal')->setLinkAttribute('data-toggle', 'modal');
+                        break;
+                    case 'generalSettings':
+                        $sidebar[$pKey][$key]->seturi('#general-settings-modal')->setLinkAttribute('data-toggle', 'modal');
+                        break;
+                }
+
             }
         }
         return $sidebar;

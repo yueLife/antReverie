@@ -1,6 +1,6 @@
 <?php
 
-namespace GoodsBundle\Entity;
+namespace ShelfBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * ShopModels
  *
  * @ORM\Table(name="sy_shop_models")
- * @ORM\Entity(repositoryClass="GoodsBundle\Entity\ShopModelsRepository")
+ * @ORM\Entity(repositoryClass="ShelfBundle\Entity\ShopModelsRepository")
  */
 class ShopModels
 {

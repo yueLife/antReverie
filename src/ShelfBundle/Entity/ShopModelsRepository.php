@@ -1,6 +1,6 @@
 <?php
 
-namespace GoodsBundle\Entity;
+namespace ShelfBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

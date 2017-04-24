@@ -1,10 +1,10 @@
-words:
-    resource: "@WordsBundle/Controller/"
+shelf:
+    resource: "@ShelfBundle/Controller/"
     type:     annotation
     prefix:   /
 
-goods:
-    resource: "@GoodsBundle/Controller/"
+words:
+    resource: "@WordsBundle/Controller/"
     type:     annotation
     prefix:   /
 

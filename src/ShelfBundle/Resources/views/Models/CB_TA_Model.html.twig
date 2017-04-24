@@ -1,0 +1,60 @@
+{% extends "PublicBundle::Layouts/mainLayout.html.twig" %}
+
+{% block pageLevelPluginsStyle %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    CB_TA <br>
+    {{ id }} <br>
+    {{ route }}
+    <div class="modal fade bs-modal-lg" id="display-model-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">文件上</h4>
+                </div>
+                <div class="modal-body">
+                    asdsa
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade bs-modal-lg" id="general-settings-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">文件上传</h4>
+                </div>
+                <div class="modal-body">
+                    asdsa
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+{% endblock %}
+
+{% block pageLevelPluginsScript %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function(){
+        });
+    </script>
+{% endblock %}

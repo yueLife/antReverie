@@ -6,7 +6,7 @@
 
     <!--
     <services>
-        <service id="goods.example" class="GoodsBundle\Example">
+        <service id="shelf.example" class="ShelfBundle\Example">
             <argument type="service" id="service_id" />
             <argument>plain_value</argument>
             <argument>%parameter_name%</argument>

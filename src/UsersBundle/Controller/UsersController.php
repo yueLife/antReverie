@@ -31,7 +31,7 @@ class UsersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $uploadFilesEm = $em->getRepository('PublicBundle:UploadFiles');
-        $shopModelsInfo = $em->getRepository('GoodsBundle:ShopModels')->findBy(array('shopId' => 1, 'del' => false));
+        $shopModelsInfo = $em->getRepository('ShelfBundle:ShopModels')->findBy(array('shopId' => 1, 'del' => false));
 
         $uploadFilesInfo = $goodsFilesInfo = $wordsFilesInfo = $unusedWordsFileInfo = [];
         if ($this->getUser()->hasRole('ROLE_GOODS')) {
@@ -55,7 +55,7 @@ class UsersController extends Controller
      * Show all files
      *
      * @Route("/allFiles", name="allFiles")
-     * @Template("UsersBundle:Main:userFiles.html.twig")
+     * @Template("UsersBundle:Main:allFiles.html.twig")
      */
     public function allFilesAction()
     {

@@ -66,6 +66,7 @@
         {% for key,breadcrumb in knp_menu_get_breadcrumbs_array(currentMenu) if key > 0 %}
             <li>
             {% if currentMenu != breadcrumb.item %}
+                <i class="iconfont icon-{{ breadcrumb.item.getExtra('icon') }}"></i>
                 <span style="color:#337ab7;">{{ breadcrumb.label }}</span>
                 <i class="iconfont icon-circle"></i>
             {% else %}

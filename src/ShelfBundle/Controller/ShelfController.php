@@ -33,22 +33,20 @@ class ShelfController extends Controller
      */
     public function displayModelAction(Request $request, $id, $route)
     {
-//        $brand = explode('_', $route)[0];
-//        $model = explode('_', $route)[1];
-//
-//        $uploadFilesEm = $this->getDoctrine()->getRepository('PublicBundle:UploadFiles');
-//        $filesInfo = $uploadFilesEm->findOneById($id);
+        $brand = explode('_', $route)[0];
+        $model = explode('_', $route)[1];
+
+        $uploadFilesEm = $this->getDoctrine()->getRepository('PublicBundle:UploadFiles');
+        $filesInfo = $uploadFilesEm->findOneById($id);
 
         return $this->render(
-            'ShelfBundle::Models/CB_TA_Model.html.twig',
-//            'GoodsBundle::Models/'.$route.'.html.twig',
+            'ShelfBundle::Models/'.$route.'.html.twig',
             array(
                 'id' => $id,
                 'route' => $route,
             )
         );
     }
-
 
     /**
      * Shelf general Settings

@@ -29,3 +29,14 @@
         <p> {{ msg }} </p>
     </div>
 {% endmacro alertClose %}
+
+{# Global tab pane #}
+{% macro liTabPane(anchor, icon, title, active) %}
+    <li class="{{ active|default('') }}">
+        <a href=".{{ anchor }}" data-toggle="tab">
+            <i class="iconfont icon-{{ icon }} font-size-18"></i> {{ title }}
+        </a>
+    </li>
+{% endmacro %}
+
+{# Global button #}

@@ -4,7 +4,6 @@
 {% use 'PublicBundle::Modules/Blocks/datatable.html.twig' %}
 
 {% block pageLevelPluginsStyle %}
-    {{ parent() }}
     {{ block('datatableStyle') }}
     {{ block('uploadStyle') }}
 {% endblock %}
@@ -99,13 +98,11 @@
 {% endblock %}
 
 {% block pageLevelPluginsScript %}
-    {{ parent() }}
     {{ block('datatableScript') }}
     {{ block('uploadScript') }}
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
     {{ block('datatableJavascripts') }}
     {{ block('uploadJavascripts') }}
     <script type="text/javascript">

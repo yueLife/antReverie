@@ -1,7 +1,7 @@
-{% extends "PublicBundle::Layouts/mainLayout.html.twig" %}
+{% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
-{% block pageLevelPluginsStyle %}
-    {#<link rel="stylesheet" href="{{ asset(PUBLIC_CSS~'toastr.min.css') }}" type="text/css">#}
+{% block pagePluginsStyles %}
+    <link rel="stylesheet" href="{{ asset(PLUGINS~'Toastr/toastr.min.css') }}" type="text/css">
 {% endblock %}
 
 
@@ -86,9 +86,9 @@
     </div>
 {% endblock %}
 
-{% block pageLevelPluginsScript %}
-    <script src="//cdn.bootcss.com/zeroclipboard/2.2.0/ZeroClipboard.js" type="text/javascript"></script>
-    <script src="//cdn.bootcss.com/toastr.js/latest/toastr.min.js" type="text/javascript"></script>
+{% block pagePluginsScripts %}
+    <script src="{{ asset(PLUGINS~'ZeroClipboard/ZeroClipboard.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset(PLUGINS~'Toastr/toastr.min.js') }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block javascripts %}

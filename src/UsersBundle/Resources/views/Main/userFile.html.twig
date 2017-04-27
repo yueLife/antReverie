@@ -1,9 +1,9 @@
-{% extends "PublicBundle::Layouts/mainLayout.html.twig" %}
+{% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
 {% use 'PublicBundle::Modules/Blocks/upload.html.twig' %}
 {% use 'PublicBundle::Modules/Blocks/datatable.html.twig' %}
 
-{% block pageLevelPluginsStyle %}
+{% block pagePluginsStyles %}
     {{ block('datatableStyle') }}
     {{ block('uploadStyle') }}
 {% endblock %}
@@ -97,7 +97,7 @@
     {{ block('uploadModal') }}
 {% endblock %}
 
-{% block pageLevelPluginsScript %}
+{% block pagePluginsScripts %}
     {{ block('datatableScript') }}
     {{ block('uploadScript') }}
 {% endblock %}

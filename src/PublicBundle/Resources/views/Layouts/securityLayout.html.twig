@@ -1,15 +1,17 @@
 {% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
-{% block pageLevelPlugins %}
+{% block pagePluginsStyles %}
     <link rel="stylesheet" href="{{ asset(GLOBAL~'plugins/select2/css/select2.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset(GLOBAL~'plugins/select2/css/select2-bootstrap.min.css') }}" type="text/css" />
 {% endblock %}
 
-{% block pageLevelStyles %}
+{% block pageStyles %}
     <link rel="stylesheet" href="{{ asset(PAGES~'css/login-5.min.css') }}" type="text/css" />
 {% endblock %}
 
-{% block stylesheet %}
+{% block globalLayoutStyles %}{% endblock %}
+
+{% block stylesheets %}
     <style>
         .user-login-5 .alert { margin-top:-5px; }
         .login-content form { margin-top:35px !important; }
@@ -60,13 +62,15 @@
 
 {% block footer %}{% endblock %}
 
-{% block pageLevelPluginsScript %}
+{% block pagePluginsScripts %}
     <script src="{{ asset(GLOBAL~'plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset(GLOBAL~'plugins/jquery-validation/js/additional-methods.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset(GLOBAL~'plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset(GLOBAL~'plugins/backstretch/jquery.backstretch.min.js') }}" type="text/javascript"></script>
 {% endblock %}
 
-{% block pageLevelScripts %}
+{% block pageScripts %}
     <script src="{{ asset(PAGES~'scripts/login-5.min.js') }}" type="text/javascript"></script>
 {% endblock %}
+
+{% block globalLayoutScripts %}{% endblock %}

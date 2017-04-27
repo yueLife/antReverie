@@ -5,12 +5,12 @@ namespace ShelfBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ShopModels
+ * ShelfModels
  *
- * @ORM\Table(name="sy_shop_models")
- * @ORM\Entity(repositoryClass="ShelfBundle\Entity\ShopModelsRepository")
+ * @ORM\Table(name="sy_shelf_models")
+ * @ORM\Entity(repositoryClass="ShelfBundle\Entity\ShelfModelsRepository")
  */
-class ShopModels
+class ShelfModels
 {
     /**
      * @var integer
@@ -63,8 +63,9 @@ class ShopModels
      */
     private $del = false;
 
+
     /**
-     * ShopModels constructor.
+     * ShelfModels constructor.
      */
     public function __construct()
     {
@@ -85,7 +86,7 @@ class ShopModels
      * Set shopId
      *
      * @param integer $shopId
-     * @return ShopModels
+     * @return ShelfModels
      */
     public function setShopId($shopId)
     {
@@ -108,7 +109,7 @@ class ShopModels
      * Set title
      *
      * @param string $title
-     * @return ShopModels
+     * @return ShelfModels
      */
     public function setTitle($title)
     {
@@ -131,7 +132,7 @@ class ShopModels
      * Set route
      *
      * @param string $route
-     * @return ShopModels
+     * @return ShelfModels
      */
     public function setRoute($route)
     {
@@ -154,7 +155,7 @@ class ShopModels
      * Set style
      *
      * @param string $style
-     * @return ShopModels
+     * @return ShelfModels
      */
     public function setStyle($style)
     {
@@ -177,7 +178,7 @@ class ShopModels
      * Set createTime
      *
      * @param string $createTime
-     * @return ShopModels
+     * @return ShelfModels
      */
     public function setCreateTime($createTime)
     {
@@ -200,7 +201,7 @@ class ShopModels
      * Set del
      *
      * @param boolean $del
-     * @return ShopModels
+     * @return ShelfModels
      */
     public function setDel($del)
     {

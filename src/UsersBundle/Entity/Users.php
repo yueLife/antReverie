@@ -29,6 +29,7 @@ class Users extends BaseUser
      */
     protected $avatar = "avatar.png";
 
+
     /**
      * Users constructor.
      */

@@ -94,7 +94,6 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function(){
-            $('#general-settings-modal').modal('show');
             var clip = new ZeroClipboard($(".copy-code-btn"));
             clip.on("copy", function(e) {
                 clip.setText($('.code-textarea').val());
@@ -123,4 +122,3 @@
         })
     </script>
 {% endblock %}
-

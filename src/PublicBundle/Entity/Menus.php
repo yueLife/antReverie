@@ -37,6 +37,13 @@ class Menus
     /**
      * @var string
      *
+     * @ORM\Column(name="route", type="string", length=255)
+     */
+    private $route;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
@@ -54,13 +61,6 @@ class Menus
      * @ORM\Column(name="action", type="string", length=255)
      */
     private $action;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="route", type="string", length=255)
-     */
-    private $route;
 
     /**
      * @var string
@@ -93,11 +93,34 @@ class Menus
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set pid
+     *
+     * @param \PublicBundle\Entity\Menus $pid
+     * @return Menus
+     */
+    public function setPid(\PublicBundle\Entity\Menus $pid = null)
+    {
+        $this->pid = $pid;
+
+        return $this;
+    }
+
+    /**
+     * Get pid
+     *
+     * @return \PublicBundle\Entity\Menus
+     */
+    public function getPid()
+    {
+        return $this->pid;
     }
 
     /**
@@ -116,11 +139,34 @@ class Menus
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set route
+     *
+     * @param string $route
+     * @return Menus
+     */
+    public function setRoute($route)
+    {
+        $this->route = $route;
+
+        return $this;
+    }
+
+    /**
+     * Get route
+     *
+     * @return string
+     */
+    public function getRoute()
+    {
+        return $this->route;
     }
 
     /**
@@ -139,7 +185,7 @@ class Menus
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -162,7 +208,7 @@ class Menus
     /**
      * Get role
      *
-     * @return string 
+     * @return string
      */
     public function getRole()
     {
@@ -185,34 +231,11 @@ class Menus
     /**
      * Get action
      *
-     * @return string 
+     * @return string
      */
     public function getAction()
     {
         return $this->action;
-    }
-
-    /**
-     * Set route
-     *
-     * @param string $route
-     * @return Menus
-     */
-    public function setRoute($route)
-    {
-        $this->route = $route;
-
-        return $this;
-    }
-
-    /**
-     * Get route
-     *
-     * @return string 
-     */
-    public function getRoute()
-    {
-        return $this->route;
     }
 
     /**
@@ -231,7 +254,7 @@ class Menus
     /**
      * Get icon
      *
-     * @return string 
+     * @return string
      */
     public function getIcon()
     {
@@ -254,34 +277,11 @@ class Menus
     /**
      * Get sort
      *
-     * @return integer 
+     * @return integer
      */
     public function getSort()
     {
         return $this->sort;
-    }
-
-    /**
-     * Set pid
-     *
-     * @param \PublicBundle\Entity\Menus $pid
-     * @return Menus
-     */
-    public function setPid(\PublicBundle\Entity\Menus $pid = null)
-    {
-        $this->pid = $pid;
-
-        return $this;
-    }
-
-    /**
-     * Get pid
-     *
-     * @return \PublicBundle\Entity\Menus 
-     */
-    public function getPid()
-    {
-        return $this->pid;
     }
 
     /**

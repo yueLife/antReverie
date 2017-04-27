@@ -5,7 +5,6 @@ namespace PublicBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use UsersBundle\Entity\Users;
 
-
 /**
  * UploadFiles
  *
@@ -82,7 +81,7 @@ class UploadFiles
 
 
     /**
-     * FilesEntity constructor.
+     * UploadFiles constructor.
      * @param Users $user
      */
     public function __construct(Users $user)
@@ -102,6 +101,29 @@ class UploadFiles
     }
 
     /**
+     * Set user
+     *
+     * @param \UsersBundle\Entity\Users $user
+     * @return UploadFiles
+     */
+    public function setUser(\UsersBundle\Entity\Users $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UsersBundle\Entity\Users
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
      * Set filename
      *
      * @param string $filename
@@ -117,7 +139,7 @@ class UploadFiles
     /**
      * Get filename
      *
-     * @return string 
+     * @return string
      */
     public function getFilename()
     {
@@ -140,7 +162,7 @@ class UploadFiles
     /**
      * Get oldname
      *
-     * @return string 
+     * @return string
      */
     public function getOldname()
     {
@@ -163,7 +185,7 @@ class UploadFiles
     /**
      * Get uploadTime
      *
-     * @return string 
+     * @return string
      */
     public function getUploadTime()
     {
@@ -186,7 +208,7 @@ class UploadFiles
     /**
      * Get state
      *
-     * @return string 
+     * @return string
      */
     public function getState()
     {
@@ -260,27 +282,5 @@ class UploadFiles
     public function getDel()
     {
         return $this->del;
-    }
-    /**
-     * Set user
-     *
-     * @param \UsersBundle\Entity\Users $user
-     * @return UploadFiles
-     */
-    public function setUser(\UsersBundle\Entity\Users $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \UsersBundle\Entity\Users
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 }

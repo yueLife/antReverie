@@ -33,8 +33,8 @@
                                 <th style="width:130px !important;">上传时间</th>
                                 <th style="width:80px !important;">操作</th>
                                 {% spaceless %}
-                                {% if shopModels|length > 3 %}
-                                    {% set width = shopModels|length * 65 %}
+                                {% if shelfModels|length > 3 %}
+                                    {% set width = shelfModels|length * 65 %}
                                 {% else %}
                                     {% set width = 200 %}
                                 {% endif %}
@@ -76,7 +76,7 @@
                                 </td>
                                 <td>
                                     {% if file.extension == 'goodsFile' %}
-                                        {% for m in shopModels %}
+                                        {% for m in shelfModels %}
                                         <a href="{{ path('displayModel', { 'id': file.id, 'route': m.route }) }}" class="btn btn-link btn-xs font-size-14"> {{ m.title }} </a>
                                         {% endfor %}
                                     {% elseif file.extension == 'wordsFile' %}

@@ -8,6 +8,7 @@
 
 namespace ShelfBundle\Controller;
 
+use Doctrine\ORM\TransactionRequiredException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -29,13 +30,14 @@ class ShelfController extends Controller
      */
     public function displayModelAction($id, $route)
     {
-        $uploadFilesEm = $this->getDoctrine()->getRepository('PublicBundle:UploadFiles');
-        $shelfGoodsEm = $this->getDoctrine()->getRepository('ShelfBundle:ShelfGoods');
+        $this->em = $this->getDoctrine()->getManager();
+        $uploadFilesEm = $this->em->getRepository('PublicBundle:UploadFiles');
+        $shelfGoodsEm = $this->em->getRepository('ShelfBundle:ShelfGoods');
 
-        $filesInfo = $uploadFilesEm->findOneById($id);
-        $shelfGoodsInfo = $shelfGoodsEm->findByFile($filesInfo);
+        $fileInfo = $uploadFilesEm->findOneById($id);
+        $shelfGoodsInfo = $shelfGoodsEm->findByFile($fileInfo);
         if (!count($shelfGoodsInfo)) {
-            $shelfGoodsInfo = $this->getFileDataFunc();
+            $this->root = $_SERVER['DOCUMENT_ROOT']."/Uploads/files/";
         }
 
         return $this->render(
@@ -57,16 +59,5 @@ class ShelfController extends Controller
     public function generalSettingsAction()
     {
         return false;
-    }
-
-    public function getFileDataFunc()
-    {
-        return 'getFileDataFunc';
-    }
-
-    public function getUserInfoFunc($user)
-    {
-        $shelfUsers = $this->getDoctrine()->getRepository('ShelfBundle:ShelfUsers');
-        $shelfUsers->findOneByUser($user);
     }
 }

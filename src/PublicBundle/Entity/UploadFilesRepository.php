@@ -16,12 +16,12 @@ class UploadFilesRepository extends EntityRepository
      * Query the user is not deleted file
      *
      * @param Entity $user
-     * @param string $extension
+     * @param string $fileType
      * @return mixed
      */
-    public function findByUserNotDel($user, $extension)
+    public function findByUserFileType($user, $fileType)
     {
-        $fileInfo = $this->findBy(array('user' => $user, 'del' => false, 'extension' => $extension));
+        $fileInfo = $this->findBy(array('user' => $user, 'del' => false, 'fileType' => $fileType));
         return $fileInfo;
     }
 }

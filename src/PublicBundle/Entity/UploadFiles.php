@@ -66,13 +66,6 @@ class UploadFiles
     protected $fileType = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="extension", type="string", length=255)
-     */
-    protected $extension;
-
-    /**
      * @var boolean
      *
      * @ORM\Column(name="del", type="boolean")
@@ -236,29 +229,6 @@ class UploadFiles
     public function getFileType()
     {
         return $this->fileType;
-    }
-
-    /**
-     * Set extension
-     *
-     * @param string $extension
-     * @return UploadFiles
-     */
-    public function setExtension($extension)
-    {
-        $this->extension = $extension;
-
-        return $this;
-    }
-
-    /**
-     * Get extension
-     *
-     * @return string
-     */
-    public function getExtension()
-    {
-        return $this->extension;
     }
 
     /**

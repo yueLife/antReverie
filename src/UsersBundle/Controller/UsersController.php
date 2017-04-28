@@ -35,12 +35,12 @@ class UsersController extends Controller
 
         $uploadFilesInfo = $goodsFilesInfo = $wordsFilesInfo = $unusedWordsFileInfo = [];
         if ($this->getUser()->hasRole('ROLE_GOODS')) {
-            $goodsFilesInfo = $uploadFilesEm->findByUserNotDel($this->getUser(), 'goodsFile');
+            $goodsFilesInfo = $uploadFilesEm->findByUserFileType($this->getUser(), 'goodsFile');
             $uploadFilesInfo = array_merge($uploadFilesInfo, $goodsFilesInfo);
         }
         if ($this->getUser()->hasRole('ROLE_WORDS')) {
-            $wordsFilesInfo = $uploadFilesEm->findByUserNotDel($this->getUser(), 'wordsFile');
-            $unusedWordsFileInfo = $uploadFilesEm->findByUserNotDel($this->getUser(), 'unusedWordsFile');
+            $wordsFilesInfo = $uploadFilesEm->findByUserFileType($this->getUser(), 'wordsFile');
+            $unusedWordsFileInfo = $uploadFilesEm->findByUserFileType($this->getUser(), 'unusedWordsFile');
             $uploadFilesInfo = array_merge($uploadFilesInfo, $wordsFilesInfo, $unusedWordsFileInfo);
         }
 

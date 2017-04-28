@@ -40,14 +40,21 @@ class ShelfGoods
     /**
      * @var string
      *
+     * @ORM\Column(name="goodsname_sub", type="string", length=255, nullable=true)
+     */
+    private $goodsnameSub;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="goods_bn", type="string", length=255, nullable=true)
      */
     private $goodsBn;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="goods_id", type="integer")
+     * @ORM\Column(name="goods_id", type="string", length=255)
      */
     private $goodsId;
 
@@ -164,6 +171,29 @@ class ShelfGoods
     public function getGoodsname()
     {
         return $this->goodsname;
+    }
+
+    /**
+     * Set goodsnameSub
+     *
+     * @param string $goodsnameSub
+     * @return ShelfGoods
+     */
+    public function setGoodsnameSub($goodsnameSub)
+    {
+        $this->goodsnameSub = $goodsnameSub;
+
+        return $this;
+    }
+
+    /**
+     * Get goodsnameSub
+     *
+     * @return string
+     */
+    public function getGoodsnameSub()
+    {
+        return $this->goodsnameSub;
     }
 
     /**

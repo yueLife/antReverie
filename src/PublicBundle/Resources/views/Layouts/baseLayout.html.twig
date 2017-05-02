@@ -17,6 +17,7 @@
     <!-- END PAGE PLUGINS STYLES -->
 
     <!-- BEGIN GLOBAL STYLES -->
+    <link rel="stylesheet" href="{{ asset(PLUGINS~'Toastr/toastr.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset(GLOBAL~'css/components-rounded.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset(GLOBAL~'css/plugins.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset(PUBLIC_CSS~'global.css') }}" type="text/css">
@@ -30,7 +31,6 @@
     {% block globalLayoutStyles %}
         <link rel="stylesheet" href="{{ asset(LAYOUTS~'layout4/css/layout.min.css') }}"  type="text/css" />
         <link rel="stylesheet" href="{{ asset(LAYOUTS~'layout4/css/themes/light.min.css') }}" type="text/css" id="style_color" />
-        <link rel="stylesheet" href="{{ asset(LAYOUTS~'layout4/css/custom.min.css') }}" type="text/css" />
     {% endblock %}
     <!-- END GLOBAL LAYOUT STYLES -->
 
@@ -86,7 +86,9 @@
 <!-- END PAGE PLUGINS SCRIPTS -->
 
 <!-- BEGIN GLOBAL SCRIPTS -->
+<script src="{{ asset(PLUGINS~'Toastr/toastr.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset(GLOBAL~'scripts/app.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset(PUBLIC_JS~'global.js') }}" type="text/javascript"></script>
 <!-- END GLOBAL SCRIPTS -->
 
 <!-- BEGIN PAGE SCRIPTS -->

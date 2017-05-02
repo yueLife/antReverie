@@ -77,12 +77,12 @@
                                 <td>
                                     {% if file.fileType == 'goodsFile' %}
                                         {% for m in shelfModels %}
-                                        <a href="#{#{ path('displayModel', { 'id': file.id, 'route': m.route }) }}#}" class="btn btn-link btn-xs font-size-14 display-model-btn" data-id="{{ file.id }}" data-route="{{ m.route }}"> {{ m.title }} </a>
+                                        <a class="btn btn-link btn-xs font-size-14 display-model-btn" data-id="{{ file.id }}" data-route="{{ m.route }}"> {{ m.title }} </a>
                                         {% endfor %}
                                     {% elseif file.fileType == 'wordsFile' %}
-                                        <a href="#test" class="btn btn-link btn-xs font-size-14"> 检测文件 </a>
+                                        <a class="btn btn-link btn-xs font-size-14"> 检测文件 </a>
                                     {% elseif file.fileType == 'unusedWordsFile' %}
-                                        <a href="#read" class="btn btn-link btn-xs font-size-14"> 读取文件 </a>
+                                        <a class="btn btn-link btn-xs font-size-14"> 读取文件 </a>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -131,6 +131,8 @@
                 $('.words-table').toggleClass('display').toggleClass('display-hide');
             });
             $(document).on('click', '.display-model-btn', function (event) {
+                var id = $(this).attr('data-id');
+                var route = $(this).attr('data-route');
                 $.ajax({
                     url: '{{ path('getShelfFileDataAjax') }}',
                     type: 'post',
@@ -138,8 +140,15 @@
                     data: { 'id': $(this).attr('data-id') },
                 }).done(function (data) {
                     console.log(data);
+                    switch (data['state']) {
+                        case 'error':
+                            toastr.error(data['message'], '提示'); break;
+                        case 'success':
+                            {#window.location.href = "{{ path('displayModel') }}/"+id+"/"+route#}
+                            toastr.success(data['message'], '提示'); break;
+                    }
                 }).fail(function (data) {
-                    console.log("未知错误！");
+                    toastr.error('未知错误！', '提示');
                 });
             });
         });

@@ -39,7 +39,7 @@ class MenuBuilder
     }
 
     /**
-     * @param Array $options
+     * @param array $options
      * @return \Knp\Menu\ItemInterface
      */
     public function createMainMenu(array $options)
@@ -67,7 +67,7 @@ class MenuBuilder
     /**
      * Create the side menu bar
      *
-     * @param Array $options
+     * @param array $options
      * @return \Knp\Menu\ItemInterface $sidebar
      */
     public function createSidebarMenu(array $options)
@@ -104,10 +104,10 @@ class MenuBuilder
     /**
      * Add sub menu to the menu bar
      *
-     * @param Mixed $menu
-     * @param Integer $key
-     * @param Mixed $child
-     * @return Mixed $menu
+     * @param mixed $menu
+     * @param integer $key
+     * @param mixed $child
+     * @return mixed $menu
      */
     private function addSubMenuToMenu($menu, $key, $child)
     {

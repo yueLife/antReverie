@@ -4,14 +4,14 @@
  * Date: 2017/5/2
  * Time: 09:59
  */
-/* oastr option */
+/* toastr option */
 toastr.options = {
     "closeButton": true,
     "debug": false,
     "newestOnTop": true,
     "progressBar": true,
     "positionClass": "toast-top-right",
-    "preventDuplicates": false,
+    "preventDuplicates": true,
     "onclick": null,
     "showDuration": "300",
     "hideDuration": "1000",

@@ -49,8 +49,8 @@ class UploadHandlerService extends UploadHandler
     /**
      * Echo information on the body
      *
-     * @param String $str
-     * @return Boolean
+     * @param string $str
+     * @return boolean
      */
     protected function body($str)
     {
@@ -60,8 +60,8 @@ class UploadHandlerService extends UploadHandler
     /**
      * Get File Type
      *
-     * @param String $file_path
-     * @return String
+     * @param string $file_path
+     * @return string
      */
     protected function get_file_type($file_path)
     {

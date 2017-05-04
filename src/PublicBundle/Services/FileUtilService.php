@@ -17,8 +17,8 @@ class FileUtilService {
     /**
      * Create dir
      *
-     * @param String $aimUrl
-     * @return Boolean
+     * @param string $aimUrl
+     * @return boolean
      */
     public function createDir($aimUrl)
     {
@@ -38,9 +38,9 @@ class FileUtilService {
     /**
      * Create file
      *
-     * @param String $aimUrl
-     * @param Boolean $overWrite
-     * @return Boolean
+     * @param string $aimUrl
+     * @param boolean $overWrite
+     * @return boolean
      */
     public function createFile($aimUrl, $overWrite = false)
     {
@@ -58,10 +58,10 @@ class FileUtilService {
     /**
      * Move dir
      *
-     * @param String $oldDir
-     * @param String $aimDir
-     * @param Boolean $overWrite
-     * @return Boolean
+     * @param string $oldDir
+     * @param string $aimDir
+     * @param boolean $overWrite
+     * @return boolean
      */
     public function moveDir($oldDir, $aimDir, $overWrite = false)
     {
@@ -96,10 +96,10 @@ class FileUtilService {
     /**
      * Move file
      *
-     * @param String $fileUrl
-     * @param String $aimUrl
-     * @param Boolean $overWrite
-     * @return Boolean
+     * @param string $fileUrl
+     * @param string $aimUrl
+     * @param boolean $overWrite
+     * @return boolean
      */
     public function moveFile($fileUrl, $aimUrl, $overWrite = false)
     {
@@ -120,8 +120,8 @@ class FileUtilService {
     /**
      * Delete Dir
      *
-     * @param String $aimDir
-     * @return Boolean
+     * @param string $aimDir
+     * @return boolean
      */
     public function unlinkDir($aimDir)
     {
@@ -148,8 +148,8 @@ class FileUtilService {
     /**
      * Delete File
      *
-     * @param String $aimUrl
-     * @return Boolean
+     * @param string $aimUrl
+     * @return boolean
      */
     public function unlinkFile($aimUrl)
     {
@@ -164,10 +164,10 @@ class FileUtilService {
     /**
      * Copy Dir
      *
-     * @param String $oldDir
-     * @param String $aimDir
-     * @param Boolean $overWrite
-     * @return Boolean
+     * @param string $oldDir
+     * @param string $aimDir
+     * @param boolean $overWrite
+     * @return boolean
      */
     public function copyDir($oldDir, $aimDir, $overWrite = false)
     {
@@ -198,10 +198,10 @@ class FileUtilService {
     /**
      * Copy File
      *
-     * @param String $fileUrl
-     * @param String $aimUrl
-     * @param Boolean $overWrite
-     * @return Boolean
+     * @param string $fileUrl
+     * @param string $aimUrl
+     * @param boolean $overWrite
+     * @return boolean
      */
     public function copyFile($fileUrl, $aimUrl, $overWrite = false)
     {

@@ -28,6 +28,7 @@ class FileController extends Controller
      *
      * @Route("/upload", name="uploadFile")
      * @param Request $request
+     * @return JsonResponse
      */
     public function uploadFileAction(Request $request)
     {
@@ -57,6 +58,7 @@ class FileController extends Controller
      *
      * @Route("/delete", name="deleteFile")
      * @param Request $request
+     * @return JsonResponse
      */
     public function deleteFileAction(Request $request)
     {

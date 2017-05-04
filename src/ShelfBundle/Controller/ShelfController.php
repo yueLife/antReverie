@@ -25,8 +25,8 @@ class ShelfController extends Controller
      * Use and display model
      *
      * @Route("/displayModel/{id}/{route}", name="displayModel", defaults={"id":"", "route":""}, requirements={"id"="\d+","route"="[A-Z]*_[A-Z]*_Model"})
-     * @param Integer $id
-     * @param String $route
+     * @param integer $id
+     * @param string $route
      */
     public function displayModelAction($id, $route)
     {
@@ -54,7 +54,7 @@ class ShelfController extends Controller
      * Shelf general Settings
      *
      * @Route("/generalSettings", name="generalSettings")
-     * @return bool
+     * @return boolean
      */
     public function generalSettingsAction()
     {

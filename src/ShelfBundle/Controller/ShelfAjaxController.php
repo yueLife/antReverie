@@ -24,14 +24,22 @@ use Symfony\Component\HttpFoundation\Request;
 class ShelfAjaxController extends Controller
 {
     private $em;
+    private $fileInfo;
     private $limit = 100;
     private $root;
     private $message = array(
         'success' => array('state' => 'success', 'message' =>'文件读取成功！正在跳转...'),
-        'readFailed' => array('state' => 'error', 'message' =>'文件读取失败，请重试或重新上传！'),
-        'dataWrong' => array('state' => 'error', 'message' =>'文件数据内容错误，请重新上传！'),
+        'unFound' => array('state' => 'error', 'message' =>'文件读取失败，请重新上传！'),
+        'readFailed' => array('state' => 'error', 'message' =>'文件读取失败，请重试！'),
+        'dataWrong' => array('state' => 'error', 'message' =>'文件数据内容错误，请检查后重新上传！'),
         'idWrongStart' => '您的数据表中第 ',
         'idWrongEnd' => ' 行数据"数字ID"可能错误，不能被识别。请重新上传！',
+    );
+    private $nullData = array(
+        'goodsname' => '', 'goodsnameSub' => '',
+        'goodsBn' => '', 'goodsId' => '', 'imgUrl' => '',
+        'introduce' => '', 'detailIntroduce' => '', 'unit' => '',
+        'tagPrice' => '', 'actPrice' => '', 'couPrice' => ''
     );
 
     /**
@@ -39,6 +47,7 @@ class ShelfAjaxController extends Controller
      *
      * @Route("/getShelfFileData", name="getShelfFileDataAjax")
      * @param Request $request
+     * @return JsonResponse
      */
     public function getShelfFileDataAjax(Request $request)
     {
@@ -46,22 +55,22 @@ class ShelfAjaxController extends Controller
         $uploadFilesEm = $this->em->getRepository('PublicBundle:UploadFiles');
         $shelfGoodsEm = $this->em->getRepository('ShelfBundle:ShelfGoods');
 
-        $fileInfo = $uploadFilesEm->findOneById($request->get('id'));
-        if ($fileInfo->getState() == 'unread' && !count($shelfGoodsEm->findByFile($fileInfo))) {
+        $this->fileInfo = $uploadFilesEm->findOneById($request->get('id'));
+        if ($this->fileInfo->getState() == 'unread' && !count($shelfGoodsEm->findByFile($this->fileInfo))) {
             $this->root = $_SERVER['DOCUMENT_ROOT']."/Uploads/files/";
-            switch (pathinfo($fileInfo->getFilename(), PATHINFO_EXTENSION)) {
+            switch (pathinfo($this->fileInfo->getFilename(), PATHINFO_EXTENSION)) {
                 case 'csv':
-                    $result = $this->getCsvDataFunc($fileInfo); break;
+                    $result = $this->getCsvDataFunc(); break;
                 case 'xlsx':
                 case 'xls':
-                    $result = $this->getExcelDataFunc($fileInfo); break;
+                    $result = $this->getExcelDataFunc(); break;
                 default:
                     return new JsonResponse($this->message['readFailed']);
             }
             return new JsonResponse($result);
-        } elseif ($fileInfo->getState() == 'wrong') {
+        } elseif ($this->fileInfo->getState() == 'wrong') {
             return new JsonResponse($this->message['dataWrong']);
-        } elseif ($fileInfo->getState() == 'read') {
+        } elseif ($this->fileInfo->getState() == 'read') {
             return new JsonResponse($this->message['success']);
         }else{
             return new JsonResponse($this->message['readFailed']);
@@ -71,107 +80,57 @@ class ShelfAjaxController extends Controller
     /**
      * Get csv file data
      *
-     * @param String $fileInfo
-     * @return Array $result
+     * @return array $result
      */
-    public function getCsvDataFunc($fileInfo)
+    public function getCsvDataFunc()
     {
-        $tmpFileData = $this->createCsvTmpFunc($this->root.$fileInfo->getFilename());
-        if (isset($tmpFileData['state']) && $tmpFileData['state'] == 'error') {
-            $fileInfo->setState('wrong');
+        $file = $this->root.$this->fileInfo->getFilename();
+        if (!is_file($file)) {
+            $this->fileInfo->setState('wrong');
             $this->em->flush();
-            return $tmpFileData; // $result
+            return $this->message['unFound'];
         }
 
-        $totalPage = ceil($tmpFileData['row'] / $this->limit);
-        $nullData = array(
-            'goodsname' => '',
-            'goodsnameSub' => '',
-            'goodsBn' => '',
-            'goodsId' => '',
-            'introduce' => '',
-            'detailIntroduce' => '',
-            'imgUrl' => '',
-            'tagPrice' => '',
-            'actPrice' => '',
-            'couPrice' => '',
-            'unit' => ''
-        );
-
-        $this->em->getConnection()->beginTransaction();
-        for($i = 1; $i <= $totalPage; $i++){
-            $offset = ($i - 1) * $this->limit;
-            $tmpData = $this->getCsvTmpDataFunc($tmpFileData['tmp'], $tmpFileData['fields'], $offset);
-
-            if (isset($tmpData['state']) && $tmpData['state'] == 'error') {
-                $this->em->getConnection()->rollback();
-                $fileInfo->setState('wrong');
-                $this->em->flush();
-                return $tmpData; // $result
-            }
-
-            foreach ($tmpData as $key => $val) {
-                $finalData = array_merge($nullData, $val);
-                $goods = new ShelfGoods($fileInfo);
-                $goods->setGoodsname($finalData['goodsname'])->setGoodsnameSub($finalData['goodsnameSub'])->setGoodsBn($finalData['goodsBn'])->setGoodsId($finalData['goodsId'])->setIntroduce($finalData['introduce'])->setDetailIntroduce($finalData['detailIntroduce'])->setImgUrl($finalData['imgUrl'])->setTagPrice($finalData['tagPrice'])->setActPrice($finalData['actPrice'])->setCouPrice($finalData['couPrice'])->setUnit($finalData['unit']);
-                $this->em->persist($goods);
-                $this->em->flush();
-            }
-            $fileInfo->setState('read');
-            $this->em->flush();
-            $this->em->clear();
-        }
-        $this->em->getConnection()->commit();
-
-        return $this->message['success'];
-    }
-    
-    /**
-     * Create csv temp File and convert encoding utf-8
-     *
-     * @param String $file
-     * @return Array $tmpFileData
-     */
-    public function createCsvTmpFunc($file)
-    {
-        // Get first line of file and translate
         $handle = fopen($file, 'r');
         $filed = fgetcsv($handle);
         foreach ($filed as $key => $item) {
             switch (mb_convert_encoding($item, 'utf-8', 'gbk')) {
                 case '宝贝名称':
-                    $tmpFileData['fields'][$key] = 'goodsname'; break;
+                    $fields[$key] = 'goodsname'; break;
                 case '副名称':
-                    $tmpFileData['fields'][$key] = 'goodsnameSub'; break;
+                    $fields[$key] = 'goodsnameSub'; break;
                 case '款号':
-                    $tmpFileData['fields'][$key] = 'goodsBn'; break;
+                    $fields[$key] = 'goodsBn'; break;
                 case '数字ID':
-                    $tmpFileData['fields'][$key] = 'goodsId'; break;
+                    $fields[$key] = 'goodsId'; break;
                 case '介绍':
-                    $tmpFileData['fields'][$key] = 'introduce'; break;
+                    $fields[$key] = 'introduce'; break;
                 case '详细信息':
-                    $tmpFileData['fields'][$key] = 'detailIntroduce'; break;
+                    $fields[$key] = 'detailIntroduce'; break;
                 case '图片链接':
-                    $tmpFileData['fields'][$key] = 'imgUrl'; break;
+                    $fields[$key] = 'imgUrl'; break;
                 case '吊牌价':
-                    $tmpFileData['fields'][$key] = 'tagPrice'; break;
+                    $fields[$key] = 'tagPrice'; break;
                 case '活动价':
-                    $tmpFileData['fields'][$key] = 'actPrice'; break;
+                    $fields[$key] = 'actPrice'; break;
                 case '用券价':
-                    $tmpFileData['fields'][$key] = 'couPrice'; break;
+                    $fields[$key] = 'couPrice'; break;
                 case '单位':
-                    $tmpFileData['fields'][$key] = 'unit'; break;
+                    $fields[$key] = 'unit'; break;
                 default:
                     fclose($handle);
+                    unset($fields);
+                    $this->fileInfo->setState('wrong');
+                    $this->em->flush();
                     return $this->message['dataWrong'];
             }
         }
 
-        $tmpFileData['tmp'] = $this->root.'tmp_'.date('YmdHis_').uniqid().'.csv';
-        @chmod($tmpFileData['tmp'], 0777);
-        $tmpHandle = fopen($tmpFileData['tmp'], 'a+');
+        $tmpFile = $this->root.'tmp_'.date('YmdHis_').uniqid().'.csv';
+        @chmod($tmpFile, 0777);
+        $tmpHandle = fopen($tmpFile, 'a+');
 
-        $tmpFileData['row'] = 0;
+        $row = 0;
         while ($line = fgetcsv($handle)) {
             $num = count($line);
             $fileData = array();
@@ -179,22 +138,50 @@ class ShelfAjaxController extends Controller
                 $fileData[$i] = mb_convert_encoding($line[$i], 'utf-8', 'gbk');
             }
             fputcsv($tmpHandle, $line);
-            $tmpFileData['row']++;
+            $row++;
         }
 
         fclose($handle);
         fclose($tmpHandle);
 
-        return $tmpFileData;
+        // Read and insert database
+        $totalPage = ceil($row / $this->limit);
+
+        $this->em->getConnection()->beginTransaction();
+        for($i = 1; $i <= $totalPage; $i++){
+            $offset = ($i - 1) * $this->limit;
+            $tmpData = $this->getCsvTmpDataFunc($tmpFile, $fields, $offset);
+
+            if (isset($tmpData['state']) && $tmpData['state'] == 'error') {
+                $this->em->getConnection()->rollback();
+                $this->fileInfo->setState('wrong');
+                $this->em->flush();
+                return $tmpData; // $result
+            }
+
+            foreach ($tmpData as $key => $val) {
+                $finalData = array_merge($this->nullData, $val);
+                $goods = new ShelfGoods($this->fileInfo);
+                $goods->setGoodsname($finalData['goodsname'])->setGoodsnameSub($finalData['goodsnameSub'])->setGoodsBn($finalData['goodsBn'])->setGoodsId($finalData['goodsId'])->setIntroduce($finalData['introduce'])->setDetailIntroduce($finalData['detailIntroduce'])->setImgUrl($finalData['imgUrl'])->setTagPrice($finalData['tagPrice'])->setActPrice($finalData['actPrice'])->setCouPrice($finalData['couPrice'])->setUnit($finalData['unit']);
+                $this->em->persist($goods);
+                $this->em->flush();
+            }
+            $this->fileInfo->setState('read');
+            $this->em->flush();
+            $this->em->clear();
+        }
+        $this->em->getConnection()->commit();
+
+        return $this->message['success'];
     }
 
     /**
      * Get csv tmp data
      *
-     * @param String $file
-     * @param Array $fields
-     * @param Integer $offset
-     * @return array
+     * @param string $file
+     * @param array $fields
+     * @param integer $offset
+     * @return array $tmpData
      */
     public function getCsvTmpDataFunc($file, $fields, $offset = 0)
     {
@@ -214,7 +201,7 @@ class ShelfAjaxController extends Controller
                 for ($k = 0; $k < $num; $k++) {
                     $lineData[$fields[$k]] = mb_convert_encoding(trim($line[$k]), 'utf-8', 'gbk');
                     if ($fields[$k] == 'goodsId') {
-                        if (strlen($lineData[$fields[$k]]) > 10 || preg_match("/\D+/", $lineData[$fields[$k]])) {
+                        if (strlen($lineData[$fields[$k]]) > 15 || preg_match("/\D+/", $lineData[$fields[$k]])) {
                             $result['state'] = 'error';
                             $result['message'] = $this->message['idWrongStart'].$j.$this->message['idWrongEnd'];
                             return $result;
@@ -225,17 +212,17 @@ class ShelfAjaxController extends Controller
             }
         }
         fclose($handle);
+        unlink($file);
         return $tmpData;
     }
 
     /**
      * Get excel file data
      *
-     * @param String $fileInfo
      * @return string
      */
-    public function getExcelDataFunc($fileInfo)
+    public function getExcelDataFunc()
     {
-        return $fileInfo->getFilename();
+        return $this->fileInfo->getFilename();
     }
 }

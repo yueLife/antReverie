@@ -21,6 +21,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  */
 class ShelfController extends Controller
 {
+    private $em;
+
     /**
      * Use and display model
      *
@@ -33,12 +35,11 @@ class ShelfController extends Controller
         $this->em = $this->getDoctrine()->getManager();
         $uploadFilesEm = $this->em->getRepository('PublicBundle:UploadFiles');
         $shelfGoodsEm = $this->em->getRepository('ShelfBundle:ShelfGoods');
+        $shelfModelsEm = $this->em->getRepository('ShelfBundle:ShelfModels');
 
         $fileInfo = $uploadFilesEm->findOneById($id);
         $shelfGoodsInfo = $shelfGoodsEm->findByFile($fileInfo);
-        if (!count($shelfGoodsInfo)) {
-            $this->root = $_SERVER['DOCUMENT_ROOT']."/Uploads/files/";
-        }
+        $model = $shelfModelsEm->findOneByRoute($route)->getStyle();
 
         return $this->render(
             'ShelfBundle::Models/'.$route.'.html.twig',
@@ -46,6 +47,7 @@ class ShelfController extends Controller
                 'id' => $id,
                 'route' => $route,
                 'data' => $shelfGoodsInfo,
+                'model' => json_decode($model)
             )
         );
     }

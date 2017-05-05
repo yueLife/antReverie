@@ -1,0 +1,30 @@
+/**
+ * Created by PhpStorm.
+ * User: Yue
+ * Date: 2017/5/4
+ * Time: 11:58
+ */
+
+/*shelf css*/
+#shelf .code-data,#shelf .shelf-tmp{ display:none; }
+#shelf .shelf-new-data .shelf-tmp-box{ opacity:0.4; }
+
+#shelf .shelf-data .shelf-box{ position:relative;margin:0 10px 10px 0; }
+#shelf .shelf-data .shelf-price{ text-align:center;background:#FFF; }
+#shelf .shelf-old-data .added .add-block{ background:rgba(0,0,0,0.7); }
+#shelf .shelf-old-data .add-block{ position:absolute;top:0;left:0;background:rgba(0,0,0,0.3); }
+#shelf .shelf-old-data .add-block .add-btn{ display:inline-block;position:absolute;width:120px; }
+
+#shelf .edit-tool{ position:absolute;left:0;top:0;text-align:center;border:2px solid #5CD;z-index:100; }
+#shelf .edit-tool .tool-btn{ cursor:pointer;margin:20px 10px 0 0; }
+#shelf .edit-tool .tool-arrow-btn{ position:absolute; }
+#shelf .edit-tool .tool-arrow-btn .icon{ font-weight:bold; }
+
+/*!*各个modal的css*!*/
+/*#tag-set .img-tag-list{ display:none; }*/
+/*#tag-set .sale-out{ text-align:center; }*/
+/*#tag-set .radio-list{ height:65px; }*/
+/*#tag-set .radio-list .col-md-9{ text-align:center; }*/
+/*#tag-set img,#tag-set .radio-list label{ cursor:pointer; }*/
+/*#add-screen textarea, #edit-style textarea{ resize:none; }*/
+/*#edit-style textarea{ height:280px;background:#FFF;cursor:default; }*/

@@ -1,0 +1,39 @@
+/**
+ * Created by PhpStorm.
+ * User: Yue
+ * Date: 2017/5/4
+ * Time: 11:59
+ */
+/*CB/TA 的css样式*/
+#shelf > div{ width:2080px; }
+#shelf .shelf-div{ width:1040px; }
+#shelf .edit-tool .btn-up{ top:80px;left:101px; }
+#shelf .edit-tool .btn-down{ top:203px;left:101px; }
+#shelf .edit-tool .btn-left{ top:140px;left:40px; }
+#shelf .edit-tool .btn-right{ top:140px;left:163px; }
+
+#shelf .shelf-data .shelf-box,#shelf .shelf-data .add-block{ width:240px;height:284px; }/*单个高宽*/
+#shelf .shelf-data .shelf-price{ width:240px;height:20px; }
+#shelf .shelf-data .add-block .add-btn{ top:130px;left:60px; }/*top:(单个高-34)/2 left:(总宽-120)/2*/
+
+#shelf .shelf-data .goodsname{ display:none; }
+
+#shelf .shelf-data .act-price{ height:20px;line-height:17px; }
+#shelf .shelf-data .act-price div{ display:inline;font-size:17px;color:#FF245E; }
+#shelf .shelf-data .act-price > div{}
+#shelf .shelf-data .act-title{}
+#shelf .shelf-data .act-content{ margin-left:0px !important; }
+
+#shelf .shelf-data .tag-price{ display:inline; }
+#shelf .shelf-data .tag-price div{ text-decoration:line-through;font-size:12px;color:#888; }
+#shelf .shelf-data .tag-price > div{}
+#shelf .shelf-data .tag-title{}
+#shelf .shelf-data .tag-content{ margin-left:-2px !important; }
+
+#shelf .shelf-data .cou-price{ display:none; }
+#shelf .shelf-data .cou-price div{}
+#shelf .shelf-data .cou-price > div{}
+#shelf .shelf-data .cou-title{}
+#shelf .shelf-data .cou-content{}
+
+#shelf .shelf-data .img-tag{}

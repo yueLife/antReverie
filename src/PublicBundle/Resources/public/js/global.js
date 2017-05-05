@@ -4,6 +4,17 @@
  * Date: 2017/5/2
  * Time: 09:59
  */
+$(function () {
+    check_page();
+    $(window).resize(function () {
+        check_page();
+    });
+})
+
+function check_page () {
+    $("#shelf").css("height", (($(window).height() - 265) + "px"));
+}
+
 /* toastr option */
 toastr.options = {
     "closeButton": true,

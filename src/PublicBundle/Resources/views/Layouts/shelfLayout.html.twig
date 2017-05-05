@@ -1,7 +1,48 @@
 {% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
+{% block pageStyles %}
+    <link rel="stylesheet" href="{{ asset(SHELF_CSS~route|replace({'_': '/', '_Model': '_Model'})~'.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset(SHELF_CSS~'shelfContent.css') }}" type="text/css" />
+{% endblock %}
+
 {% block content %}
-    {% block shelfContent %}{% endblock %}
+    <div class="portlet light">
+        <div class="portlet-body">
+            <div id="shelf" style="overflow:auto;">
+                <div class="row">
+                    <div class="portlet light shelf-div fl">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="iconfont icon-shelf font-size-18"></i>
+                                <span class="caption-subject bold uppercase"> 货架样式</span>
+                            </div>
+                            <div class="actions">
+                                <button class="btn btn-circle yellow-crusta display-hide delete-all-btn">
+                                    <i class="iconfont icon-trash font-size-16"></i> 全部移除 </button>
+                                <button class="btn btn-circle green-jungle add-all-btn">
+                                    <i class="iconfont icon-plus font-size-16"></i> 全部添加 </button>
+                            </div>
+                        </div>
+                        <div class="portlet-body shelf-data shelf-new-data">
+                        </div>
+                        <div class="shelf-code-data"></div>
+                    </div>
+                    <div class="portlet light shelf-div fr">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="iconfont icon-content font-weight-bold"></i>
+                                <span class="caption-subject bold uppercase"> 货架数据</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body shelf-data shelf-old-data">
+                            {% block shelfContent %}{% endblock %}
+                        </div>
+                    </div>
+                    <div class="shelf-tmp"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- display-model-modal -->
     <div class="modal fade bs-modal-lg" id="display-model-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -85,17 +126,18 @@
     <script src="{{ asset(PLUGINS~'ZeroClipboard/ZeroClipboard.min.js') }}" type="text/javascript"></script>
 {% endblock %}
 
+{% block pageScripts %}
+    <script src="{{ asset(SHELF_JS~'shelfContent.js') }}" type="text/javascript"></script>
+{% endblock %}
+
 {% block javascripts %}
     <script type="text/javascript">
+        var lineNum = {{ model.lineNum|default(4) }};
         $(function(){
-            var clip = new ZeroClipboard($(".copy-code-btn"));
-            clip.on("copy", function(e) {
-                clip.setText($('.code-textarea').val());
-            });
-            clip.on("aftercopy", function(e) {
-                toastr.success('复制成功！', '提示');
-            });
+            // 单个删除出货架
 
-        })
+
+
+        });
     </script>
 {% endblock %}

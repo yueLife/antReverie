@@ -1,8 +1,59 @@
 {% extends "PublicBundle::Layouts/shelfLayout.html.twig" %}
 
 {% block shelfContent %}
-    CB_TA <br>
-    {{ id }} <br>
-    {{ route }}<br>
-    {{ dump(data) }}
+    {% for goods in data %}
+    <div class="shelf-box fl" data-index="index_{{ goods.id }}">
+        <img src="{{ goods.imgUrl }}" class="shelf-img fl" data-href="{{ goods.goodsId }}" data-name="{{ goods.goodsname }}">
+        <div class="shelf-price fl">
+            <div class="goodsname"> {{ goods.goodsname }} </div>
+            <div class='act-price'>
+                <div>
+                    <div class="act-title title"> 活动价名称:￥ </div>
+                    <div class="act-content content"> {{ goods.actPrice|number_format(0) }} </div>
+                </div>
+                <div class='tag-price'>
+                    <div>
+                        <div class="tag-title title"> ￥ </div>
+                        <div class="tag-content content"> {{ goods.tagPrice|number_format(0) }} </div>
+                    </div>
+                </div>
+            </div>
+            <div class='cou-price'>
+                <div>
+                    <div class="cou-title title"> 优惠价名称:￥ </div>
+                    <div class="cou-content content"> {{ goods.couPrice|number_format(0) }} </div>
+                </div>
+            </div>
+            <img class="img-tag" src="">
+        </div>
+        <div class="add-block">
+            <button type='button' class="btn btn-sm btn-info add-btn"> 添加到货架 </button>
+        </div>
+    </div>
+    <div class="shelf-hide-box display-hide" data-index="{{ goods.id }}">
+        <img src="{{ goods.imgUrl }}">
+        <div>
+            <div> {{ goods.goodsname }}</div>
+            <div>
+                <div>
+                    <div> 活动价名称:￥</div>
+                    <div>{{ goods.actPrice|number_format(0) }} </div>
+                </div>
+                <div>
+                    <div>
+                        <div>￥</div>
+                        <div>{{ goods.tagPrice|number_format(0) }} </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div> 优惠价名称:￥</div>
+                    <div>{{ goods.couPrice|number_format(0) }} </div>
+                </div>
+            </div>
+            <img src="">
+        </div>
+    </div>
+    {% endfor %}
 {% endblock %}

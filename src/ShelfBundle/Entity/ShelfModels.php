@@ -22,8 +22,6 @@ class ShelfModels
     private $id;
 
     /**
-     * @var integer
-     *
      * @ORM\ManyToOne(targetEntity="Shops")
      * @ORM\JoinColumn(name="shop_id", referencedColumnName="id")
      */

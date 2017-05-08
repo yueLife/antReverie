@@ -9,7 +9,7 @@ use UsersBundle\Entity\Users;
  * ShelfUsers
  *
  * @ORM\Table(name="sy_shelf_users")
- * @ORM\Entity(repositoryClass="ShelfBundle\Entity\UserShelvesRepository")
+ * @ORM\Entity(repositoryClass="ShelfBundle\Entity\ShelfUsersRepository")
  */
 class ShelfUsers
 {
@@ -45,18 +45,16 @@ class ShelfUsers
     private $imgList;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="plat_now", type="integer")
+     * @ORM\ManyToOne(targetEntity="Plats")
+     * @ORM\JoinColumn(name="plat_id", referencedColumnName="id")
      */
-    private $platNow;
+    private $plat;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="brand_now", type="integer")
+     * @ORM\ManyToOne(targetEntity="Brands")
+     * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
      */
-    private $brandNow;
+    private $brand;
 
 
     /**
@@ -148,48 +146,48 @@ class ShelfUsers
     }
 
     /**
-     * Set platNow
+     * Set plat
      *
-     * @param integer $platNow
+     * @param \ShelfBundle\Entity\Plats $plat
      * @return ShelfUsers
      */
-    public function setPlatNow($platNow)
+    public function setPlat(\ShelfBundle\Entity\Plats $plat = null)
     {
-        $this->platNow = $platNow;
+        $this->plat = $plat;
 
         return $this;
     }
 
     /**
-     * Get platNow
+     * Get plat
      *
-     * @return integer
+     * @return \ShelfBundle\Entity\Plats 
      */
-    public function getPlatNow()
+    public function getPlat()
     {
-        return $this->platNow;
+        return $this->plat;
     }
 
     /**
-     * Set brandNow
+     * Set brand
      *
-     * @param integer $brandNow
+     * @param \ShelfBundle\Entity\Brands $brand
      * @return ShelfUsers
      */
-    public function setBrandNow($brandNow)
+    public function setBrand(\ShelfBundle\Entity\Brands $brand = null)
     {
-        $this->brandNow = $brandNow;
+        $this->brand = $brand;
 
         return $this;
     }
 
     /**
-     * Get brandNow
+     * Get brand
      *
-     * @return integer
+     * @return \ShelfBundle\Entity\Brands 
      */
-    public function getBrandNow()
+    public function getBrand()
     {
-        return $this->brandNow;
+        return $this->brand;
     }
 }

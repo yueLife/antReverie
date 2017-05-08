@@ -30,16 +30,12 @@ class Shops
     private $shopname;
 
     /**
-     * @var integer
-     *
      * @ORM\ManyToOne(targetEntity="Brands")
      * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
      */
     private $brand;
 
     /**
-     * @var integer
-     *
      * @ORM\ManyToOne(targetEntity="Plats")
      * @ORM\JoinColumn(name="plat_id", referencedColumnName="id")
      */

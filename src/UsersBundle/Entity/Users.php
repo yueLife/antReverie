@@ -4,6 +4,7 @@ namespace UsersBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Entity\User as BaseUser;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Users
@@ -54,7 +55,7 @@ class Users extends BaseUser
     /**
      * Get avatar
      *
-     * @return string
+     * @return string 
      */
     public function getAvatar()
     {

@@ -24,9 +24,10 @@ class ShelfModels
     /**
      * @var integer
      *
-     * @ORM\Column(name="shop_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="Shops")
+     * @ORM\JoinColumn(name="shop_id", referencedColumnName="id")
      */
-    private $shopId;
+    private $shop;
 
     /**
      * @var string
@@ -75,7 +76,7 @@ class ShelfModels
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -83,26 +84,26 @@ class ShelfModels
     }
 
     /**
-     * Set shopId
+     * Set shop
      *
-     * @param integer $shopId
+     * @param \ShelfBundle\Entity\Shops $shop
      * @return ShelfModels
      */
-    public function setShopId($shopId)
+    public function setShop(\ShelfBundle\Entity\Shops $shop = null)
     {
-        $this->shopId = $shopId;
+        $this->shop = $shop;
 
         return $this;
     }
 
     /**
-     * Get shopId
+     * Get shop
      *
-     * @return integer 
+     * @return \ShelfBundle\Entity\Shops
      */
-    public function getShopId()
+    public function getShop()
     {
-        return $this->shopId;
+        return $this->shop;
     }
 
     /**
@@ -121,7 +122,7 @@ class ShelfModels
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -144,7 +145,7 @@ class ShelfModels
     /**
      * Get route
      *
-     * @return string 
+     * @return string
      */
     public function getRoute()
     {
@@ -167,7 +168,7 @@ class ShelfModels
     /**
      * Get style
      *
-     * @return string 
+     * @return string
      */
     public function getStyle()
     {

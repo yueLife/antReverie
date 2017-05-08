@@ -75,7 +75,7 @@ class Menus
      * @ORM\Column(name="sort", type="smallint")
      */
     private $sort;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Menus", mappedBy="pid")
      */

@@ -81,10 +81,10 @@ class ShelfUsers
     /**
      * Set user
      *
-     * @param \UserBundle\Entity\Users $user
+     * @param \UsersBundle\Entity\Users $user
      * @return ShelfUsers
      */
-    public function setUser(\UserBundle\Entity\Users $user = null)
+    public function setUser(\UsersBundle\Entity\Users $user = null)
     {
         $this->user = $user;
 
@@ -94,7 +94,7 @@ class ShelfUsers
     /**
      * Get user
      *
-     * @return \UserBundle\Entity\Users
+     * @return \UsersBundle\Entity\Users
      */
     public function getUser()
     {

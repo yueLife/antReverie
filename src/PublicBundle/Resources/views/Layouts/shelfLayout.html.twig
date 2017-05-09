@@ -17,15 +17,15 @@
                                 <span class="caption-subject bold uppercase"> 货架样式</span>
                             </div>
                             <div class="actions">
-                                <button class="btn btn-circle yellow-crusta display-hide delete-all-btn">
-                                    <i class="iconfont icon-trash font-size-16"></i> 全部移除 </button>
                                 <button class="btn btn-circle green-jungle add-all-btn">
                                     <i class="iconfont icon-plus font-size-16"></i> 全部添加 </button>
+                                <button class="btn btn-circle yellow-crusta delete-all-btn">
+                                    <i class="iconfont icon-trash font-size-16"></i> 全部移除 </button>
                             </div>
                         </div>
                         <div class="portlet-body shelf-data shelf-new-data">
                         </div>
-                        <div class="shelf-code-data"></div>
+                        <div class="shelf-code-data display-hide"></div>
                     </div>
                     <div class="portlet light shelf-div fr">
                         <div class="portlet-title">
@@ -38,7 +38,7 @@
                             {% block shelfContent %}{% endblock %}
                         </div>
                     </div>
-                    <div class="shelf-tmp"></div>
+                    <div class="shelf-tmp display-hide"></div>
                 </div>
             </div>
         </div>
@@ -132,12 +132,8 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-        var lineNum = {{ model.lineNum|default(4) }};
+        var lineNum = {{ model.lineNum|default(3) }};
         $(function(){
-            // 单个删除出货架
-
-
-
         });
     </script>
 {% endblock %}

@@ -33,9 +33,9 @@ class ShelfUsers
     /**
      * @var string
      *
-     * @ORM\Column(name="shelf_set", type="text")
+     * @ORM\Column(name="personal", type="text")
      */
-    private $shelfSet;
+    private $personal;
 
     /**
      * @var string
@@ -100,26 +100,26 @@ class ShelfUsers
     }
 
     /**
-     * Set shelfSet
+     * Set personal
      *
-     * @param string $shelfSet
+     * @param string $personal
      * @return ShelfUsers
      */
-    public function setShelfSet($shelfSet)
+    public function setPersonal($personal)
     {
-        $this->shelfSet = $shelfSet;
+        $this->personal = $personal;
 
         return $this;
     }
 
     /**
-     * Get shelfSet
+     * Get personal
      *
      * @return string
      */
-    public function getShelfSet()
+    public function getPersonal()
     {
-        return $this->shelfSet;
+        return $this->personal;
     }
 
     /**

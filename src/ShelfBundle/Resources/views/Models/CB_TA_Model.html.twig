@@ -24,36 +24,40 @@
                     <div class="cou-content content"> {{ goods.couPrice|number_format(0) }} </div>
                 </div>
             </div>
-            <img class="img-tag" src="">
+            <img src="{{ option.personal.imgTag }}" class="img-tag">
         </div>
         <div class="add-block">
             <button type='button' class="btn btn-sm btn-info add-btn"> 添加到货架 </button>
         </div>
     </div>
-    <div class="shelf-hide-box display-hide" data-index="{{ goods.id }}">
-        <img src="{{ goods.imgUrl }}">
-        <div>
-            <div> {{ goods.goodsname }}</div>
-            <div>
-                <div>
-                    <div> 活动价名称:￥</div>
-                    <div>{{ goods.actPrice|number_format(0) }} </div>
+    <div class="shelf-hide-box display-hide" data-index="index_{{ goods.id }}" style="{{ option.shelf.shelfBox }}">
+        <a href="{{ option.plat.start }}{{ goods.goodsId }}{{ option.plat.end }}" target="_blank">
+            <img src="{{ goods.imgUrl }}" alt="{{ goods.goodsname }}">
+        </a>
+        <div style="{{ option.shelf.shelfPrice }}">
+            <div style="{{ option.shelf.goodsName }}"> {{ goods.goodsname }}</div>
+            <div style="{{ option.shelf.actPrice }}">
+                <div style="{{ option.shelf.actDiv }}">
+                    <div style="{{ option.shelf.actTitle }}{{ option.personal.actFont }}"> 活动价名称:￥</div>
+                    <div style="{{ option.shelf.actContent }}{{ option.personal.actFont }}">{{ goods.actPrice|number_format(0) }} </div>
                 </div>
-                <div>
-                    <div>
-                        <div>￥</div>
-                        <div>{{ goods.tagPrice|number_format(0) }} </div>
+                <div style="{{ option.shelf.tagPrice }}">
+                    <div style="{{ option.shelf.tagDiv }}">
+                        <div style="{{ option.shelf.tagTitle }}{{ option.personal.tagFont }}">￥</div>
+                        <div style="{{ option.shelf.tagContent }}{{ option.personal.tagFont }}">{{ goods.tagPrice|number_format(0) }} </div>
                     </div>
                 </div>
             </div>
-            <div>
-                <div>
-                    <div> 优惠价名称:￥</div>
-                    <div>{{ goods.couPrice|number_format(0) }} </div>
+            <div style="{{ option.shelf.couPrice }}">
+                <div style="{{ option.shelf.couDiv }}">
+                    <div style="{{ option.shelf.couTitle }}{{ option.personal.couFont }}"> 优惠价名称:￥</div>
+                    <div style="{{ option.shelf.couContent }}{{ option.personal.couFont }}">{{ goods.couPrice|number_format(0) }} </div>
                 </div>
             </div>
-            <img src="">
         </div>
+        <a href="{{ option.plat.start }}{{ goods.goodsId }}{{ option.plat.end }}" target="_blank">
+            <img src="{{ option.personal.imgTag }}" alt="{{ goods.goodsname }}" class="img-tag" style="{{ option.shelf.imgTag }}">
+        </a>
     </div>
     {% endfor %}
 {% endblock %}

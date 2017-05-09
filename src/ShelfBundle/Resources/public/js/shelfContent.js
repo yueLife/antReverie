@@ -12,8 +12,8 @@ $(function () {
             changeStyle(shelfBox);
             addOneShelfBox(shelfBox);
             if ($(".shelf-old-data .shelf-box:not(.added)").length === 0) {
-                $(".add-all-btn").addClass("display-hide");
-                $(".delete-all-btn").removeClass("display-hide");
+                $(".add-all-btn").fadeOut(500);
+
             }
             toastr.success("该商品添加成功！", "提示", {timeOut: "1000"});
         } else {
@@ -23,8 +23,7 @@ $(function () {
 
     // 全部添加到货架
     $(document).on("click", ".add-all-btn", function () {
-        $(this).addClass("display-hide");
-        $(".delete-all-btn").removeClass("display-hide");
+        $(".add-all-btn").fadeOut(500);
         $(".shelf-old-data .shelf-box:not(.added)").each(function () {
             changeStyle($(this));
             addOneShelfBox($(this));
@@ -32,10 +31,21 @@ $(function () {
         toastr.success("该商品已全部添加成功！", "提示", {timeOut: "1000"});
     });
 
+    // 单个删除出货架
+    $(document).on("click", ".edit-delete", function (event) {
+        var box = $(this).parents("div[data-index]");
+        var idx = box.attr("data-index");
+        box.animate({ "width": 0, "height": 0 }, 400, function() {
+            box.remove();
+        });
+        $(".add-all-btn").fadeIn(500);
+        var shelfBox = $(".shelf-old-data").find(".shelf-box[data-index=" + idx + "]");
+        recoverStyle(shelfBox)
+    });
+
     // 全部删除出货架
     $(document).on("click", ".delete-all-btn", function () {
-        $(this).addClass("display-hide");
-        $(".add-all-btn").removeClass("display-hide");
+        $(".add-all-btn").fadeIn(500);
         $(".shelf-new-data").empty();
         $(".shelf-old-data .added").each(function () {
             recoverStyle($(this));
@@ -65,12 +75,28 @@ $(function () {
         return false;
     });
 
+    // 隐藏鼠标工具栏
+    $(document).on("mouseleave", ".shelf-new-data .edit-tool", function(e) {
+        $(".shelf-new-data .edit-tool").remove();
+    });
+
+    // 替换按钮操作
+    $(document).on("click", ".edit-replace", function(e) {
+        var box = $(this).parents("div[data-index]");
+        if (box.hasClass("shelf-tmp-box")) {
+            box.removeClass("shelf-tmp-box");
+        }else{
+            // 即将要替换的占住本身的坑位
+            box.siblings().removeClass("shelf-tmp-box").end().addClass("shelf-tmp-box");
+        }
+    });
+
     // 元素左右移动
-    $(document).on('click', '.btn-left,.btn-right', function() {
+    $(document).on("click", ".btn-left,.btn-right", function() {
         // 获取当前模块的列位置
-        var box = $(this).parents('div[data-index]');
-        var idx1 = $(this).closest('.shelf-data').children('div').length;
-        var idx2 = $(this).closest('.shelf-data').find('div[data-index]').length;
+        var box = $(this).parents("div[data-index]");
+        var idx1 = $(this).closest(".shelf-data").children("div").length;
+        var idx2 = $(this).closest(".shelf-data").find("div[data-index]").length;
         var idx = $(box).index() - idx1 + idx2;
 
         // 当前模块在第几列 得出结果为0是第num列
@@ -80,7 +106,7 @@ $(function () {
         }
 
         // 向左移动
-        if ($(this).hasClass('btn-left')) {
+        if ($(this).hasClass("btn-left")) {
             if (curCol !== 1) {
                 replaceBox(box, idx - 1);
             }
@@ -93,10 +119,10 @@ $(function () {
     });
 
     // 元素上下移动
-    $(document).on('click', '.btn-up,.btn-down', function() {
-        var box = $(this).parents('div[data-index]');
-        var idx1 = $(this).closest('.shelf-data').children('div').length;
-        var idx2 = $(this).closest('.shelf-data').find('div[data-index]').length;
+    $(document).on("click", ".btn-up,.btn-down", function() {
+        var box = $(this).parents("div[data-index]");
+        var idx1 = $(this).closest(".shelf-data").children("div").length;
+        var idx2 = $(this).closest(".shelf-data").find("div[data-index]").length;
         var idx = $(box).index() - idx1 + idx2;
         var total = $(".new-shelf-data div[data-index]").size();
 
@@ -112,7 +138,7 @@ $(function () {
         }
 
         // 向上移动
-        if ($(this).hasClass('btn-up')) {
+        if ($(this).hasClass("btn-up")) {
             if (curRow !== 1) {
                 // 得出上面一行对应的元素
                 var upRow = curRow - 1;
@@ -129,6 +155,29 @@ $(function () {
                 replaceBox(box, downIdx);
             }
         }
+    });
+
+    // 生成代码
+    $('#general-settings-modal').on('show.bs.modal', function () {
+        var codeData = $(".shelf-code-data");
+        codeData.empty();
+        var goodsList = $(".shelf-new-data > div");
+        goodsList.each(function (index) {
+            var idx = $(this).attr("data-index");
+            var shelfBox = $(".shelf-old-data .shelf-hide-box[data-index=" + idx + "]").clone();
+            // 去除data-index属性
+            shelfBox.removeAttr("data-index class");
+            if (index % lineNum === (lineNum - 1)) {
+                shelfBox.css({ 'marginRight': 0 });
+            }
+            codeData.append(shelfBox);
+        });
+
+        var code = "<div>";
+        code += codeData.html().replace(/\n+/g, "").replace(/  +/g, "");
+        code += "</div>";
+
+        $('.code-textarea').val(code);
     });
 
     // 复制代码
@@ -154,21 +203,37 @@ function recoverStyle(shelfBox) {
 // 添加一个到new-shelf
 function addOneShelfBox(shelfBox) {
     var shelfBoxClone = shelfBox.clone();
-    shelfBoxClone.find(".add-block").remove()
-    $(".shelf-new-data").append(shelfBoxClone);
+    shelfBoxClone.find(".add-block").remove();
+
+    // 判断左侧是否有要替换的坑位栏,坑位栏添加优先 //先替换占坑的栏
+    var tmpBox = $(".shelf-new-data div.shelf-tmp-box");
+    if (tmpBox.size() > 0) {
+        var tmpIdx = tmpBox.attr("data-index");
+        tmpBox.empty();
+        // 临时存储器
+        $(".shelf-tmp").html(shelfBoxClone);
+        var _tmp = $(".shelf-tmp > div[data-index]");
+        var _tmpIdx = _tmp.attr("data-index");
+        tmpBox.attr("data-index", _tmpIdx).html(_tmp.html()).removeClass("shelf-tmp-box");
+
+        // 已经被替换模块在对应的右侧数据源里样式还原
+        recoverStyle($(".shelf-old-data > div[data-index=" + tmpIdx + "]"))
+    } else {
+        $(".shelf-new-data").append(shelfBoxClone);
+    }
 }
 
 // 元素内容的替换
 function replaceBox(box, curIdx) {
     var curBox = $(".shelf-new-data div[data-index]").eq(curIdx);
-    var boxIDx = curBox.attr('data-index');
-    curBox.css({ 'position': 'relative' });
+    var boxIDx = curBox.attr("data-index");
+    curBox.css({ "position": "relative" });
     var cont = $(curBox).html();
     var curCont = $(box).html();
-    var curBoxIdx = box.attr('data-index');
+    var curBoxIdx = box.attr("data-index");
 
     curBox.html(curCont);
-    curBox.attr('data-index', curBoxIdx);
+    curBox.attr("data-index", curBoxIdx);
     $(box).html(cont);
-    $(box).attr('data-index', boxIDx);
+    $(box).attr("data-index", boxIDx);
 }

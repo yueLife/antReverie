@@ -31,7 +31,7 @@ class UsersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $uploadFilesEm = $em->getRepository('PublicBundle:UploadFiles');
-        $shelfModelsInfo = $em->getRepository('ShelfBundle:ShelfModels')->findBy(array('shopId' => 1, 'del' => false));
+        $shelfModelsInfo = $em->getRepository('ShelfBundle:ShelfModels')->findBy(array('shop' => 1, 'del' => false));
 
         $uploadFilesInfo = $goodsFilesInfo = $wordsFilesInfo = $unusedWordsFileInfo = [];
         if ($this->getUser()->hasRole('ROLE_GOODS')) {

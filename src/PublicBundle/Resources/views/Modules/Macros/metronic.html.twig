@@ -1,0 +1,27 @@
+{# Metronic Floation Labels #}
+{% macro floatingInput(anchor, type, name, state, title) %}
+    <div class="form-group form-md-line-input form-md-floating-label has-{{ state|default("success") }}">
+        <input type="{{ type|default("text") }}" id="{{ anchor }}" class="form-control" name="{{ name }}">
+        <label for="{{ anchor }}"> {{ title }} </label>
+    </div>
+{% endmacro %}
+
+{% macro floatingCheckbox(anchor, name, title, checked) %}
+    <div class="md-checkbox">
+        <input type="checkbox" id="{{ anchor }}" class="md-check" name="{{ name }}" {% if checked %}checked{% endif %}>
+        <label for="{{ anchor }}">
+            <span></span>
+            <span class="check"></span>
+            <span class="box"></span> {{ title }} </label>
+    </div>
+{% endmacro %}
+
+{% macro floatingRadio(anchor, name, value, title, checked) %}
+    <div class="md-radio">
+        <input type="radio" id="{{ anchor }}" class="md-radiobtn" name="{{ name }}" value="{{ value }}" {% if checked %}checked{% endif %}>
+        <label for="{{ anchor }}">
+            <span></span>
+            <span class="check"></span>
+            <span class="box"></span> {{ title }} </label>
+    </div>
+{% endmacro %}

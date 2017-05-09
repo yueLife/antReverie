@@ -34,7 +34,7 @@
 {% macro liTabPane(anchor, icon, title, active) %}
     <li class="{{ active|default('') }}">
         <a href=".{{ anchor }}" data-toggle="tab">
-            <i class="iconfont icon-{{ icon }} font-size-18"></i> {{ title }}
+            {%- if icon %}<i class="iconfont icon-{{ icon }} font-size-18"></i>{% endif %}{{- title -}}
         </a>
     </li>
 {% endmacro %}

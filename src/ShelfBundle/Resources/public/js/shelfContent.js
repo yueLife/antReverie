@@ -179,15 +179,6 @@ $(function () {
 
         $('.code-textarea').val(code);
     });
-
-    // 复制代码
-    var clip = new ZeroClipboard($(".copy-code-btn"));
-    clip.on("copy", function () {
-        clip.setText($(".code-textarea").val());
-    });
-    clip.on("aftercopy", function () {
-        toastr.success("复制成功！", "提示");
-    });
 });
 
 // 修改已经添加后的样式

@@ -1,12 +1,12 @@
 {# Metronic Floation Labels #}
-{% macro floatingInput(anchor, type, name, state, title) %}
+{% macro floatingInput(title, anchor, type, name, state) %}
     <div class="form-group form-md-line-input form-md-floating-label has-{{ state|default("success") }}">
         <input type="{{ type|default("text") }}" id="{{ anchor }}" class="form-control" name="{{ name }}">
         <label for="{{ anchor }}"> {{ title }} </label>
     </div>
 {% endmacro %}
 
-{% macro floatingCheckbox(anchor, name, title, checked) %}
+{% macro floatingCheckbox(title, anchor, name, checked) %}
     <div class="md-checkbox">
         <input type="checkbox" id="{{ anchor }}" class="md-check" name="{{ name }}" {% if checked %}checked{% endif %}>
         <label for="{{ anchor }}">
@@ -16,12 +16,20 @@
     </div>
 {% endmacro %}
 
-{% macro floatingRadio(anchor, name, value, title, checked) %}
+{% macro floatingRadio(title, anchor, name, value, checked) %}
     <div class="md-radio">
         <input type="radio" id="{{ anchor }}" class="md-radiobtn" name="{{ name }}" value="{{ value }}" {% if checked %}checked{% endif %}>
         <label for="{{ anchor }}">
             <span></span>
             <span class="check"></span>
             <span class="box"></span> {{ title }} </label>
+    </div>
+{% endmacro %}
+
+{# Must Use ColorPick #}
+{% macro colorPick(title, anchor, name, value) %}
+    <div class="form-group form-md-line-input form-md-floating-label has-success padding-top">
+        <label for="{{ anchor }}"> {{ title }} </label>
+        <input type="text" id="{{ anchor }}" class="form-control color-pick" name="{{ name }}" value="#{{ value }}" data-position="bottom right" >
     </div>
 {% endmacro %}

@@ -225,4 +225,20 @@ class ShelfAjaxController extends Controller
     {
         return $this->fileInfo->getFilename();
     }
+
+    /**
+     * Set Shelf User Data Ajax
+     *
+     * @Route("/setShelfUserData", name="setShelfUserDataAjax")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function setShelfUserDataAjax(Request $request)
+    {
+        $this->em = $this->getDoctrine()->getManager();
+        $shelfUsersEm = $this->em->getRepository('ShelfBundle:ShelfUsers');
+        $personal = json_decode($shelfUsersEm->findOneByUser($this->getUser())->getPersonal());
+
+        return new JsonResponse($personal);
+    }
 }

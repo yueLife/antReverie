@@ -1,13 +1,13 @@
 {% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
-{% block pagePluginsStyles %}
-    <link rel="stylesheet" href="{{ asset(GLOBAL~'plugins/bootstrap-colorpicker/css/colorpicker.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset(GLOBAL~'plugins/jquery-minicolors/jquery.minicolors.css') }}" type="text/css">
-{% endblock %}
+{% use "PublicBundle::Modules/Plugins/colorPick.html.twig" %}
+{% use "PublicBundle::Modules/Plugins/zeroClipboard.html.twig" %}
+
+{% block pagePluginsStyles %}{{ block("CPPluginsStyles") }}{% endblock %}
 
 {% block pageStyles %}
-    <link rel="stylesheet" href="{{ asset(SHELF_CSS~route|replace({'_': '/', '_Model': '_Model'})~'.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset(SHELF_CSS~'shelfContent.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset(SHELF_CSS~route|replace({"_": "/", "_Model": "_Model"})~".css") }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset(SHELF_CSS~"shelfContent.css") }}" type="text/css" />
 {% endblock %}
 
 {% block stylesheets %}
@@ -32,12 +32,32 @@
 注意事项：当前所展示的前端样式，并不能保证与在天猫/京东上的样式一致。天猫/京东会过滤某些样式，实际以天猫/京东上显示为准。</textarea>                     </div>
     </div>
 {% endmacro %}
-
-{% macro colorPick(anchor, name, value) %}
-    <div class="form-group form-md-line-input form-md-floating-label has-success padding-top">
-        <label for="{{ anchor }}"> 字体颜色 </label>
-        <input type="text" id="{{ anchor }}" class="form-control demo" name="{{ name }}" value="#{{ value }}"data-control="hue" data-position="bottom right" >
-    </div>
+{% macro styleForm(metronic, shelf, cate) %}
+    <form role="form" data-cate="{{ cate }}">
+        <input type="text" class="display-hide" name="cate" value="{{ cate }}">
+        <div class="form-body">
+            <div class="col-md-6">
+                {{ metronic.floatingInput("标题", cate~"-title", "", "title") }}
+                {{ metronic.floatingInput("字体大小", cate~"-size", "", "size") }}
+                {{ metronic.floatingInput("字体族科", cate~"-family", "", "family") }}
+                {{ metronic.colorPick("字体颜色", cate~"-font-color", "color", "A7292F") }}
+                <div class="form-group form-md-checkboxes">
+                    <label> 常用样式 </label>
+                    <div class="md-checkbox-inline">
+                        {{ metronic.floatingCheckbox("粗体", cate~"-weight", "weight") }}
+                        {{ metronic.floatingCheckbox("斜体", cate~"-italic", "italic") }}
+                    </div>
+                    <div class="md-radio-inline">
+                        {{ metronic.floatingRadio("中划线", cate~"-line-through", "line", "through") }}
+                        {{ metronic.floatingRadio("下划线", cate~"-line-under", "line", "under") }}
+                        {{ metronic.floatingRadio("没有", cate~"-line-none", "line", "none", "ture") }}
+                    </div>
+                </div>
+                <button type="button" class="btn dark btn-outline style-use-btn"> 使用 </button>
+            </div>
+            {{ shelf.preview(cate~"-title-preview", cate~"-text-preview") }}
+        </div>
+    </form>
 {% endmacro %}
 
 {% block content %}
@@ -106,10 +126,10 @@
                     <div class="tabbable-line tabs-below">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                         <ul class="nav nav-tabs">
-                            {{ layouts.liTabPane('create-code-tab', 'edit', '生成代码') }}
-                            {{ layouts.liTabPane('edit-style-tab', 'spanner', '设置样式', 'active') }}
-                            {{ layouts.liTabPane('set-tag-tab', 'tag', '设置标签') }}
-                            {{ layouts.liTabPane('add-screen-tab', 'screen', '添加通屏') }}
+                            {{ layouts.liTabPane("create-code-tab", "edit", "生成代码") }}
+                            {{ layouts.liTabPane("edit-style-tab", "spanner", "设置样式", "active") }}
+                            {{ layouts.liTabPane("set-tag-tab", "tag", "设置标签") }}
+                            {{ layouts.liTabPane("add-screen-tab", "screen", "添加通屏") }}
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane create-code-tab">
@@ -123,88 +143,22 @@
                                 <div style="height:350px;">
                                     <div class="col-md-2 col-sm-2 col-xs-2">
                                         <ul class="nav nav-tabs tabs-left">
-                                            {{ layouts.liTabPane('style-act-tab', '', '活动价', 'active') }}
-                                            {{ layouts.liTabPane('style-cou-tab', '', '优惠价') }}
-                                            {{ layouts.liTabPane('style-tag-tab', '', '吊牌价') }}
-                                            {{ layouts.liTabPane('style-color-tab', '', '样式颜色') }}
+                                            {{ layouts.liTabPane("style-act-tab", "", "活动价", "active") }}
+                                            {{ layouts.liTabPane("style-cou-tab", "", "优惠价") }}
+                                            {{ layouts.liTabPane("style-tag-tab", "", "吊牌价") }}
+                                            {{ layouts.liTabPane("style-color-tab", "", "样式颜色") }}
                                         </ul>
                                     </div>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
                                         <div class="tab-content">
                                             <div class="tab-pane active in style-act-tab">
-                                                <form role="form">
-                                                    <div class="form-body">
-                                                        <div class="col-md-6">
-                                                            {{ metronic.floatingInput("act-name", "", "fontName", "", "标题") }}
-                                                            {{ metronic.floatingInput("act-size", "", "fontSize", "", "字体大小") }}
-                                                            {{ metronic.floatingInput("act-family", "", "fontFamily", "", "字体族科") }}
-                                                            {{ shelf.colorPick("act-font-color", "fontColor", "a7292f") }}
-                                                            <div class="form-group form-md-checkboxes">
-                                                                <label> 常用样式 </label>
-                                                                <div class="md-checkbox-inline">
-                                                                    {{ metronic.floatingCheckbox("act-weight", "fontWeight", "粗体") }}
-                                                                    {{ metronic.floatingCheckbox("act-italic", "fontItalic", "斜体") }}
-                                                                </div>
-                                                                <div class="md-radio-inline">
-                                                                    {{ metronic.floatingRadio("act-line-through", "line", "through", "中划线") }}
-                                                                    {{ metronic.floatingRadio("act-line-under", "line", "under", "下划线") }}
-                                                                    {{ metronic.floatingRadio("act-line-none", "line", "none", "没有", "ture") }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        {{ shelf.preview("act-title-preview", "act-title-preview") }}
-                                                    </div>
-                                                </form>
+                                                {{ shelf.styleForm(metronic, shelf, "act") }}
                                             </div>
                                             <div class="tab-pane fade style-cou-tab">
-                                                <form role="form">
-                                                    <div class="form-body">
-                                                        <div class="col-md-6">
-                                                            {{ metronic.floatingInput("cou-name", "", "fontName", "", "标题") }}
-                                                            {{ metronic.floatingInput("cou-size", "", "fontSize", "", "字体大小") }}
-                                                            {{ metronic.floatingInput("cou-family", "", "fontFamily", "", "字体族科") }}
-                                                            {{ shelf.colorPick("cou-font-color", "fontColor", "295ead") }}
-                                                            <div class="form-group form-md-checkboxes">
-                                                                <label> 常用样式 </label>
-                                                                <div class="md-checkbox-inline">
-                                                                    {{ metronic.floatingCheckbox("cou-weight", "fontWeight", "粗体") }}
-                                                                    {{ metronic.floatingCheckbox("cou-italic", "fontItalic", "斜体") }}
-                                                                </div>
-                                                                <div class="md-radio-inline">
-                                                                    {{ metronic.floatingRadio("cou-line-through", "line", "through", "中划线") }}
-                                                                    {{ metronic.floatingRadio("cou-line-under", "line", "under", "下划线") }}
-                                                                    {{ metronic.floatingRadio("cou-line-none", "line", "none", "没有", "ture") }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        {{ shelf.preview("cou-title-preview", "cou-title-preview") }}
-                                                    </div>
-                                                </form>
+                                                {{ shelf.styleForm(metronic, shelf, "cou") }}
                                             </div>
                                             <div class="tab-pane fade style-tag-tab">
-                                                <form role="form">
-                                                    <div class="form-body">
-                                                        <div class="col-md-6">
-                                                            {{ metronic.floatingInput("tag-name", "", "fontName", "", "标题") }}
-                                                            {{ metronic.floatingInput("tag-size", "", "fontSize", "", "字体大小") }}
-                                                            {{ metronic.floatingInput("tag-family", "", "fontFamily", "", "字体族科") }}
-                                                            {{ shelf.colorPick("tag-font-color", "fontColor", "c71616") }}
-                                                            <div class="form-group form-md-checkboxes">
-                                                                <label> 常用样式 </label>
-                                                                <div class="md-checkbox-inline">
-                                                                    {{ metronic.floatingCheckbox("tag-weight", "fontWeight", "粗体") }}
-                                                                    {{ metronic.floatingCheckbox("tag-italic", "fontItalic", "斜体") }}
-                                                                </div>
-                                                                <div class="md-radio-inline">
-                                                                    {{ metronic.floatingRadio("tag-line-through", "line", "through", "中划线") }}
-                                                                    {{ metronic.floatingRadio("tag-line-under", "line", "under", "下划线") }}
-                                                                    {{ metronic.floatingRadio("tag-line-none", "line", "none", "没有", "ture") }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        {{ shelf.preview("tag-title-preview", "tag-title-preview") }}
-                                                    </div>
-                                                </form>
+                                                {{ shelf.styleForm(metronic, shelf, "tag") }}
                                             </div>
                                             <div class="tab-pane fade style-color-tab">
                                                 <p>4</p>
@@ -233,7 +187,6 @@
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
                         <div class="tab-pane active edit-style-tab">
-                            <button type="button" class="btn dark btn-outline style-use-btn"> 使用 </button>
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
                         <div class="tab-pane set-tag-tab">
@@ -250,27 +203,38 @@
 {% endblock %}
 
 {% block pagePluginsScripts %}
-    <script src="{{ asset(PLUGINS~'ZeroClipboard/ZeroClipboard.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset(GLOBAL~'plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js') }}" type="text/javascript"></script>
-    <script src="{{ asset(GLOBAL~'plugins/jquery-minicolors/jquery.minicolors.min.js') }}" type="text/javascript"></script>
+    {{ block("ZCPluginsScripts") }}
+    {{ block("CPPluginsScripts") }}
 {% endblock %}
 
 {% block pageScripts %}
-    <script src="{{ asset(PAGES~'scripts/components-color-pickers.min.js') }}" type="text/javascript"></script>
-
-    <script src="{{ asset(SHELF_JS~'shelfContent.js') }}" type="text/javascript"></script>
+    <script src="{{ asset(SHELF_JS~"shelfContent.js") }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block javascripts %}
+    {{ block("ZCJavascripts") }}
+    {{ block("CPJavascripts") }}
     <script type="text/javascript">
+        var ZCBtn = $(".copy-code-btn");
+        var ZCText = $(".code-textarea");
         var lineNum = {{ model.lineNum|default(3) }};
         $(function(){
-            $('#general-settings-modal').modal('show');
-            $(document).on('click', '.style-use-btn', function () {
-                var act = $(".style-act-tab form").serialize();
-                var cou = $(".style-cou-tab form").serialize();
-                var tag = $(".style-tag-tab form").serialize();
-                console.log(act);
+            $("#general-settings-modal").modal("show");
+            $(document).on("click", ".style-use-btn", function () {
+                var form = $(this).closest("form");
+                var cate = form.attr("data-cate");
+                $("#" + cate + "-title-preview").val(form.find("#" + cate + "-title").val());
+                $("#" + cate + "-text-preview").css("");
+                {#$.ajax({#}
+                    {#url: "{{ path("setShelfUserDataAjax") }}",#}
+                    {#type: "post",#}
+                    {#dataType: "json",#}
+                    {#data: form.serialize(),#}
+                {#}).done(function (data) {#}
+                    {#console.log(data);#}
+                {#}).fail(function (data) {#}
+                    {#console.log("未知错误！");#}
+                {#});#}
             });
         });
     </script>

@@ -237,7 +237,12 @@ class ShelfAjaxController extends Controller
     {
         $this->em = $this->getDoctrine()->getManager();
         $shelfUsersEm = $this->em->getRepository('ShelfBundle:ShelfUsers');
-        $personal = json_decode($shelfUsersEm->findOneByUser($this->getUser())->getPersonal());
+        $shelfUsersInfo = $shelfUsersEm->findOneByUser($this->getUser());
+        $personal = json_decode($shelfUsersInfo->getPersonal(), true);
+
+        $personal[$request->get("cate")] = $request->get("json");
+        $shelfUsersInfo->setPersonal(json_encode($personal));
+        $this->em->flush();
 
         return new JsonResponse($personal);
     }

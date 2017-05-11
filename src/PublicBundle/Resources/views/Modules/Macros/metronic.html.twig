@@ -6,9 +6,9 @@
     </div>
 {% endmacro %}
 
-{% macro floatingCheckbox(title, anchor, name, checked) %}
+{% macro floatingCheckbox(title, anchor, name, value, checked) %}
     <div class="md-checkbox">
-        <input type="checkbox" id="{{ anchor }}" class="md-check" name="{{ name }}" {% if checked %}checked{% endif %}>
+        <input type="checkbox" id="{{ anchor }}" class="md-check" name="{{ name }}" value="{{ value }}" {% if checked %}checked{% endif %}>
         <label for="{{ anchor }}">
             <span></span>
             <span class="check"></span>

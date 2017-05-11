@@ -21,6 +21,7 @@
 
 .cursor-default{ cursor:default !important;}
 .border-none{ border:none !important; }
+.no-resize{ resize:none !important;}
 
 .fl{ float:left; }
 .fr{ float:right; }

@@ -15,53 +15,60 @@
         .tabbable-line>.tab-content{ padding:10px 0; }
         .form-group.form-md-line-input{ margin: 0px; }
         .padding-top{ padding-top:0px !important; }
+        .code-textarea{ height:310px; }
     </style>
 {% endblock %}
 
-{% macro preview(titleAnchor, textAnchor) %}
+{% macro preview(titleAnchor, textAnchor, cate) %}
     <div class="col-md-6">
-        <div class="form-group form-md-line-input form-md-floating-label">
-            <input type="text" id="{{ titleAnchor }}" class="form-control" value="标题" readonly>
-            <label for="{{ titleAnchor }}"> 预览 </label>
-            <textarea id="{{ textAnchor }}" class="form-control" style="resize:none;" rows="15" readonly>
+        <div class="form-group form-md-line-input form-md-floating-label {{ cate }}-textarea">
+            {% if cate and cate|slice(3, 5) == "Title" %}
+            <textarea id="{{ titleAnchor }}" class="form-control no-resize cursor-default" rows="1" readonly>标题</textarea>
+            {% endif %}
+            <textarea id="{{ textAnchor }}" class="form-control no-resize cursor-default" rows="15" readonly>
 数字：0123456789
 小写字母：abcdefghijklmnopqrstuvwxyz
 大写字母：ABCDEFGHIJKLMNOPQRSTUVWXYZ
 常用中文符号：￥。，：；“”‘’（）
 常用英文符号：$ . , : ; " " ' ' ( )
-注意事项：当前所展示的前端样式，并不能保证与在天猫/京东上的样式一致。天猫/京东会过滤某些样式，实际以天猫/京东上显示为准。</textarea>                     </div>
+注意事项：当前所展示的前端样式，并不能保证与在天猫/京东上的样式一致。天猫/京东会过滤某些样式，实际以天猫/京东上显示为准。</textarea>
+            <label for="{{ titleAnchor }}"> 预览 </label>
+        </div>
     </div>
 {% endmacro %}
-{% macro styleForm(metronic, shelf, cate) %}
-    <form role="form" data-cate="{{ cate }}">
-        <input type="text" class="display-hide" name="cate" value="{{ cate }}">
-        <div class="form-body">
-            <div class="col-md-6">
-                {{ metronic.floatingInput("标题", cate~"-title", "", "title") }}
-                {{ metronic.floatingInput("字体大小", cate~"-size", "", "size") }}
-                {{ metronic.floatingInput("字体族科", cate~"-family", "", "family") }}
-                {{ metronic.colorPick("字体颜色", cate~"-font-color", "color", "A7292F") }}
-                <div class="form-group form-md-checkboxes">
-                    <label> 常用样式 </label>
-                    <div class="md-checkbox-inline">
-                        {{ metronic.floatingCheckbox("粗体", cate~"-weight", "weight") }}
-                        {{ metronic.floatingCheckbox("斜体", cate~"-italic", "italic") }}
+{% macro styleForm(metronic, self, cate, active) %}
+    <div class="tab-pane {{ cate }}-tab {{ active|default("fade") }}">
+        <form role="form" data-cate="{{ cate }}">
+            <input type="text" class="display-hide" name="cate" value="{{ cate }}">
+            <div class="form-body">
+                <div class="col-md-6">
+                    {% if cate and cate|slice(3, 5) == "Title" %}
+                        {{ metronic.floatingInput("标题", cate~"-title", "", "title") }}
+                    {% endif %}
+                    {{ metronic.floatingInput("字体大小", cate~"-size", "", "size") }}
+                    {{ metronic.floatingInput("字体族科", cate~"-family", "", "family") }}
+                    {{ metronic.colorPick("字体颜色", cate~"-font-color", "color", "A7292F") }}
+                    <div class="form-group form-md-checkboxes">
+                        <label> 常用样式 </label>
+                        <div class="md-checkbox-inline">
+                            {{ metronic.floatingCheckbox("粗体", cate~"-weight", "weight", "bold") }}
+                            {{ metronic.floatingCheckbox("斜体", cate~"-italic", "italic", "italic") }}
+                        </div>
+                        <div class="md-radio-inline">
+                            {{ metronic.floatingRadio("中划线", cate~"-line-through", "line", "line-through") }}
+                            {{ metronic.floatingRadio("没有", cate~"-line-none", "line", "none", "ture") }}
+                        </div>
                     </div>
-                    <div class="md-radio-inline">
-                        {{ metronic.floatingRadio("中划线", cate~"-line-through", "line", "through") }}
-                        {{ metronic.floatingRadio("下划线", cate~"-line-under", "line", "under") }}
-                        {{ metronic.floatingRadio("没有", cate~"-line-none", "line", "none", "ture") }}
-                    </div>
-                </div>
-                <button type="button" class="btn dark btn-outline style-use-btn"> 使用 </button>
+                    <button type="button" class="btn dark btn-outline style-use-btn"> 使用 </button>
+                </div>`
+                {{ self.preview(cate~"-title-preview", cate~"-text-preview", cate) }}
             </div>
-            {{ shelf.preview(cate~"-title-preview", cate~"-text-preview") }}
-        </div>
-    </form>
+        </form>
+    </div>
 {% endmacro %}
 
 {% block content %}
-    {% import _self as shelf %}
+    {% import _self as self %}
     <div class="portlet light">
         <div class="portlet-body">
             <div id="shelf" style="overflow:auto;">
@@ -135,33 +142,33 @@
                             <div class="tab-pane create-code-tab">
                                 <div style="height:350px;">
                                     <div class="row">
-                                        <textarea class="form-control code-textarea" style="resize:none;" rows="18"></textarea>
+                                        <textarea class="form-control code-textarea no-resize" rows="18"></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane active edit-style-tab">
+                            <div class="tab-pane edit-style-tab active ">
                                 <div style="height:350px;">
                                     <div class="col-md-2 col-sm-2 col-xs-2">
                                         <ul class="nav nav-tabs tabs-left">
-                                            {{ layouts.liTabPane("style-act-tab", "", "活动价", "active") }}
-                                            {{ layouts.liTabPane("style-cou-tab", "", "优惠价") }}
-                                            {{ layouts.liTabPane("style-tag-tab", "", "吊牌价") }}
-                                            {{ layouts.liTabPane("style-color-tab", "", "样式颜色") }}
+                                            {{ layouts.liTabPane("actTitle-tab", "", "活动标题", "active") }}
+                                            {{ layouts.liTabPane("actPrice-tab", "", "活动价格") }}
+                                            {{ layouts.liTabPane("couTitle-tab", "", "优惠标题") }}
+                                            {{ layouts.liTabPane("couPrice-tab", "", "优惠价格") }}
+                                            {{ layouts.liTabPane("tagTitle-tab", "", "吊牌标题") }}
+                                            {{ layouts.liTabPane("tagPrice-tab", "", "吊牌价格") }}
+                                            {{ layouts.liTabPane("other-color-tab", "", "其他颜色") }}
                                         </ul>
                                     </div>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
                                         <div class="tab-content">
-                                            <div class="tab-pane active in style-act-tab">
-                                                {{ shelf.styleForm(metronic, shelf, "act") }}
-                                            </div>
-                                            <div class="tab-pane fade style-cou-tab">
-                                                {{ shelf.styleForm(metronic, shelf, "cou") }}
-                                            </div>
-                                            <div class="tab-pane fade style-tag-tab">
-                                                {{ shelf.styleForm(metronic, shelf, "tag") }}
-                                            </div>
-                                            <div class="tab-pane fade style-color-tab">
-                                                <p>4</p>
+                                            {{ self.styleForm(metronic, self, "actTitle", "active in") }}
+                                            {{ self.styleForm(metronic, self, "actPrice") }}
+                                            {{ self.styleForm(metronic, self, "couTitle") }}
+                                            {{ self.styleForm(metronic, self, "couPrice") }}
+                                            {{ self.styleForm(metronic, self, "tagTitle") }}
+                                            {{ self.styleForm(metronic, self, "tagPrice") }}
+                                            <div class="tab-pane other-color-tab fade">
+                                                <p>7</p>
                                             </div>
                                         </div>
                                     </div>
@@ -223,19 +230,20 @@
             $(document).on("click", ".style-use-btn", function () {
                 var form = $(this).closest("form");
                 var cate = form.attr("data-cate");
-                $("#" + cate + "-title-preview").val(form.find("#" + cate + "-title").val());
-                $("#" + cate + "-text-preview").css("");
-                {#$.ajax({#}
-                    {#url: "{{ path("setShelfUserDataAjax") }}",#}
-                    {#type: "post",#}
-                    {#dataType: "json",#}
-                    {#data: form.serialize(),#}
-                {#}).done(function (data) {#}
-                    {#console.log(data);#}
-                {#}).fail(function (data) {#}
-                    {#console.log("未知错误！");#}
-                {#});#}
+                var json = getPersonalJson(form, cate);
+
+                $.ajax({
+                    url: "{{ path("setShelfUserDataAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "cate": cate, "json": json },
+                }).done(function (data) {
+                    console.log(data);
+                }).fail(function (data) {
+                    console.log("未知错误！");
+                });
             });
         });
+
     </script>
 {% endblock %}

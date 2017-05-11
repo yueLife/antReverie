@@ -18,22 +18,22 @@
 
 #shelf .shelf-data .goodsname{ display:none; }
 
-#shelf .shelf-data .act-price{ height:20px;line-height:17px; }
-#shelf .shelf-data .act-price div{ display:inline;font-size:17px;color:#FF245E; }
-#shelf .shelf-data .act-price > div{}
-#shelf .shelf-data .act-title{}
-#shelf .shelf-data .act-content{ margin-left:0px !important; }
+#shelf .shelf-data .act-content{ height:20px;line-height:17px; }
+#shelf .shelf-data .act-content div{ display:inline; }
+#shelf .shelf-data .act-content > div{}
+#shelf .shelf-data .actTitle{ }
+#shelf .shelf-data .actPrice{ margin-left:0px !important; }
 
-#shelf .shelf-data .tag-price{ display:inline; }
-#shelf .shelf-data .tag-price div{ text-decoration:line-through;font-size:12px;color:#888; }
-#shelf .shelf-data .tag-price > div{}
-#shelf .shelf-data .tag-title{}
-#shelf .shelf-data .tag-content{ margin-left:-2px !important; }
+#shelf .shelf-data .tag-content{ display:inline; }
+#shelf .shelf-data .tag-content div{ }
+#shelf .shelf-data .tag-content > div{}
+#shelf .shelf-data .tagTitle{ }
+#shelf .shelf-data .tagPrice{ margin-left:-2px !important; }
 
-#shelf .shelf-data .cou-price{ display:none; }
-#shelf .shelf-data .cou-price div{}
-#shelf .shelf-data .cou-price > div{}
-#shelf .shelf-data .cou-title{}
-#shelf .shelf-data .cou-content{}
+#shelf .shelf-data .cou-content{ display:none; }
+#shelf .shelf-data .cou-content div{}
+#shelf .shelf-data .cou-content > div{}
+#shelf .shelf-data .couTitle{}
+#shelf .shelf-data .couPrice{}
 
 #shelf .shelf-data .img-tag{}

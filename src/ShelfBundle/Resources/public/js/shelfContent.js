@@ -32,7 +32,7 @@ $(function () {
     });
 
     // 单个删除出货架
-    $(document).on("click", ".edit-delete", function (event) {
+    $(document).on("click", ".edit-delete", function () {
         var box = $(this).parents("div[data-index]");
         var idx = box.attr("data-index");
         box.animate({ "width": 0, "height": 0 }, 400, function() {
@@ -76,12 +76,12 @@ $(function () {
     });
 
     // 隐藏鼠标工具栏
-    $(document).on("mouseleave", ".shelf-new-data .edit-tool", function(e) {
+    $(document).on("mouseleave", ".shelf-new-data .edit-tool", function() {
         $(".shelf-new-data .edit-tool").remove();
     });
 
     // 替换按钮操作
-    $(document).on("click", ".edit-replace", function(e) {
+    $(document).on("click", ".edit-replace", function() {
         var box = $(this).parents("div[data-index]");
         if (box.hasClass("shelf-tmp-box")) {
             box.removeClass("shelf-tmp-box");

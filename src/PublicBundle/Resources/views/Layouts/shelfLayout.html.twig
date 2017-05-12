@@ -1,7 +1,7 @@
 {% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
 {% use "PublicBundle::Modules/Plugins/colorPick.html.twig" %}
-{% use "PublicBundle::Modules/Plugins/zeroClipboard.html.twig" %}
+{% use "PublicBundle::Modules/Plugins/Clipboard.html.twig" %}
 
 {% block pagePluginsStyles %}{{ block("CPPluginsStyles") }}{% endblock %}
 
@@ -133,20 +133,20 @@
                     <div class="tabbable-line tabs-below">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                         <ul class="nav nav-tabs">
-                            {{ layouts.liTabPane("create-code-tab", "edit", "生成代码") }}
-                            {{ layouts.liTabPane("edit-style-tab", "spanner", "设置样式", "active") }}
+                            {{ layouts.liTabPane("create-code-tab", "edit", "生成代码", "active") }}
+                            {{ layouts.liTabPane("edit-style-tab", "spanner", "设置样式") }}
                             {{ layouts.liTabPane("set-tag-tab", "tag", "设置标签") }}
                             {{ layouts.liTabPane("add-screen-tab", "screen", "添加通屏") }}
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane create-code-tab">
+                            <div class="tab-pane create-code-tab active">
                                 <div style="height:350px;">
                                     <div class="row">
                                         <textarea class="form-control code-textarea no-resize" rows="18"></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane edit-style-tab active ">
+                            <div class="tab-pane edit-style-tab">
                                 <div style="height:350px;">
                                     <div class="col-md-2 col-sm-2 col-xs-2">
                                         <ul class="nav nav-tabs tabs-left">
@@ -189,11 +189,11 @@
                 </div>
                 <div class="modal-footer">
                     <div class="tab-content">
-                        <div class="tab-pane create-code-tab">
-                            <button type="button" class="btn dark btn-outline copy-code-btn"> 复制代码 </button>
+                        <div class="tab-pane active create-code-tab">
+                            <button type="button" class="btn dark btn-outline copy-code-btn" data-clipboard-target=".code-textarea"> 复制代码 </button>
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
-                        <div class="tab-pane active edit-style-tab">
+                        <div class="tab-pane edit-style-tab">
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
                         <div class="tab-pane set-tag-tab">
@@ -210,7 +210,7 @@
 {% endblock %}
 
 {% block pagePluginsScripts %}
-    {{ block("ZCPluginsScripts") }}
+    {{ block("ClipPluginsScripts") }}
     {{ block("CPPluginsScripts") }}
 {% endblock %}
 
@@ -219,14 +219,12 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ block("ZCJavascripts") }}
+    {{ block("ClipJavascripts") }}
     {{ block("CPJavascripts") }}
     <script type="text/javascript">
-        var ZCBtn = $(".copy-code-btn");
-        var ZCText = $(".code-textarea");
+        var ClipBtn = ".copy-code-btn";
         var lineNum = {{ model.lineNum|default(3) }};
         $(function(){
-            $("#general-settings-modal").modal("show");
             $(document).on("click", ".style-use-btn", function () {
                 var form = $(this).closest("form");
                 var cate = form.attr("data-cate");

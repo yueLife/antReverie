@@ -1,0 +1,30 @@
+{# Clipboard.js Block#}
+{# pagePluginsScripts #}
+{% block ClipPluginsScripts %}
+    <script src="{{ asset(PLUGINS~"Clipboard/Clipboard.min.js") }}" type="text/javascript"></script>
+{% endblock %}
+
+{# Input Toastr #}
+{# javascripts #}
+{% block ClipJavascripts %}
+    <script type="text/javascript">
+        $(function(){
+            var clip = new Clipboard(ClipBtn);
+            clip.on('success', function() {
+                if (typeof toastr === 'undefined') {
+                    alert("复制成功！");
+                }else {
+                    toastr.success("复制成功！", "提示");
+                }
+            });
+
+            clip.on('error', function() {
+                if (typeof toastr === 'undefined') {
+                    alert("复制失败！");
+                }else {
+                    toastr.success("复制失败！", "提示");
+                }
+            });
+        })
+    </script>
+{% endblock %}

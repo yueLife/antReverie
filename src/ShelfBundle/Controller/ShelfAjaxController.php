@@ -240,10 +240,45 @@ class ShelfAjaxController extends Controller
         $shelfUsersInfo = $shelfUsersEm->findOneByUser($this->getUser());
         $personal = json_decode($shelfUsersInfo->getPersonal(), true);
 
-        $personal[$request->get("cate")] = $request->get("json");
-        $shelfUsersInfo->setPersonal(json_encode($personal));
-        $this->em->flush();
+        $style = "";
+        if ($title = $request->get("title")) {
+            $styleArr["title"] = $title;
+        }
+        if ($size = $request->get("size")) {
+            $style .= "font-size:".$size."px;";
+        }
+        $styleArr["size"] = $size;
+        if ($family = $request->get("family")) {
+            $style .= "font-family:".$family.";";
+            $styleArr["family"] = $family;
+        }
+        if ($color = $request->get("color")) {
+            $style .= "color:".$color.";";
+            $styleArr["color"] = $color;
+        }
+        if ($weight = $request->get("weight")) {
+            $style .= "font-weight:".$weight.";";
+            $styleArr["weight"] = $weight;
+        }else{
+            $style .= "font-weight:normal;";
+            $styleArr["weight"] = "normal";
+        }
+        if ($italic = $request->get("italic")) {
+            $style .= "font-style:".$italic.";";
+            $styleArr["italic"] = $italic;
+        }else{
+            $style .= "font-style:normal;";
+            $styleArr["italic"] = "normal";
+        }
+        if ($line = $request->get("line")) {
+            $style .= "text-decoration:".$line.";";
+            $styleArr["line"] = $line;
+        }
 
-        return new JsonResponse($personal);
+//        $personal[$request->get("cate")] = $request->get("json");
+//        $shelfUsersInfo->setPersonal(json_encode($personal));
+//        $this->em->flush();
+
+        return new JsonResponse($styleArr);
     }
 }

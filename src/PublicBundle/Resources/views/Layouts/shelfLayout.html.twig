@@ -228,20 +228,19 @@
             $(document).on("click", ".style-use-btn", function () {
                 var form = $(this).closest("form");
                 var cate = form.attr("data-cate");
-                var json = getPersonalJson(form, cate);
-
+                setPersonalStyle(form, cate);
+                
                 $.ajax({
                     url: "{{ path("setShelfUserDataAjax") }}",
                     type: "post",
                     dataType: "json",
-                    data: { "cate": cate, "json": json },
+                    data: form.serialize(),
                 }).done(function (data) {
                     console.log(data);
-                }).fail(function (data) {
+                }).fail(function () {
                     console.log("未知错误！");
                 });
             });
         });
-
     </script>
 {% endblock %}

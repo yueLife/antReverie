@@ -229,9 +229,8 @@ function replaceBox(box, curIdx) {
 }
 
 // 设置用户货架样式
-function getPersonalJson(form, cate) {
+function setPersonalStyle(form, cate) {
     var cText = $("." + cate + "-textarea textarea");
-    var json = "";
 
     if (title = form.find("input[name=title]").val()) {
         $("#" + cate + "-title-preview").val(title);
@@ -240,44 +239,33 @@ function getPersonalJson(form, cate) {
     if (size = form.find("input[name=size]").val()) {
         cText.css("fontSize", size + "px");
         $(".shelf-data ." + cate).css("fontSize", size + "px");
-        json += "font-size:" + size + "px;";
     }
     if (family = form.find("input[name=family]").val()) {
         cText.css("fontFamily", family);
         $(".shelf-data ." + cate).css("fontFamily", family);
-        json += "font-family:" + family + ";";
     }
-    if (fontColor = form.find("input[name=color]").val()) {
-        cText.css("color", fontColor);
-        $(".shelf-data ." + cate).css("color", fontColor);
-        json += "color:" + fontColor + ";";
-
+    if (color = form.find("input[name=color]").val()) {
+        cText.css("color", color);
+        $(".shelf-data ." + cate).css("color", color);
     }
     if (form.find("input[name=weight]").prop("checked")) {
         cText.css("fontWeight", "bold");
         $(".shelf-data ." + cate).css("fontWeight", "bold");
-        json += "font-weight:bold;";
     }else{
         cText.css("fontWeight", "normal");
         $(".shelf-data ." + cate).css("fontWeight", "normal");
-        json += "font-weight:normal;";
     }
     if (form.find("input[name=italic]").prop("checked")) {
         cText.css("fontStyle", "italic");
         $(".shelf-data ." + cate).css("fontStyle", "italic");
-        json += "font-weight:italic;";
     }else {
         cText.css("fontStyle", "normal");
         $(".shelf-data ." + cate).css("fontStyle", "normal");
-        json += "font-weight:normal;";
     }
     form.find("input[name=line]").each(function () {
         if ($(this).prop("checked")) {
             cText.css("textDecoration", $(this).val());
             $(".shelf-data ." + cate).css("textDecoration", $(this).val());
-            json += "text-decoration:" + $(this).val() + ";";
         }
     });
-
-    return json;
 }

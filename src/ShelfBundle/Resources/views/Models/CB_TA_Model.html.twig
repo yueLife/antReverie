@@ -1,8 +1,6 @@
 {% extends "PublicBundle::Layouts/shelfLayout.html.twig" %}
 
 {% block shelfContent %}
-    {% set p = option.personal %}
-    {% set s = option.shelf %}
     {% for goods in data %}
     <div class="shelf-box fl" data-index="index_{{ goods.id }}">
         <img src="{{ goods.imgUrl }}" class="shelf-img fl" data-href="{{ goods.goodsId }}" data-name="{{ goods.goodsname }}">

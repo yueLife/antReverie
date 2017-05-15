@@ -1,7 +1,7 @@
 {# Metronic Floation Labels #}
-{% macro floatingInput(title, anchor, type, name, state) %}
+{% macro floatingInput(title, anchor, type, name, value, state) %}
     <div class="form-group form-md-line-input form-md-floating-label has-{{ state|default("success") }}">
-        <input type="{{ type|default("text") }}" id="{{ anchor }}" class="form-control" name="{{ name }}">
+        <input type="{{ type|default("text") }}" id="{{ anchor }}" class="form-control" name="{{ name }}" value="{{ value|default("") }}">
         <label for="{{ anchor }}"> {{ title }} </label>
     </div>
 {% endmacro %}

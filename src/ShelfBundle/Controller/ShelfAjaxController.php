@@ -241,44 +241,31 @@ class ShelfAjaxController extends Controller
         $personal = json_decode($shelfUsersInfo->getPersonal(), true);
 
         $style = "";
-        if ($title = $request->get("title")) {
-            $styleArr["title"] = $title;
+        if (substr($request->get("cate"), 3,5) == "Title") {
+            $styleArr["title"] = ($title = $request->get("title")) ? $title : "" ;
         }
-        if ($size = $request->get("size")) {
-            $style .= "font-size:".$size."px;";
+        if ($styleArr["size"] = $request->get("size")) {
+            $style .= "font-size:".$styleArr["size"]."px;";
         }
-        $styleArr["size"] = $size;
-        if ($family = $request->get("family")) {
-            $style .= "font-family:".$family.";";
-            $styleArr["family"] = $family;
+        if ($styleArr["family"] = $request->get("family")) {
+            $style .= "font-family:".$styleArr["family"].";";
         }
-        if ($color = $request->get("color")) {
-            $style .= "color:".$color.";";
-            $styleArr["color"] = $color;
+        if ($styleArr["color"] = $request->get("color")) {
+            $style .= "color:".$styleArr["color"].";";
         }
-        if ($weight = $request->get("weight")) {
-            $style .= "font-weight:".$weight.";";
-            $styleArr["weight"] = $weight;
-        }else{
-            $style .= "font-weight:normal;";
-            $styleArr["weight"] = "normal";
+        if ($styleArr["line"] = $request->get("line")) {
+            $style .= "text-decoration:".$styleArr["line"].";";
         }
-        if ($italic = $request->get("italic")) {
-            $style .= "font-style:".$italic.";";
-            $styleArr["italic"] = $italic;
-        }else{
-            $style .= "font-style:normal;";
-            $styleArr["italic"] = "normal";
-        }
-        if ($line = $request->get("line")) {
-            $style .= "text-decoration:".$line.";";
-            $styleArr["line"] = $line;
-        }
+        $styleArr["weight"] = ($weight = $request->get("weight")) ? $weight : "normal" ;
+        $style .= "font-weight:".$styleArr["weight"].";";
+        $styleArr["italic"] = ($italic = $request->get("italic")) ? $italic : "normal" ;
+        $style .= "font-style:".$styleArr["italic"].";";
 
-//        $personal[$request->get("cate")] = $request->get("json");
-//        $shelfUsersInfo->setPersonal(json_encode($personal));
-//        $this->em->flush();
+        $personal[$request->get("cate")] = $style;
+        $personal["style"][$request->get("cate")] = $styleArr;
+        $shelfUsersInfo->setPersonal(json_encode($personal));
+        $this->em->flush();
 
-        return new JsonResponse($styleArr);
+        return new JsonResponse(array('state' => 'success', 'message' =>'设置成功！'));
     }
 }

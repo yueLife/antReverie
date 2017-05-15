@@ -36,27 +36,36 @@
         </div>
     </div>
 {% endmacro %}
-{% macro styleForm(metronic, self, cate, active) %}
+{% macro styleForm(metronic, self, cate, value, active) %}
     <div class="tab-pane {{ cate }}-tab {{ active|default("fade") }}">
         <form role="form" data-cate="{{ cate }}">
             <input type="text" class="display-hide" name="cate" value="{{ cate }}">
             <div class="form-body">
                 <div class="col-md-6">
                     {% if cate and cate|slice(3, 5) == "Title" %}
-                        {{ metronic.floatingInput("标题", cate~"-title", "", "title") }}
+                        {{ metronic.floatingInput("标题", cate~"-title", "", "title", value.title) }}
                     {% endif %}
-                    {{ metronic.floatingInput("字体大小", cate~"-size", "", "size") }}
-                    {{ metronic.floatingInput("字体族科", cate~"-family", "", "family") }}
-                    {{ metronic.colorPick("字体颜色", cate~"-font-color", "color", "A7292F") }}
+                    {{ metronic.floatingInput("字体大小", cate~"-size", "", "size", value.size) }}
+                    {{ metronic.floatingInput("字体族科", cate~"-family", "", "family", value.family) }}
+                    {{ metronic.colorPick("字体颜色", cate~"-font-color", "color", value.color) }}
                     <div class="form-group form-md-checkboxes">
                         <label> 常用样式 </label>
                         <div class="md-checkbox-inline">
-                            {{ metronic.floatingCheckbox("粗体", cate~"-weight", "weight", "bold") }}
-                            {{ metronic.floatingCheckbox("斜体", cate~"-italic", "italic", "italic") }}
+                            {% if value.weight == "bold" %}{% set checked = "checked" %}{% else %}{% set checked = "" %}{% endif %}
+                            {{ metronic.floatingCheckbox("粗体", cate~"-weight", "weight", "bold", checked) }}
+                            {% if value.italic == "italic" %}{% set checked = "checked" %}{% else %}{% set checked = "" %}{% endif %}
+                            {{ metronic.floatingCheckbox("斜体", cate~"-italic", "italic", "italic", checked) }}
                         </div>
                         <div class="md-radio-inline">
-                            {{ metronic.floatingRadio("中划线", cate~"-line-through", "line", "line-through") }}
-                            {{ metronic.floatingRadio("没有", cate~"-line-none", "line", "none", "ture") }}
+                            {% if value.line == "line-through" %}
+                                {% set lineThrough = "checked" %}
+                                {% set lineNone = "" %}
+                            {% else %}
+                                {% set lineThrough = "" %}
+                                {% set lineNone = "checked" %}
+                            {% endif %}
+                            {{ metronic.floatingRadio("中划线", cate~"-line-through", "line", "line-through", lineThrough) }}
+                            {{ metronic.floatingRadio("没有", cate~"-line-none", "line", "none", lineNone) }}
                         </div>
                     </div>
                     <button type="button" class="btn dark btn-outline style-use-btn"> 使用 </button>
@@ -68,6 +77,8 @@
 {% endmacro %}
 
 {% block content %}
+    {% set p = option.personal %}
+    {% set s = option.shelf %}
     {% import _self as self %}
     <div class="portlet light">
         <div class="portlet-body">
@@ -161,12 +172,12 @@
                                     </div>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
                                         <div class="tab-content">
-                                            {{ self.styleForm(metronic, self, "actTitle", "active in") }}
-                                            {{ self.styleForm(metronic, self, "actPrice") }}
-                                            {{ self.styleForm(metronic, self, "couTitle") }}
-                                            {{ self.styleForm(metronic, self, "couPrice") }}
-                                            {{ self.styleForm(metronic, self, "tagTitle") }}
-                                            {{ self.styleForm(metronic, self, "tagPrice") }}
+                                            {{ self.styleForm(metronic, self, "actTitle", p.style.actTitle, "active in") }}
+                                            {{ self.styleForm(metronic, self, "actPrice", p.style.actPrice) }}
+                                            {{ self.styleForm(metronic, self, "couTitle", p.style.couTitle) }}
+                                            {{ self.styleForm(metronic, self, "couPrice", p.style.couPrice) }}
+                                            {{ self.styleForm(metronic, self, "tagTitle", p.style.tagTitle) }}
+                                            {{ self.styleForm(metronic, self, "tagPrice", p.style.tagPrice) }}
                                             <div class="tab-pane other-color-tab fade">
                                                 <p>7</p>
                                             </div>
@@ -236,9 +247,9 @@
                     dataType: "json",
                     data: form.serialize(),
                 }).done(function (data) {
-                    console.log(data);
+                    toastr.success(data["message"], "提示", {timeOut: "1000"});
                 }).fail(function () {
-                    console.log("未知错误！");
+                    toastr.error("未知错误！", "提示");
                 });
             });
         });

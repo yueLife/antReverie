@@ -7,6 +7,7 @@
 
 /*shelf css*/
 #shelf .shelf-new-data .shelf-tmp-box{ opacity:0.4; }
+#shelf .shelf-data{min-height:200px;overflow:hidden;padding:0;background:#EEE;}
 
 #shelf .shelf-data .shelf-box{ position:relative;margin:0 10px 10px 0; }
 #shelf .shelf-data .shelf-price{ text-align:center;background:#FFF; }

@@ -7,9 +7,10 @@
 // 全局变量
 var ClipBtn = ".copy-code-btn";
 var screen = new Object();
-    screen['start'] = '';
-    screen['end'] = '';
-    
+    screen["start"] = "";
+    screen["end"] = "";
+var bgColor = "";
+
 $(function () {
     // 单个添加到货架
     $(document).on("click", ".add-block .add-btn", function() {
@@ -280,44 +281,61 @@ function replaceBox(box, curIdx) {
 
 // 设置用户货架样式
 function setPersonalStyle(form, cate) {
-    var cText = $("." + cate + "-textarea textarea");
+    if (cate !== "otherColor") {
+        var cText = $("." + cate + "-textarea textarea");
 
-    if (title = form.find("input[name=title]").val()) {
-        $("#" + cate + "-title-preview").val(title);
-        $(".shelf-data ." + cate).html(title);
-    }
-    if (size = form.find("input[name=size]").val()) {
-        cText.css("fontSize", size + "px");
-        $(".shelf-data ." + cate).css("fontSize", size + "px");
-    }
-    if (family = form.find("input[name=family]").val()) {
-        cText.css("fontFamily", family);
-        $(".shelf-data ." + cate).css("fontFamily", family);
-    }
-    if (color = form.find("input[name=color]").val()) {
-        cText.css("color", color);
-        $(".shelf-data ." + cate).css("color", color);
-    }
-    if (form.find("input[name=weight]").prop("checked")) {
-        cText.css("fontWeight", "bold");
-        $(".shelf-data ." + cate).css("fontWeight", "bold");
-    }else{
-        cText.css("fontWeight", "normal");
-        $(".shelf-data ." + cate).css("fontWeight", "normal");
-    }
-    if (form.find("input[name=italic]").prop("checked")) {
-        cText.css("fontStyle", "italic");
-        $(".shelf-data ." + cate).css("fontStyle", "italic");
-    }else {
-        cText.css("fontStyle", "normal");
-        $(".shelf-data ." + cate).css("fontStyle", "normal");
-    }
-    form.find("input[name=line]").each(function () {
-        if ($(this).prop("checked")) {
-            cText.css("textDecoration", $(this).val());
-            $(".shelf-data ." + cate).css("textDecoration", $(this).val());
+        if (title = form.find("input[name=title]").val()) {
+            $("#" + cate + "-title-preview").val(title);
+            $(".shelf-data ." + cate).html(title);
         }
-    });
+        if (size = form.find("input[name=size]").val()) {
+            cText.css("fontSize", size + "px");
+            $(".shelf-data ." + cate).css("fontSize", size + "px");
+        }
+        if (family = form.find("input[name=family]").val()) {
+            cText.css("fontFamily", family);
+            $(".shelf-data ." + cate).css("fontFamily", family);
+        }
+        if (color = form.find("input[name=color]").val()) {
+            cText.css("color", color);
+            $(".shelf-data ." + cate).css("color", color);
+        }
+        if (form.find("input[name=weight]").prop("checked")) {
+            cText.css("fontWeight", "bold");
+            $(".shelf-data ." + cate).css("fontWeight", "bold");
+        } else {
+            cText.css("fontWeight", "normal");
+            $(".shelf-data ." + cate).css("fontWeight", "normal");
+        }
+        if (form.find("input[name=italic]").prop("checked")) {
+            cText.css("fontStyle", "italic");
+            $(".shelf-data ." + cate).css("fontStyle", "italic");
+        } else {
+            cText.css("fontStyle", "normal");
+            $(".shelf-data ." + cate).css("fontStyle", "normal");
+        }
+        form.find("input[name=line]").each(function () {
+            if ($(this).prop("checked")) {
+                cText.css("textDecoration", $(this).val());
+                $(".shelf-data ." + cate).css("textDecoration", $(this).val());
+            }
+        });
+    } else {
+        console.log();
+        if (bgColor = form.find("input[name='bgColor']").val()) {
+            $(".shelf-data").css("backgroundColor", bgColor);
+            bgColor = ' style="background:' + bgColor + ';"';
+        }
+        if (boxColor = form.find("input[name='boxColor']").val()) {
+            $(".shelf-price").css("backgroundColor", boxColor);
+        }
+        if (mainColor = form.find("input[name='mainTitleColor']").val()) {
+            $(".shelf-data .goodsname").find(".main-name").css("color", boxColor);
+        }
+        if (subColor = form.find("input[name='subTitleColor']").val()) {
+            $(".shelf-data .goodsname").find(".sub-name").css("color", subColor);
+        }
+    }
 }
 
 // 恢复天猫通屏使用按钮样式
@@ -342,7 +360,7 @@ function createCode(){
         }
         codeData.append(shelfBox);
     });
-    var code = screen['start'] + "<div>";
+    var code = screen['start'] + "<div" + bgColor + ">";
     code += codeData.find("div").removeAttr("class").end().html().replace(/\n+/g, "").replace(/  +/g, "");
     code += "</div>" + screen['end'];
 

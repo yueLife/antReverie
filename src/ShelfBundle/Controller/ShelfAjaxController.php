@@ -242,7 +242,12 @@ class ShelfAjaxController extends Controller
 
         if (($cate = $request->get("cate")) == "imgTag") {
             $personal[$cate] = $request->get("value");
-        }else{
+        } elseif ($cate == "otherColor") {
+            $personal["mainTitleColor"] = $request->get("mainTitleColor");
+            $personal["subTitleColor"] = $request->get("subTitleColor");
+            $personal["bgColor"] = $request->get("bgColor");
+            $personal["boxColor"] = $request->get("boxColor");
+        } else {
             $style = "";
             if (substr($cate, 3,5) == "Title") {
                 $styleArr["title"] = ($title = $request->get("title")) ? $title : "" ;
@@ -267,11 +272,10 @@ class ShelfAjaxController extends Controller
             $personal[$cate] = $style;
             $personal["style"][$cate] = $styleArr;
         }
-//        $shelfUsersInfo->setPersonal(json_encode($personal));
-//        $this->em->flush();
+        $shelfUsersInfo->setPersonal(json_encode($personal));
+        $this->em->flush();
 
-//        return new JsonResponse(array('state' => 'success', 'message' =>'设置成功！'));
-        return new JsonResponse($personal);
+        return new JsonResponse(array('state' => 'success', 'message' =>'设置成功！'));
     }
 
     /**

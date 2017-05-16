@@ -1,7 +1,63 @@
 {% extends "PublicBundle::Layouts/shelfLayout.html.twig" %}
 
 {% block shelfContent %}
-    CB_TB <br>
-    {{ id }} <br>
-    {{ route }}
+    {% for goods in data %}
+        <div class="shelf-box fl" data-index="index_{{ goods.id }}">
+            <img src="{{ goods.imgUrl }}" class="shelf-img fl" data-href="{{ goods.goodsId }}" data-name="{{ goods.goodsname }}">
+            <div class="shelf-price fl">
+                <div class="goodsname"> {{ goods.goodsname }} </div>
+                <div class='act-content'>
+                    <div>
+                        <div class="actTitle title" style="{{ p.actTitle }}"> 活动价名称:￥ </div>
+                        <div class="actPrice price" style="{{ p.actPrice }}"> {{ goods.actPrice|number_format(0, 0, "", "") }} </div>
+                    </div>
+                    <div class='tag-content'>
+                        <div>
+                            <div class="tagTitle title" style="{{ p.tagTitle }}"> ￥ </div>
+                            <div class="tagPrice price" style="{{ p.tagPrice }}"> {{ goods.tagPrice|number_format(0, 0, "", "") }} </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='cou-content'>
+                    <div>
+                        <div class="couTitle title" style="{{ p.couTitle }}"> 优惠价名称:￥ </div>
+                        <div class="couPrice price" style="{{ p.couPrice }}"> {{ goods.couPrice|number_format(0, 0, "", "") }} </div>
+                    </div>
+                </div>
+                <img src="{{ p.imgTag }}" class="img-tag">
+            </div>
+            <div class="add-block">
+                <button type='button' class="btn btn-sm btn-info add-btn"> 添加到货架 </button>
+            </div>
+        </div>
+        <div class="shelf-hide-box display-hide" data-index="index_{{ goods.id }}" style="{{ s.shelfBox }}">
+            <a href="{{ option.plat.start }}{{ goods.goodsId }}{{ option.plat.end }}" target="_blank">
+                <img src="{{ goods.imgUrl }}" alt="{{ goods.goodsname }}">
+            </a>
+            <div class="shelfPrice" style="{{ s.shelfPrice }}">
+                <div style="{{ s.goodsName }}"> {{ goods.goodsname }}</div>
+                <div style="{{ s.actContent }}">
+                    <div style="{{ s.actDiv }}">
+                        <div class="actTitle" style="{{ s.actTitle }}{{ p.actTitle }}"> 活动价名称:￥</div>
+                        <div class="actPrice" style="{{ s.actPrice }}{{ p.actPrice }}">{{ goods.actPrice|number_format(0) }} </div>
+                    </div>
+                    <div style="{{ s.tagContent }}">
+                        <div style="{{ s.tagDiv }}">
+                            <div class="tagTitle" style="{{ s.tagTitle }}{{ p.tagTitle }}">￥</div>
+                            <div class="tagPrice" style="{{ s.tagPrice }}{{ p.tagPrice }}">{{ goods.tagPrice|number_format(0) }} </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="{{ s.couContent }}">
+                    <div style="{{ s.couDiv }}">
+                        <div class="couTitle" style="{{ s.couTitle }}{{ p.couTitle }}"> 优惠价名称:￥</div>
+                        <div class="couPrice" style="{{ s.couPrice }}{{ p.couPrice }}">{{ goods.couPrice|number_format(0) }} </div>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ option.plat.start }}{{ goods.goodsId }}{{ option.plat.end }}" target="_blank">
+                <img src="{{ p.imgTag }}" alt="{{ goods.goodsname }}" class="img-tag" style="{{ s.imgTag }}">
+            </a>
+        </div>
+    {% endfor %}
 {% endblock %}

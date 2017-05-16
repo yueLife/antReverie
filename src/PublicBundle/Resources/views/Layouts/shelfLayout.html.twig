@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <button type="button" class="btn dark btn-outline style-use-btn"> 使用 </button>
-                </div>`
+                </div>
                 {{ self.preview(cate~"-title-preview", cate~"-text-preview", cate) }}
             </div>
         </form>
@@ -89,6 +89,20 @@
                 <button class="btn green-haze {{ btnClass }}" type="button"> {{ btn }} </button>
             </span>
         </div>
+    </div>
+{% endmacro %}
+{% macro screen(self, plat, start, end, active) %}
+    <div class="tab-pane {{ plat }}-screen fade {{ active }}" data-plat="{{ plat }}">
+        {{ self.inputRightGroup("通屏高度", plat~"-screen-height", 6400, "get-screen-ht-btn", "获取高度") }}
+        <div class="form-group form-md-line-input form-md-floating-label">
+            <textarea id="{{ plat }}-screen-start" class="form-control no-resize" rows="4" readonly>{{ start }}</textarea>
+            <label for="{{ plat }}-screen-start"> 通屏代码开头 </label>
+        </div>
+        <div class="form-group form-md-line-input form-md-floating-label">
+            <textarea id="{{ plat }}-screen-end" class="form-control no-resize" rows="4" readonly>{{ end }}</textarea>
+            <label for="{{ plat }}-screen-end"> 通屏代码结尾 </label>
+        </div>
+        <button type="button" class="btn dark btn-outline mt10 screen-use-btn"> 使用通屏 </button>
     </div>
 {% endmacro %}
 
@@ -160,13 +174,13 @@
                     <div class="tabbable-line tabs-below">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                         <ul class="nav nav-tabs">
-                            {{ layouts.liTabPane("create-code-tab", "edit", "生成代码") }}
+                            {{ layouts.liTabPane("create-code-tab", "edit", "生成代码", "active") }}
                             {{ layouts.liTabPane("edit-style-tab", "spanner", "设置样式") }}
                             {{ layouts.liTabPane("set-tag-tab", "tag", "设置标签") }}
-                            {{ layouts.liTabPane("add-screen-tab", "screen", "添加通屏", "active") }}
+                            {{ layouts.liTabPane("add-screen-tab", "screen", "添加通屏") }}
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane fade create-code-tab">
+                            <div class="tab-pane fade create-code-tab active in">
                                 <div style="height:350px;">
                                     <div class="row">
                                         <textarea class="form-control code-textarea no-resize" rows="18"></textarea>
@@ -195,7 +209,20 @@
                                             {{ self.styleForm(metronic, self, "tagTitle", p.style.tagTitle) }}
                                             {{ self.styleForm(metronic, self, "tagPrice", p.style.tagPrice) }}
                                             <div class="tab-pane other-color-tab fade">
-                                                <p>7</p>
+                                                <form role="form" data-cate="otherColor">
+                                                    <input type="text" class="display-hide" name="cate" value="otherColor">
+                                                    <div class="form-body">
+                                                        <div class="col-md-6">
+                                                            {{ metronic.colorPick("主标题颜色", "main-title-color", "mainTitleColor", p.mainTitleColor) }}
+                                                            {{ metronic.colorPick("整体背景颜色", "bg-color", "bgColor", p.bgColor) }}
+                                                            <button type="button" class="btn dark btn-outline mt10 style-use-btn"> 使用 </button>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            {{ metronic.colorPick("副标题颜色", "sub-title-color", "subTitleColor", p.subTitleColor) }}
+                                                            {{ metronic.colorPick("单个背景颜色", "box-color", "boxColor", p.boxColor) }}
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -227,7 +254,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade add-screen-tab active in">
+                            <div class="tab-pane fade add-screen-tab">
                                 <div style="height:350px;">
                                     <div class="col-md-2 col-sm-2 col-xs-2">
                                         <ul class="nav nav-tabs tabs-left">
@@ -237,30 +264,8 @@
                                     </div>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
                                         <div class="tab-content">
-<div class="tab-pane tm-screen fade active in" data-plat="tm">
-    {{ self.inputRightGroup("通屏高度", "tm-screen-height", 6400, "get-screen-ht-btn", "获取高度") }}
-    <div class="form-group form-md-line-input form-md-floating-label">
-        <textarea id="tm-screen-start" class="form-control no-resize" rows="4" readonly><div style="height:6400px;"><div class="sn-simple-logo" style="width:1920px;height:6458px;border:none;padding:0;top:auto;left:50%;"><div class="sn-simple-logo" style="width:1920px;height:6458px;border:none;padding:0;top:auto;left:-960px;"><div style="margin:0 auto;"></textarea>
-        <label for="tm-screen-start"> 通屏代码开头 </label>
-    </div>
-    <div class="form-group form-md-line-input form-md-floating-label">
-        <textarea id="tm-screen-end" class="form-control no-resize" rows="4" readonly></div></div></div></div></textarea>
-        <label for="tm-screen-end"> 通屏代码结尾 </label>
-    </div>
-    <button type="button" class="btn dark btn-outline mt10 screen-use-btn"> 使用通屏 </button>
-</div>
-<div class="tab-pane jd-screen fade" data-plat="jd">
-    {{ self.inputRightGroup("通屏高度", "jd-screen-height", 6400, "get-screen-ht-btn", "获取高度") }}
-    <div class="form-group form-md-line-input form-md-floating-label">
-        <textarea id="jd-screen-start" class="form-control no-resize" rows="4" readonly><div style="width:1920px; height:6400px; background:rgba(255,255,255,1)"><div style=" width:1200px; height:6458px; margin:0 auto;"><div style="margin:0 auto;"></textarea>
-        <label for="jd-screen-start"> 通屏代码开头 </label>
-    </div>
-    <div class="form-group form-md-line-input form-md-floating-label">
-        <textarea id="jd-screen-end" class="form-control no-resize" rows="4" readonly></div></div></div></textarea>
-        <label for="jd-screen-end"> 通屏代码结尾 </label>
-    </div>
-    <button type="button" class="btn dark btn-outline mt10 screen-use-btn"> 使用通屏 </button>
-</div>
+                                            {{ self.screen(self, "tm", '<div style="height:6400px;"><div class="sn-simple-logo" style="width:1920px;height:6400px;border:none;padding:0;top:auto;left:50%;"><div class="sn-simple-logo" style="width:1920px;height:6400px;border:none;padding:0;top:auto;left:-960px;"><div style="margin:0 auto;">', "</div></div></div></div>", "active in") }}
+                                            {{ self.screen(self, "tm", '<div style="width:1920px; height:6400px; background:rgba(255,255,255,1)"><div style=" width:1200px; height:6400px; margin:0 auto;"><div style="margin:0 auto;">', "</div></div></div>") }}
                                         </div>
                                     </div>
                                 </div>
@@ -270,7 +275,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="tab-content">
-                        <div class="tab-pane create-code-tab">
+                        <div class="tab-pane create-code-tab active">
                             <button type="button" class="btn dark btn-outline copy-code-btn" data-clipboard-target=".code-textarea"> 复制代码 </button>
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
@@ -281,7 +286,7 @@
                             <button type="button" class="btn dark btn-outline show-tag-img-btn"> 替换 </button>
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
-                        <div class="tab-pane add-screen-tab active">
+                        <div class="tab-pane add-screen-tab">
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
                     </div>
@@ -306,7 +311,6 @@
     <script type="text/javascript">
         var lineNum = {{ model.lineNum|default(3) }};
         $(function() {
-            $("#general-settings-modal").modal("show");
             // 修改personalShelfData
             $(document).on("click", ".style-use-btn", function () {
                 var form = $(this).closest("form");

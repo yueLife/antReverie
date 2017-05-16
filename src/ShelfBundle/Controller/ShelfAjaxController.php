@@ -240,30 +240,56 @@ class ShelfAjaxController extends Controller
         $shelfUsersInfo = $shelfUsersEm->findOneByUser($this->getUser());
         $personal = json_decode($shelfUsersInfo->getPersonal(), true);
 
-        $style = "";
-        if (substr($request->get("cate"), 3,5) == "Title") {
-            $styleArr["title"] = ($title = $request->get("title")) ? $title : "" ;
-        }
-        if ($styleArr["size"] = $request->get("size")) {
-            $style .= "font-size:".$styleArr["size"]."px;";
-        }
-        if ($styleArr["family"] = $request->get("family")) {
-            $style .= "font-family:".$styleArr["family"].";";
-        }
-        if ($styleArr["color"] = $request->get("color")) {
-            $style .= "color:".$styleArr["color"].";";
-        }
-        if ($styleArr["line"] = $request->get("line")) {
-            $style .= "text-decoration:".$styleArr["line"].";";
-        }
-        $styleArr["weight"] = ($weight = $request->get("weight")) ? $weight : "normal" ;
-        $style .= "font-weight:".$styleArr["weight"].";";
-        $styleArr["italic"] = ($italic = $request->get("italic")) ? $italic : "normal" ;
-        $style .= "font-style:".$styleArr["italic"].";";
+        if (($cate = $request->get("cate")) == "imgTag") {
+            $personal[$cate] = $request->get("value");
+        }else{
+            $style = "";
+            if (substr($cate, 3,5) == "Title") {
+                $styleArr["title"] = ($title = $request->get("title")) ? $title : "" ;
+            }
+            if ($styleArr["size"] = $request->get("size")) {
+                $style .= "font-size:".$styleArr["size"]."px;";
+            }
+            if ($styleArr["family"] = $request->get("family")) {
+                $style .= "font-family:".$styleArr["family"].";";
+            }
+            if ($styleArr["color"] = $request->get("color")) {
+                $style .= "color:".$styleArr["color"].";";
+            }
+            if ($styleArr["line"] = $request->get("line")) {
+                $style .= "text-decoration:".$styleArr["line"].";";
+            }
+            $styleArr["weight"] = ($weight = $request->get("weight")) ? $weight : "normal" ;
+            $style .= "font-weight:".$styleArr["weight"].";";
+            $styleArr["italic"] = ($italic = $request->get("italic")) ? $italic : "normal" ;
+            $style .= "font-style:".$styleArr["italic"].";";
 
-        $personal[$request->get("cate")] = $style;
-        $personal["style"][$request->get("cate")] = $styleArr;
-        $shelfUsersInfo->setPersonal(json_encode($personal));
+            $personal[$cate] = $style;
+            $personal["style"][$cate] = $styleArr;
+        }
+//        $shelfUsersInfo->setPersonal(json_encode($personal));
+//        $this->em->flush();
+
+//        return new JsonResponse(array('state' => 'success', 'message' =>'设置成功！'));
+        return new JsonResponse($personal);
+    }
+
+    /**
+     * Set Personal Img Tag Ajax
+     *
+     * @Route("/setPersonalTag", name="setPersonalTagAjax")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function setPersonalTagAjax(Request $request)
+    {
+        $this->em = $this->getDoctrine()->getManager();
+        $shelfUsersEm = $this->em->getRepository('ShelfBundle:ShelfUsers');
+        $shelfUsersInfo = $shelfUsersEm->findOneByUser($this->getUser());
+        $imgList = json_decode($shelfUsersInfo->getImgList(), true);
+
+        $imgList[$request->get("key")] = $request->get("value");
+        $shelfUsersInfo->setImgList(json_encode($imgList));
         $this->em->flush();
 
         return new JsonResponse(array('state' => 'success', 'message' =>'设置成功！'));

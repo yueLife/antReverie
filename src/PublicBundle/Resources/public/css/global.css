@@ -20,6 +20,7 @@
 .font-weight-normal{ font-weight:normal !important; }
 
 .cursor-default{ cursor:default !important;}
+.cursor-pointer{ cursor:pointer !important;}
 .border-none{ border:none !important; }
 .no-resize{ resize:none !important;}
 

@@ -178,6 +178,12 @@ $(function () {
 
         $(".code-textarea").val(code);
     });
+
+    // 修改标签
+    $(document).on("click", ".show-tag-img-btn", function () {
+        $(".tag-input-div").toggleClass("display-hide");
+        $(".tag-img-div").toggleClass("display-hide");
+    });
 });
 
 // 修改已经添加后的样式

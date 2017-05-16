@@ -78,7 +78,7 @@
         </form>
     </div>
 {% endmacro %}
-{% macro inputRightGroup(title, anchor, value) %}
+{% macro inputRightGroup(title, anchor, value, btnClass, btn) %}
     <div class="form-group form-md-line-input form-md-floating-label has-success">
         <div class="input-group input-group-sm">
             <div class="input-group-control">
@@ -86,7 +86,7 @@
                 <label for="{{ anchor }}"> {{ title }} </label>
             </div>
             <span class="input-group-btn btn-right">
-                <button class="btn green-haze ch-tag-img-btn" type="button"> 替换 </button>
+                <button class="btn green-haze {{ btnClass }}" type="button"> {{ btn }} </button>
             </span>
         </div>
     </div>
@@ -95,7 +95,6 @@
 {% set p = option.personal %}
 {% set s = option.shelf %}
 {% block content %}
-    {{ dump(option) }}
     {% import _self as self %}
     <div class="portlet light">
         <div class="portlet-body">
@@ -163,18 +162,18 @@
                         <ul class="nav nav-tabs">
                             {{ layouts.liTabPane("create-code-tab", "edit", "生成代码") }}
                             {{ layouts.liTabPane("edit-style-tab", "spanner", "设置样式") }}
-                            {{ layouts.liTabPane("set-tag-tab", "tag", "设置标签", "active") }}
-                            {{ layouts.liTabPane("add-screen-tab", "screen", "添加通屏") }}
+                            {{ layouts.liTabPane("set-tag-tab", "tag", "设置标签") }}
+                            {{ layouts.liTabPane("add-screen-tab", "screen", "添加通屏", "active") }}
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane create-code-tab">
+                            <div class="tab-pane fade create-code-tab">
                                 <div style="height:350px;">
                                     <div class="row">
                                         <textarea class="form-control code-textarea no-resize" rows="18"></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane edit-style-tab">
+                            <div class="tab-pane fade edit-style-tab">
                                 <div style="height:350px;">
                                     <div class="col-md-2 col-sm-2 col-xs-2">
                                         <ul class="nav nav-tabs tabs-left">
@@ -202,12 +201,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane set-tag-tab active">
+                            <div class="tab-pane fade set-tag-tab">
                                 <div style="height:350px;">
                                     <div class="col-md-6">
                                         <div class="tag-img-div"><img src="{{ option.imgList.saleOut }}" alt="售罄图片" class="cursor-pointer" data-name="saleOut"></div>
                                         <div class="tag-input-div display-hide">
-                                            {{ self.inputRightGroup("售罄图片", "saleOut", option.imgList.saleOut) }}
+                                            {{ self.inputRightGroup("售罄图片", "saleOut", option.imgList.saleOut, "ch-tag-img-btn", "替换") }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -219,18 +218,51 @@
                                             <div><img src="{{ option.imgList.fifthImg }}" alt="备用标签5" class="cursor-pointer" data-name="fifthImg"></div>
                                         </div>
                                         <div class="tag-input-div display-hide">
-                                        {{ self.inputRightGroup("备用标签1", "firstImg", option.imgList.firstImg) }}
-                                        {{ self.inputRightGroup("备用标签2", "secondImg", option.imgList.secondImg) }}
-                                        {{ self.inputRightGroup("备用标签3", "thirdImg", option.imgList.thirdImg) }}
-                                        {{ self.inputRightGroup("备用标签4", "fourthImg", option.imgList.fourthImg) }}
-                                        {{ self.inputRightGroup("备用标签5", "fifthImg", option.imgList.fifthImg) }}
+                                        {{ self.inputRightGroup("备用标签1", "firstImg", option.imgList.firstImg, "ch-tag-img-btn", "替换") }}
+                                        {{ self.inputRightGroup("备用标签2", "secondImg", option.imgList.secondImg, "ch-tag-img-btn", "替换") }}
+                                        {{ self.inputRightGroup("备用标签3", "thirdImg", option.imgList.thirdImg, "ch-tag-img-btn", "替换") }}
+                                        {{ self.inputRightGroup("备用标签4", "fourthImg", option.imgList.fourthImg, "ch-tag-img-btn", "替换") }}
+                                        {{ self.inputRightGroup("备用标签5", "fifthImg", option.imgList.fifthImg, "ch-tag-img-btn", "替换") }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane add-screen-tab">
-                                <div style="height: 200px;">
-                                    <h4> 添加通屏 </h4>
+                            <div class="tab-pane fade add-screen-tab active in">
+                                <div style="height:350px;">
+                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <ul class="nav nav-tabs tabs-left">
+                                            {{ layouts.liTabPane("tm-screen", "", "天猫通屏", "active") }}
+                                            {{ layouts.liTabPane("jd-screen", "", "京东通屏") }}
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <div class="tab-content">
+<div class="tab-pane tm-screen fade active in" data-plat="tm">
+    {{ self.inputRightGroup("通屏高度", "tm-screen-height", 6400, "get-screen-ht-btn", "获取高度") }}
+    <div class="form-group form-md-line-input form-md-floating-label">
+        <textarea id="tm-screen-start" class="form-control no-resize" rows="4" readonly><div style="height:6400px;"><div class="sn-simple-logo" style="width:1920px;height:6458px;border:none;padding:0;top:auto;left:50%;"><div class="sn-simple-logo" style="width:1920px;height:6458px;border:none;padding:0;top:auto;left:-960px;"><div style="margin:0 auto;"></textarea>
+        <label for="tm-screen-start"> 通屏代码开头 </label>
+    </div>
+    <div class="form-group form-md-line-input form-md-floating-label">
+        <textarea id="tm-screen-end" class="form-control no-resize" rows="4" readonly></div></div></div></div></textarea>
+        <label for="tm-screen-end"> 通屏代码结尾 </label>
+    </div>
+    <button type="button" class="btn dark btn-outline mt10 screen-use-btn"> 使用通屏 </button>
+</div>
+<div class="tab-pane jd-screen fade" data-plat="jd">
+    {{ self.inputRightGroup("通屏高度", "jd-screen-height", 6400, "get-screen-ht-btn", "获取高度") }}
+    <div class="form-group form-md-line-input form-md-floating-label">
+        <textarea id="jd-screen-start" class="form-control no-resize" rows="4" readonly><div style="width:1920px; height:6400px; background:rgba(255,255,255,1)"><div style=" width:1200px; height:6458px; margin:0 auto;"><div style="margin:0 auto;"></textarea>
+        <label for="jd-screen-start"> 通屏代码开头 </label>
+    </div>
+    <div class="form-group form-md-line-input form-md-floating-label">
+        <textarea id="jd-screen-end" class="form-control no-resize" rows="4" readonly></div></div></div></textarea>
+        <label for="jd-screen-end"> 通屏代码结尾 </label>
+    </div>
+    <button type="button" class="btn dark btn-outline mt10 screen-use-btn"> 使用通屏 </button>
+</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -245,11 +277,11 @@
                         <div class="tab-pane edit-style-tab">
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
-                        <div class="tab-pane set-tag-tab active">
+                        <div class="tab-pane set-tag-tab">
                             <button type="button" class="btn dark btn-outline show-tag-img-btn"> 替换 </button>
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
-                        <div class="tab-pane add-screen-tab">
+                        <div class="tab-pane add-screen-tab active">
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
                     </div>
@@ -272,16 +304,15 @@
     {{ block("ClipJavascripts") }}
     {{ block("CPJavascripts") }}
     <script type="text/javascript">
-        var ClipBtn = ".copy-code-btn";
         var lineNum = {{ model.lineNum|default(3) }};
-        $(function(){
-            $('#general-settings-modal').modal('show');
+        $(function() {
+            $("#general-settings-modal").modal("show");
             // 修改personalShelfData
             $(document).on("click", ".style-use-btn", function () {
                 var form = $(this).closest("form");
                 var cate = form.attr("data-cate");
                 setPersonalStyle(form, cate);
-                
+
                 $.ajax({
                     url: "{{ path("setShelfUserDataAjax") }}",
                     type: "post",
@@ -301,7 +332,7 @@
                     url: "{{ path("setPersonalTagAjax") }}",
                     type: "post",
                     dataType: "json",
-                    data: {"key": input.attr("name"), "value":input.val()},
+                    data: {"key": input.attr("name"), "value": input.val()},
                 }).done(function (data) {
                     $(".tag-img-div img[data-name='" + input.attr("name") + "']").attr("src", input.val());
                     toastr.success(data["message"], "提示", {timeOut: "1000"});
@@ -324,19 +355,6 @@
                     toastr.error("未知错误！", "提示");
                 });
             });
-            // 使用售罄
-            $(document).on('click','.edit-sale-out',function() {
-                var shelf = $(this).parents("div[data-index]");
-                if (shelf.find("div.sale-out").size() === 0) {
-                    var out_tmp = '';
-                    out_tmp += '<div class="sale-out" style="position:absolute;top:0;left:0;z-index:99;overflow:hidden;{{ s.saleOutBox }}">';
-                    out_tmp += '<img alt="已售罄" src="' + $(".tag-img-div img[data-name='saleOut']").attr("src") + '">';
-                    out_tmp += '</div>';
-                    shelf.append(out_tmp);
-                } else {
-                    shelf.find("div.sale-out").remove();
-                }
-            })
         });
     </script>
 {% endblock %}

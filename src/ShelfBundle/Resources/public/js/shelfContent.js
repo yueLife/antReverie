@@ -4,6 +4,12 @@
  * Date: 2017/5/4
  * Time: 11:58
  */
+// 全局变量
+var ClipBtn = ".copy-code-btn";
+var screen = new Object();
+    screen['start'] = '';
+    screen['end'] = '';
+    
 $(function () {
     // 单个添加到货架
     $(document).on("click", ".add-block .add-btn", function() {
@@ -157,32 +163,70 @@ $(function () {
         }
     });
 
-    // 生成代码
-    $("#general-settings-modal").on("show.bs.modal", function () {
-        var codeData = $(".shelf-code-data");
-        codeData.empty();
-        var goodsList = $(".shelf-new-data > div");
-        goodsList.each(function (index) {
-            var idx = $(this).attr("data-index");
-            var shelfBox = $(".shelf-old-data .shelf-hide-box[data-index=" + idx + "]").clone();
-            // 去除data-index属性
-            shelfBox.removeAttr("data-index class");
-            if (index % lineNum === (lineNum - 1)) {
-                shelfBox.css({ "marginRight": 0 });
-            }
-            codeData.append(shelfBox);
-        });
-        var code = "<div>";
-        code += codeData.find("div").removeAttr("class").end().html().replace(/\n+/g, "").replace(/  +/g, "");
-        code += "</div>";
-
-        $(".code-textarea").val(code);
-    });
-
     // 修改标签
     $(document).on("click", ".show-tag-img-btn", function () {
         $(".tag-input-div").toggleClass("display-hide");
         $(".tag-img-div").toggleClass("display-hide");
+    });
+
+    // 使用售罄
+    $(document).on("click", ".edit-sale-out", function () {
+        var shelf = $(this).parents("div[data-index]");
+        if (shelf.find("div.sale-out").size() === 0) {
+            var out_tmp = '';
+            out_tmp += '<div class="sale-out" style="position:absolute;top:0;left:0;z-index:99;overflow:hidden;{{ s.saleOutBox }}">';
+            out_tmp += '<img alt="已售罄" src="' + $(".tag-img-div img[data-name='saleOut']").attr("src") + '">';
+            out_tmp += '</div>';
+            shelf.append(out_tmp);
+        } else {
+            shelf.find("div.sale-out").remove();
+        }
+    });
+
+    // 获取通屏高度
+    $(document).on("click", ".get-screen-ht-btn", function() {
+        var _div = $(".shelf-new-data > div");
+        var ht = Math.ceil(_div.size() / lineNum) * _div.outerHeight(true) - (_div.outerHeight(true)-_div.height());
+        $(this).closest(".input-group").find("input").val(ht);
+        recoverScreenBtnStyle();
+    });
+
+    // 使用通屏
+    $(document).on("click", ".screen-use-btn", function () {
+        recoverScreenBtnStyle();
+        var ht = $(this).closest("div").find("input").val();
+        var plat = $(this).closest("div").attr("data-plat");
+        if (plat === "tm") {
+            screen['start'] = '<div style="height:' + ht + 'px;"><div class="sn-simple-logo" style="width:1920px;height:' + ht + 'px;border:none;padding:0;top:auto;left:50%;"><div class="sn-simple-logo" style="width:1920px;height:' + ht + 'px;border:none;padding:0;top:auto;left:-960px;"><div style="margin:0 auto;">';
+            screen['end'] = '</div></div></div></div>';
+            var _plat = "天猫通屏";
+        } else if (plat === "jd") {
+            screen['start'] = '<div style="width:1920px; height:' + ht + 'px; background:rgba(255,255,255,1)"><div style=" width:1200px; height:' + ht + 'px; margin:0 auto;"><div style="margin:0 auto;">';
+            screen['end'] = '</div></div></div>';
+            var _plat = "京东通屏";
+        }
+
+        $(this).closest("div").find("textarea:eq(0)").val(screen['start']);
+        $(this).addClass("red screen-unuse-btn").removeClass("dark screen-use-btn").html("已使用通屏");
+        toastr.success("使用 " + _plat+ " 成功！", "提示", {timeOut: "1000"});
+    });
+
+    // 不使用通屏
+    $(document).on("click", ".screen-unuse-btn", function () {
+        recoverScreenBtnStyle();
+    });
+
+    // 手动修改高度
+    $(document).on("focus", "#tm-screen-height, #jd-screen-height", function() {
+        recoverScreenBtnStyle();
+    });
+
+    // 生成代码
+    $("#general-settings-modal").on("show.bs.modal", function () {
+        createCode();
+    });
+    $(document).on("click", "a[href='.create-code-tab']", function () {
+        createCode();
     });
 });
 
@@ -274,4 +318,33 @@ function setPersonalStyle(form, cate) {
             $(".shelf-data ." + cate).css("textDecoration", $(this).val());
         }
     });
+}
+
+// 恢复天猫通屏使用按钮样式
+function recoverScreenBtnStyle(){
+    $(".screen-unuse-btn").addClass("dark screen-use-btn").removeClass("red screen-unuse-btn").html("使用通屏");
+    screen["start"] = "";
+    screen["end"] = "";
+}
+
+// 生成代码
+function createCode(){
+    var codeData = $(".shelf-code-data");
+    codeData.empty();
+    var goodsList = $(".shelf-new-data > div");
+    goodsList.each(function (index) {
+        var idx = $(this).attr("data-index");
+        var shelfBox = $(".shelf-old-data .shelf-hide-box[data-index=" + idx + "]").clone();
+        // 去除data-index属性
+        shelfBox.removeAttr("data-index class");
+        if (index % lineNum === (lineNum - 1)) {
+            shelfBox.css({ "marginRight": 0 });
+        }
+        codeData.append(shelfBox);
+    });
+    var code = screen['start'] + "<div>";
+    code += codeData.find("div").removeAttr("class").end().html().replace(/\n+/g, "").replace(/  +/g, "");
+    code += "</div>" + screen['end'];
+
+    $(".code-textarea").val(code);
 }

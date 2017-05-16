@@ -95,6 +95,7 @@
 {% set p = option.personal %}
 {% set s = option.shelf %}
 {% block content %}
+    {{ dump(option) }}
     {% import _self as self %}
     <div class="portlet light">
         <div class="portlet-body">

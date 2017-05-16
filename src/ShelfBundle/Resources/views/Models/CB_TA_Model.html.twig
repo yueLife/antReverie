@@ -36,22 +36,22 @@
         </a>
         <div class="shelfPrice" style="{{ s.shelfPrice }}">
             <div style="{{ s.goodsName }}"> {{ goods.goodsname }}</div>
-            <div style="{{ s.actPrice }}">
+            <div style="{{ s.actContent }}">
                 <div style="{{ s.actDiv }}">
                     <div class="actTitle" style="{{ s.actTitle }}{{ p.actTitle }}"> 活动价名称:￥</div>
-                    <div class="actPrice" style="{{ s.actContent }}{{ p.actPrice }}">{{ goods.actPrice|number_format(0) }} </div>
+                    <div class="actPrice" style="{{ s.actPrice }}{{ p.actPrice }}">{{ goods.actPrice|number_format(0) }} </div>
                 </div>
-                <div style="{{ s.tagPrice }}">
+                <div style="{{ s.tagContent }}">
                     <div style="{{ s.tagDiv }}">
                         <div class="tagTitle" style="{{ s.tagTitle }}{{ p.tagTitle }}">￥</div>
-                        <div class="tagPrice" style="{{ s.tagContent }}{{ p.tagPrice }}">{{ goods.tagPrice|number_format(0) }} </div>
+                        <div class="tagPrice" style="{{ s.tagPrice }}{{ p.tagPrice }}">{{ goods.tagPrice|number_format(0) }} </div>
                     </div>
                 </div>
             </div>
-            <div style="{{ s.couPrice }}">
+            <div style="{{ s.couContent }}">
                 <div style="{{ s.couDiv }}">
                     <div class="couTitle" style="{{ s.couTitle }}{{ p.couTitle }}"> 优惠价名称:￥</div>
-                    <div class="couPrice" style="{{ s.couContent }}{{ p.couPrice }}">{{ goods.couPrice|number_format(0) }} </div>
+                    <div class="couPrice" style="{{ s.couPrice }}{{ p.couPrice }}">{{ goods.couPrice|number_format(0) }} </div>
                 </div>
             </div>
         </div>

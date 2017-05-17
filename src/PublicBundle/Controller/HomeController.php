@@ -25,6 +25,6 @@ class HomeController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return array('name' => 'name');
+        return array("name" => "name");
     }
 }

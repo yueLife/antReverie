@@ -1,7 +1,7 @@
 {% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
+{% use "PublicBundle::Modules/Plugins/clipboard.html.twig" %}
 {% use "PublicBundle::Modules/Plugins/colorPick.html.twig" %}
-{% use "PublicBundle::Modules/Plugins/Clipboard.html.twig" %}
 
 {% block pagePluginsStyles %}{{ block("CPPluginsStyles") }}{% endblock %}
 
@@ -108,6 +108,7 @@
 
 {% set p = option.personal %}
 {% set s = option.shelf %}
+
 {% block content %}
     {% import _self as self %}
     <div class="portlet light">
@@ -148,24 +149,6 @@
         </div>
     </div>
 
-    <!-- display-model-modal -->
-    <div class="modal fade bs-modal-lg" id="display-model-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title"> 获取模板 </h4>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- general-settings-modal -->
     <div class="modal fade bs-modal-lg" id="general-settings-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -174,13 +157,26 @@
                     <div class="tabbable-line tabs-below">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                         <ul class="nav nav-tabs">
-                            {{ layouts.liTabPane("create-code-tab", "edit", "生成代码", "active") }}
+                            {{ layouts.liTabPane("display-model-tab", "model-format", "其他模板", "active") }}
+                            {{ layouts.liTabPane("create-code-tab", "edit", "生成代码") }}
                             {{ layouts.liTabPane("edit-style-tab", "spanner", "设置样式") }}
                             {{ layouts.liTabPane("set-tag-tab", "tag", "设置标签") }}
                             {{ layouts.liTabPane("add-screen-tab", "screen", "添加通屏") }}
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane fade create-code-tab active in">
+                            <div class="tab-pane fade display-model-tab active in">
+                                <div style="height:350px;">
+                                    <table class="table mb10">
+                                        <tr><th> 其他样式模板 </th></tr>
+                                    </table>
+                                    {% for key,m in option.models %}
+                                    <div class="col-md-3">
+                                        <a href="{{ path("displayModel", {"id": id, "route": m.route}) }}">{{ m.title }}</a>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade create-code-tab">
                                 <div style="height:350px;">
                                     <div class="row">
                                         <textarea class="form-control code-textarea no-resize" rows="18"></textarea>
@@ -275,7 +271,10 @@
                 </div>
                 <div class="modal-footer">
                     <div class="tab-content">
-                        <div class="tab-pane create-code-tab active">
+                        <div class="tab-pane display-model-tab active">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
+                        </div>
+                        <div class="tab-pane create-code-tab">
                             <button type="button" class="btn dark btn-outline copy-code-btn" data-clipboard-target=".code-textarea"> 复制代码 </button>
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
                         </div>
@@ -311,6 +310,7 @@
     <script type="text/javascript">
         var lineNum = {{ model.lineNum|default(3) }};
         $(function() {
+            $("#general-settings-modal").modal("show");
             // 修改personalShelfData
             $(document).on("click", ".style-use-btn", function () {
                 var form = $(this).closest("form");

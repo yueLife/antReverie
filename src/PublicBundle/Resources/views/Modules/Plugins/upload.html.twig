@@ -1,0 +1,215 @@
+{% block fileUpPluginsStyles %}
+    <link rel="stylesheet" href="{{ asset(GLOBAL~"plugins/fancybox/source/jquery.fancybox.css") }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset(GLOBAL~"plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css") }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset(GLOBAL~"plugins/jquery-file-upload/css/jquery.fileupload.css") }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset(GLOBAL~"plugins/jquery-file-upload/css/jquery.fileupload-ui.css") }}" type="text/css" />
+{% endblock %}
+
+{% block uploadModal %}
+    <div class="modal fade bs-modal-lg" id="file-upload-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">文件上传</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form id="fileupload" action="{{ path("uploadFile") }}" method="POST" enctype="multipart/form-data">
+                                {% if chooseFile is defined and chooseFile %}
+                                {{ block("chooseFileType") }}
+                                {% endif %}
+                                <div class="row fileupload-buttonbar">
+                                    <div class="col-lg-7">
+                                        <span class="btn green fileinput-button">
+                                            <i class="iconfont icon-plus"></i>
+                                            <span> 添加文件 </span>
+                                            <input type="file" name="files[]" multiple=""> </span>
+                                        <button type="submit" class="btn blue start">
+                                            <i class="iconfont icon-upload"></i>
+                                            <span> 开始上传 </span>
+                                        </button>
+                                        <button type="reset" class="btn warning cancel">
+                                            <i class="iconfont icon-ban-circle"></i>
+                                            <span> 取消上传 </span>
+                                        </button>
+                                        <button type="button" class="btn red delete">
+                                            <i class="iconfont icon-trash"></i>
+                                            <span> 删除 </span>
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-5 fileupload-progress fade">
+                                        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar progress-bar-success" style="width:0%;"> </div>
+                                        </div>
+                                        <div class="progress-extended"> &nbsp; </div>
+                                    </div>
+                                </div>
+                                <table role="presentation" class="table table-striped clearfix">
+                                    <tbody class="files"> </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    {% verbatim  %}
+                    <script id="template-upload" type="text/x-tmpl">
+                        {% for (var i=0, file; file=o.files[i]; i++) { %}
+                        <tr class="template-upload fade">
+                            <td>
+                                <span class="name">{%=file.name%}</span>
+                                <strong class="error label label-danger"></strong>
+                            </td>
+                            <td>
+                                <span class="size">Processing...</span>
+                                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                                </div>
+                            </td>
+                            <td>
+                                {% if (!i && !o.options.autoUpload) { %}
+                                <button class="btn blue start" disabled>
+                                    <i class="iconfont icon-upload"></i>
+                                    <span>开始</span>
+                                </button> {% } %} {% if (!i) { %}
+                                <button class="btn red cancel">
+                                    <i class="iconfont icon-ban-circle"></i>
+                                    <span>取消</span>
+                                </button>
+                                {% } %}
+                            </td>
+                        </tr>
+                        {% } %}
+                    </script>
+                    <script id="template-download" type="text/x-tmpl">
+                        {% for (var i=0, file; file=o.files[i]; i++) { %}
+                        <tr class="template-download fade">
+                            <td>
+                                <span>{%=file.name%}</span>
+                                {% if (file.error) { %}
+                                <div>
+                                    <span class="label label-danger">错误</span> {%=file.error%}
+                                </div>
+                                {% } %}
+                            </td>
+                            <td>
+                                <span class="size">{%=o.formatFileSize(file.size)%}</span>
+                            </td>
+                            <td>
+                                {% if (file.deleteUrl) { %}
+                                <button class="btn red delete btn-sm">
+                                    <i class="iconfont icon-trash"></i>
+                                    <span>删除</span>
+                                </button>
+                                {% } else { %}
+                                <button class="btn yellow cancel btn-sm">
+                                    <i class="iconfont icon-ban-circle"></i>
+                                    <span>取消</span>
+                                </button>
+                                {% } %}
+                            </td>
+                        </tr>
+                        {% } %}
+                    </script>
+                    {%  endverbatim %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+{% endblock %}
+
+{% block chooseFileType %}
+    <div class="row fileupload-buttonbar">
+        <div class="col-lg-12">
+            <span> 选择上传文件类型 ：</span>
+            <div class="btn-group">
+                <button type="button" class="btn yellow dropdown-toggle fileType" data-toggle="dropdown" data-fileType="goodsFile"> <span> 货架文件 </span>
+                    <i class="iconfont icon-arrow-down font-size-12"></i>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <a href="javascript:;" data-fileType="goodsFile"> 货架文件 </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-fileType="wordsFile"> 检测文件 </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-fileType="unusedWordsFile"> 禁词文件 </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block fileUpPluginsScripts %}
+    <script src="{{ asset(GLOBAL~"plugins/fancybox/source/jquery.fancybox.pack.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/vendor/tmpl.min.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/vendor/load-image.min.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/vendor/canvas-to-blob.min.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/jquery.iframe-transport.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/jquery.fileupload.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/jquery.fileupload-process.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/jquery.fileupload-image.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/jquery.fileupload-audio.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/jquery.fileupload-video.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/jquery.fileupload-validate.js") }}" type="text/javascript"></script>
+    <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/jquery.fileupload-ui.js") }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block fileUpJavascripts %}
+    <script type="text/javascript">
+        $(function(){
+            uploadLayout();
+            $(document).on("click", ".fileupload-buttonbar .delete", function (e) {
+                $(".files .template-download").fadeOut();
+            });
+            $(document).on("click", ".files .delete", function (e) {
+                $(this).closest("tr").fadeOut();
+            });
+            $("#file-upload-modal").on("hidden.bs.modal", function (e) {
+                $(".files .template-download").remove();
+            });
+            $("a[data-fileType]").click(function(){
+                $("button.fileType").attr("data-fileType", $(this).attr("data-fileType")).find("span").html($(this).html());
+            })
+        });
+        function uploadLayout() {
+            $("#fileupload").bind("fileuploadsubmit", function (e, data) {
+                var fileType = $("button.fileType").attr("data-fileType");
+                data.formData = {fileType: fileType};
+            }).fileupload({
+                disableImageResize: false,
+                autoUpload: false,
+                disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+                maxFileSize: 5*1024*1024,
+                acceptFileTypes: /(\.|\/)(csv|xlsx?)$/i,
+
+                messages: {
+                    maxNumberOfFiles: "单次最大上传文件个数为10个",
+                    acceptFileTypes: "该文件格式不允许上传",
+                    maxFileSize: "单文件不允许超过5MB",
+                    minFileSize: "单文件过小",
+                    unknownError: "未知错误"
+                }
+            });
+
+            // Upload support CORS browser server status check:
+            if ($.support.cors) {
+                $.ajax({
+                    type: "HEAD"
+                }).fail(function () {
+                    $('<div class="alert alert-danger"/>')
+                        .text("上传服务器当前不可用 - " + new Date()).appendTo("#fileupload");
+                });
+            }
+        }
+    </script>
+{% endblock %}

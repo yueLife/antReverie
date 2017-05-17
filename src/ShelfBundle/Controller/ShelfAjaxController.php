@@ -28,18 +28,18 @@ class ShelfAjaxController extends Controller
     private $limit = 100;
     private $root;
     private $message = array(
-        'success' => array('state' => 'success', 'message' =>'文件读取成功！正在跳转...'),
-        'unFound' => array('state' => 'error', 'message' =>'文件读取失败，请重新上传！'),
-        'readFailed' => array('state' => 'error', 'message' =>'文件读取失败，请重试！'),
-        'dataWrong' => array('state' => 'error', 'message' =>'文件数据内容错误，请检查后重新上传！'),
-        'idWrongStart' => '您的数据表中第 ',
-        'idWrongEnd' => ' 行数据"数字ID"可能错误，不能被识别。请重新上传！',
+        "success" => array("state" => "success", "message" =>"文件读取成功！正在跳转..."),
+        "unFound" => array("state" => "error", "message" =>"文件读取失败，请重新上传！"),
+        "readFailed" => array("state" => "error", "message" =>"文件读取失败，请重试！"),
+        "dataWrong" => array("state" => "error", "message" =>"文件数据内容错误，请检查后重新上传！"),
+        "idWrongStart" => "您的数据表中第 ",
+        "idWrongEnd" => " 行数据'数字ID'可能错误，不能被识别。请重新上传！",
     );
     private $nullData = array(
-        'goodsname' => '', 'goodsnameSub' => '',
-        'goodsBn' => '', 'goodsId' => '', 'imgUrl' => '',
-        'introduce' => '', 'detailIntroduce' => '', 'unit' => '',
-        'tagPrice' => '', 'actPrice' => '', 'couPrice' => ''
+        "goodsname" => "", "goodsnameSub" => "",
+        "goodsBn" => "", "goodsId" => "", "imgUrl" => "",
+        "introduce" => "", "detailIntroduce" => "", "unit" => "",
+        "tagPrice" => "", "actPrice" => "", "couPrice" => ""
     );
 
     /**
@@ -52,28 +52,28 @@ class ShelfAjaxController extends Controller
     public function getShelfFileDataAjax(Request $request)
     {
         $this->em = $this->getDoctrine()->getManager();
-        $uploadFilesEm = $this->em->getRepository('PublicBundle:UploadFiles');
-        $shelfGoodsEm = $this->em->getRepository('ShelfBundle:ShelfGoods');
+        $uploadFilesEm = $this->em->getRepository("PublicBundle:UploadFiles");
+        $shelfGoodsEm = $this->em->getRepository("ShelfBundle:ShelfGoods");
 
-        $this->fileInfo = $uploadFilesEm->findOneById($request->get('id'));
-        if ($this->fileInfo->getState() == 'unread' && !count($shelfGoodsEm->findByFile($this->fileInfo))) {
-            $this->root = $_SERVER['DOCUMENT_ROOT']."/Uploads/files/";
+        $this->fileInfo = $uploadFilesEm->findOneById($request->get("id"));
+        if ($this->fileInfo->getState() == "unread" && !count($shelfGoodsEm->findByFile($this->fileInfo))) {
+            $this->root = $_SERVER["DOCUMENT_ROOT"]."/Uploads/files/";
             switch (pathinfo($this->fileInfo->getFilename(), PATHINFO_EXTENSION)) {
-                case 'csv':
+                case "csv":
                     $result = $this->getCsvDataFunc(); break;
-                case 'xlsx':
-                case 'xls':
+                case "xlsx":
+                case "xls":
                     $result = $this->getExcelDataFunc(); break;
                 default:
-                    return new JsonResponse($this->message['readFailed']);
+                    return new JsonResponse($this->message["readFailed"]);
             }
             return new JsonResponse($result);
-        } elseif ($this->fileInfo->getState() == 'wrong') {
-            return new JsonResponse($this->message['dataWrong']);
-        } elseif ($this->fileInfo->getState() == 'read') {
-            return new JsonResponse($this->message['success']);
+        } elseif ($this->fileInfo->getState() == "wrong") {
+            return new JsonResponse($this->message["dataWrong"]);
+        } elseif ($this->fileInfo->getState() == "read") {
+            return new JsonResponse($this->message["success"]);
         }else{
-            return new JsonResponse($this->message['readFailed']);
+            return new JsonResponse($this->message["readFailed"]);
         }
     }
 
@@ -86,56 +86,56 @@ class ShelfAjaxController extends Controller
     {
         $file = $this->root.$this->fileInfo->getFilename();
         if (!is_file($file)) {
-            $this->fileInfo->setState('wrong');
+            $this->fileInfo->setState("wrong");
             $this->em->flush();
-            return $this->message['unFound'];
+            return $this->message["unFound"];
         }
 
-        $handle = fopen($file, 'r');
+        $handle = fopen($file, "r");
         $filed = fgetcsv($handle);
         foreach ($filed as $key => $item) {
-            switch (mb_convert_encoding($item, 'utf-8', 'gbk')) {
-                case '宝贝名称':
-                    $fields[$key] = 'goodsname'; break;
-                case '副名称':
-                    $fields[$key] = 'goodsnameSub'; break;
-                case '款号':
-                    $fields[$key] = 'goodsBn'; break;
-                case '数字ID':
-                    $fields[$key] = 'goodsId'; break;
-                case '介绍':
-                    $fields[$key] = 'introduce'; break;
-                case '详细信息':
-                    $fields[$key] = 'detailIntroduce'; break;
-                case '图片链接':
-                    $fields[$key] = 'imgUrl'; break;
-                case '吊牌价':
-                    $fields[$key] = 'tagPrice'; break;
-                case '活动价':
-                    $fields[$key] = 'actPrice'; break;
-                case '用券价':
-                    $fields[$key] = 'couPrice'; break;
-                case '单位':
-                    $fields[$key] = 'unit'; break;
+            switch (mb_convert_encoding($item, "utf-8", "gbk")) {
+                case "宝贝名称":
+                    $fields[$key] = "goodsname"; break;
+                case "副名称":
+                    $fields[$key] = "goodsnameSub"; break;
+                case "款号":
+                    $fields[$key] = "goodsBn"; break;
+                case "数字ID":
+                    $fields[$key] = "goodsId"; break;
+                case "介绍":
+                    $fields[$key] = "introduce"; break;
+                case "详细信息":
+                    $fields[$key] = "detailIntroduce"; break;
+                case "图片链接":
+                    $fields[$key] = "imgUrl"; break;
+                case "吊牌价":
+                    $fields[$key] = "tagPrice"; break;
+                case "活动价":
+                    $fields[$key] = "actPrice"; break;
+                case "用券价":
+                    $fields[$key] = "couPrice"; break;
+                case "单位":
+                    $fields[$key] = "unit"; break;
                 default:
                     fclose($handle);
                     unset($fields);
-                    $this->fileInfo->setState('wrong');
+                    $this->fileInfo->setState("wrong");
                     $this->em->flush();
-                    return $this->message['dataWrong'];
+                    return $this->message["dataWrong"];
             }
         }
 
-        $tmpFile = $this->root.'tmp_'.date('YmdHis_').uniqid().'.csv';
+        $tmpFile = $this->root."tmp_".date("YmdHis_").uniqid().".csv";
         @chmod($tmpFile, 0777);
-        $tmpHandle = fopen($tmpFile, 'a+');
+        $tmpHandle = fopen($tmpFile, "a+");
 
         $row = 0;
         while ($line = fgetcsv($handle)) {
             $num = count($line);
             $fileData = array();
             for ($i = 0; $i < $num; $i++) {
-                $fileData[$i] = mb_convert_encoding($line[$i], 'utf-8', 'gbk');
+                $fileData[$i] = mb_convert_encoding($line[$i], "utf-8", "gbk");
             }
             fputcsv($tmpHandle, $line);
             $row++;
@@ -152,9 +152,9 @@ class ShelfAjaxController extends Controller
             $offset = ($i - 1) * $this->limit;
             $tmpData = $this->getCsvTmpDataFunc($tmpFile, $fields, $offset);
 
-            if (isset($tmpData['state']) && $tmpData['state'] == 'error') {
+            if (isset($tmpData["state"]) && $tmpData["state"] == "error") {
                 $this->em->getConnection()->rollback();
-                $this->fileInfo->setState('wrong');
+                $this->fileInfo->setState("wrong");
                 $this->em->flush();
                 return $tmpData; // $result
             }
@@ -162,17 +162,17 @@ class ShelfAjaxController extends Controller
             foreach ($tmpData as $key => $val) {
                 $finalData = array_merge($this->nullData, $val);
                 $goods = new ShelfGoods($this->fileInfo);
-                $goods->setGoodsname($finalData['goodsname'])->setGoodsnameSub($finalData['goodsnameSub'])->setGoodsBn($finalData['goodsBn'])->setGoodsId($finalData['goodsId'])->setIntroduce($finalData['introduce'])->setDetailIntroduce($finalData['detailIntroduce'])->setImgUrl($finalData['imgUrl'])->setTagPrice($finalData['tagPrice'])->setActPrice($finalData['actPrice'])->setCouPrice($finalData['couPrice'])->setUnit($finalData['unit']);
+                $goods->setGoodsname($finalData["goodsname"])->setGoodsnameSub($finalData["goodsnameSub"])->setGoodsBn($finalData["goodsBn"])->setGoodsId($finalData["goodsId"])->setIntroduce($finalData["introduce"])->setDetailIntroduce($finalData["detailIntroduce"])->setImgUrl($finalData["imgUrl"])->setTagPrice($finalData["tagPrice"])->setActPrice($finalData["actPrice"])->setCouPrice($finalData["couPrice"])->setUnit($finalData["unit"]);
                 $this->em->persist($goods);
                 $this->em->flush();
             }
-            $this->fileInfo->setState('read');
+            $this->fileInfo->setState("read");
             $this->em->flush();
             $this->em->clear();
         }
         $this->em->getConnection()->commit();
 
-        return $this->message['success'];
+        return $this->message["success"];
     }
 
     /**
@@ -185,7 +185,7 @@ class ShelfAjaxController extends Controller
      */
     public function getCsvTmpDataFunc($file, $fields, $offset = 0)
     {
-        if (!$handle = fopen($file, 'r')) return $this->message['readFailed'];
+        if (!$handle = fopen($file, "r")) return $this->message["readFailed"];
 
         $i = $j = 0;
         while ($i < $offset) {
@@ -199,11 +199,11 @@ class ShelfAjaxController extends Controller
             if (!empty($line = fgetcsv($handle))) {
                 $num = count($line);
                 for ($k = 0; $k < $num; $k++) {
-                    $lineData[$fields[$k]] = mb_convert_encoding(trim($line[$k]), 'utf-8', 'gbk');
-                    if ($fields[$k] == 'goodsId') {
+                    $lineData[$fields[$k]] = mb_convert_encoding(trim($line[$k]), "utf-8", "gbk");
+                    if ($fields[$k] == "goodsId") {
                         if (strlen($lineData[$fields[$k]]) > 15 || preg_match("/\D+/", $lineData[$fields[$k]])) {
-                            $result['state'] = 'error';
-                            $result['message'] = $this->message['idWrongStart'].$j.$this->message['idWrongEnd'];
+                            $result["state"] = "error";
+                            $result["message"] = $this->message["idWrongStart"].$j.$this->message["idWrongEnd"];
                             return $result;
                         }
                     }
@@ -236,7 +236,7 @@ class ShelfAjaxController extends Controller
     public function setShelfUserDataAjax(Request $request)
     {
         $this->em = $this->getDoctrine()->getManager();
-        $shelfUsersEm = $this->em->getRepository('ShelfBundle:ShelfUsers');
+        $shelfUsersEm = $this->em->getRepository("ShelfBundle:ShelfUsers");
         $shelfUsersInfo = $shelfUsersEm->findOneByUser($this->getUser());
         $personal = json_decode($shelfUsersInfo->getPersonal(), true);
 
@@ -275,7 +275,7 @@ class ShelfAjaxController extends Controller
         $shelfUsersInfo->setPersonal(json_encode($personal));
         $this->em->flush();
 
-        return new JsonResponse(array('state' => 'success', 'message' =>'设置成功！'));
+        return new JsonResponse(array("state" => "success", "message" =>"设置成功！"));
     }
 
     /**
@@ -288,7 +288,7 @@ class ShelfAjaxController extends Controller
     public function setPersonalTagAjax(Request $request)
     {
         $this->em = $this->getDoctrine()->getManager();
-        $shelfUsersEm = $this->em->getRepository('ShelfBundle:ShelfUsers');
+        $shelfUsersEm = $this->em->getRepository("ShelfBundle:ShelfUsers");
         $shelfUsersInfo = $shelfUsersEm->findOneByUser($this->getUser());
         $imgList = json_decode($shelfUsersInfo->getImgList(), true);
 
@@ -296,6 +296,6 @@ class ShelfAjaxController extends Controller
         $shelfUsersInfo->setImgList(json_encode($imgList));
         $this->em->flush();
 
-        return new JsonResponse(array('state' => 'success', 'message' =>'设置成功！'));
+        return new JsonResponse(array("state" => "success", "message" =>"设置成功！"));
     }
 }

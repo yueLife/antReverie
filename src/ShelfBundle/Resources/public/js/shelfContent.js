@@ -198,16 +198,16 @@ $(function () {
         var ht = $(this).closest("div").find("input").val();
         var plat = $(this).closest("div").attr("data-plat");
         if (plat === "tm") {
-            screen['start'] = '<div style="height:' + ht + 'px;"><div class="sn-simple-logo" style="width:1920px;height:' + ht + 'px;border:none;padding:0;top:auto;left:50%;"><div class="sn-simple-logo" style="width:1920px;height:' + ht + 'px;border:none;padding:0;top:auto;left:-960px;"><div style="margin:0 auto;">';
-            screen['end'] = '</div></div></div></div>';
+            screen["start"] = '<div style="height:' + ht + 'px;"><div class="sn-simple-logo" style="width:1920px;height:' + ht + 'px;border:none;padding:0;top:auto;left:50%;"><div class="sn-simple-logo" style="width:1920px;height:' + ht + 'px;border:none;padding:0;top:auto;left:-960px;"><div style="margin:0 auto;">';
+            screen["end"] = '</div></div></div></div>';
             var _plat = "天猫通屏";
         } else if (plat === "jd") {
-            screen['start'] = '<div style="width:1920px; height:' + ht + 'px; background:rgba(255,255,255,1)"><div style=" width:1200px; height:' + ht + 'px; margin:0 auto;"><div style="margin:0 auto;">';
-            screen['end'] = '</div></div></div>';
+            screen["start"] = '<div style="width:1920px; height:' + ht + 'px; background:rgba(255,255,255,1)"><div style=" width:1200px; height:' + ht + 'px; margin:0 auto;"><div style="margin:0 auto;">';
+            screen["end"] = '</div></div></div>';
             var _plat = "京东通屏";
         }
 
-        $(this).closest("div").find("textarea:eq(0)").val(screen['start']);
+        $(this).closest("div").find("textarea:eq(0)").val(screen["start"]);
         $(this).addClass("red screen-unuse-btn").removeClass("dark screen-use-btn").html("已使用通屏");
         toastr.success("使用 " + _plat+ " 成功！", "提示", {timeOut: "1000"});
     });
@@ -360,9 +360,9 @@ function createCode(){
         }
         codeData.append(shelfBox);
     });
-    var code = screen['start'] + "<div" + bgColor + ">";
+    var code = screen["start"] + "<div" + bgColor + ">";
     code += codeData.find("div").removeAttr("class").end().html().replace(/\n+/g, "").replace(/  +/g, "");
-    code += "</div>" + screen['end'];
+    code += "</div>" + screen["end"];
 
     $(".code-textarea").val(code);
 }

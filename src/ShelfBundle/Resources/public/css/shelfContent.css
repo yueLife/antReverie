@@ -19,12 +19,3 @@
 #shelf .edit-tool .tool-btn{ cursor:pointer;margin:20px 10px 0 0; }
 #shelf .edit-tool .tool-arrow-btn{ position:absolute; }
 #shelf .edit-tool .tool-arrow-btn .icon{ font-weight:bold; }
-
-/*!*各个modal的css*!*/
-/*#tag-set .img-tag-list{ display:none; }*/
-/*#tag-set .sale-out{ text-align:center; }*/
-/*#tag-set .radio-list{ height:65px; }*/
-/*#tag-set .radio-list .col-md-9{ text-align:center; }*/
-/*#tag-set img,#tag-set .radio-list label{ cursor:pointer; }*/
-/*#add-screen textarea, #edit-style textarea{ resize:none; }*/
-/*#edit-style textarea{ height:280px;background:#FFF;cursor:default; }*/

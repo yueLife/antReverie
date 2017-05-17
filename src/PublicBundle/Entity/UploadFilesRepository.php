@@ -21,7 +21,7 @@ class UploadFilesRepository extends EntityRepository
      */
     public function findByUserFileType($user, $fileType)
     {
-        $fileInfo = $this->findBy(array('user' => $user, 'del' => false, 'fileType' => $fileType));
+        $fileInfo = $this->findBy(array("user" => $user, "del" => false, "fileType" => $fileType));
         return $fileInfo;
     }
 }

@@ -10,16 +10,16 @@
     <script type="text/javascript">
         $(function(){
             var clip = new Clipboard(ClipBtn);
-            clip.on('success', function() {
-                if (typeof toastr === 'undefined') {
+            clip.on("success", function() {
+                if (typeof toastr === "undefined") {
                     alert("复制成功！");
                 }else {
                     toastr.success("复制成功！", "提示");
                 }
             });
 
-            clip.on('error', function() {
-                if (typeof toastr === 'undefined') {
+            clip.on("error", function() {
+                if (typeof toastr === "undefined") {
                     alert("复制失败！");
                 }else {
                     toastr.error("复制失败！", "提示");

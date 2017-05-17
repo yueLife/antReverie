@@ -22,16 +22,16 @@
                         <!-- BEGIN USER LOGIN DROPDOWN -->
                         <li class="dropdown dropdown-user dropdown-dark">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                <span class="username username-hide-on-mobile"> {{ app.user.username|default('') }} </span>
-                                <img alt="" class="img-circle" src="{{ asset(AVATARS~app.user.avatar|default('avatar.png')) }}" /> </a>
+                                <span class="username username-hide-on-mobile"> {{ app.user.username|default("") }} </span>
+                                <img alt="" class="img-circle" src="{{ asset(AVATARS~app.user.avatar|default("avatar.png")) }}" /> </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
-                                    <a href="{{ path('fos_user_profile_show') }}">
+                                    <a href="{{ path("fos_user_profile_show") }}">
                                         <i class="iconfont icon-user"></i> 个人中心 </a>
                                 </li>
                                 <li class="divider"> </li>
                                 <li>
-                                    <a href="{{ path('fos_user_security_logout') }}">
+                                    <a href="{{ path("fos_user_security_logout") }}">
                                         <i class="iconfont icon-logout"></i> 登出 </a>
                                 </li>
                             </ul>
@@ -66,7 +66,7 @@
         {% for key,breadcrumb in knp_menu_get_breadcrumbs_array(currentMenu) if key > 0 %}
             <li>
             {% if currentMenu != breadcrumb.item %}
-                <i class="iconfont icon-{{ breadcrumb.item.getExtra('icon') }}"></i>
+                <i class="iconfont icon-{{ breadcrumb.item.getExtra("icon") }}"></i>
                 <span style="color:#337ab7;">{{ breadcrumb.label }}</span>
                 <i class="iconfont icon-circle"></i>
             {% else %}

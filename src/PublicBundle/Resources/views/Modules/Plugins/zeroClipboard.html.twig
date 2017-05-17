@@ -14,7 +14,7 @@
                 clip.setText(ZCText.val());
             });
             clip.on("aftercopy", function () {
-                if (typeof toastr === 'undefined') {
+                if (typeof toastr === "undefined") {
                     alert("复制成功！");
                 }else {
                     toastr.success("复制成功！", "提示");

@@ -1,11 +1,11 @@
 {% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
-{% use 'PublicBundle::Modules/Blocks/upload.html.twig' %}
-{% use 'PublicBundle::Modules/Blocks/datatable.html.twig' %}
+{% use "PublicBundle::Modules/Plugins/datatable.html.twig" %}
+{% use "PublicBundle::Modules/Plugins/upload.html.twig" %}
 
 {% block pagePluginsStyles %}
-    {{ block('datatableStyle') }}
-    {{ block('uploadStyle') }}
+    {{ block("datatablePluginsStyles") }}
+    {{ block("fileUpPluginsStyles") }}
 {% endblock %}
 
 {% block content %}
@@ -48,24 +48,24 @@
                                 <td> {{ file.id }} </td>
                                 <td data-filename="{{ file.filename }}"> {{ file.oldname }} </td>
                                 <td>
-                                    {% if file.state == 'read' %}
-                                        {% set state = 'success' %}
-                                        {% set title = '已读' %}
-                                    {% elseif file.state == 'unread' %}
-                                        {% set state = 'warning' %}
-                                        {% set title = '未读' %}
-                                    {% elseif file.state == 'wrong' %}
-                                        {% set state = 'danger' %}
-                                        {% set title = '错误' %}
+                                    {% if file.state == "read" %}
+                                        {% set state = "success" %}
+                                        {% set title = "已读" %}
+                                    {% elseif file.state == "unread" %}
+                                        {% set state = "warning" %}
+                                        {% set title = "未读" %}
+                                    {% elseif file.state == "wrong" %}
+                                        {% set state = "danger" %}
+                                        {% set title = "错误" %}
                                     {% endif %}
                                     <button type="button" class="btn btn-xs btn-{{ state }}"> {{ title }} </button>
                                 </td>
                                 <td>
-                                    {% if file.fileType == 'goodsFile' %}
+                                    {% if file.fileType == "goodsFile" %}
                                         货架文件
-                                    {% elseif file.fileType == 'wordsFile' %}
+                                    {% elseif file.fileType == "wordsFile" %}
                                         检测文件
-                                    {% elseif file.fileType == 'unusedWordsFile' %}
+                                    {% elseif file.fileType == "unusedWordsFile" %}
                                         禁词文件
                                     {% endif %}
                                 </td>
@@ -75,13 +75,13 @@
                                     <button type="button" class="btn btn-xs default green-meadow-stripe"> 下载 </button>
                                 </td>
                                 <td>
-                                    {% if file.fileType == 'goodsFile' %}
+                                    {% if file.fileType == "goodsFile" %}
                                         {% for m in shelfModels %}
                                         <a class="btn btn-link btn-xs font-size-14 display-model-btn" data-id="{{ file.id }}" data-route="{{ m.route }}"> {{ m.title }} </a>
                                         {% endfor %}
-                                    {% elseif file.fileType == 'wordsFile' %}
+                                    {% elseif file.fileType == "wordsFile" %}
                                         <a class="btn btn-link btn-xs font-size-14"> 检测文件 </a>
-                                    {% elseif file.fileType == 'unusedWordsFile' %}
+                                    {% elseif file.fileType == "unusedWordsFile" %}
                                         <a class="btn btn-link btn-xs font-size-14"> 读取文件 </a>
                                     {% endif %}
                                 </td>
@@ -94,31 +94,31 @@
         </div>
     </div>
     {% set chooseFile = true %}
-    {{ block('uploadModal') }}
+    {{ block("uploadModal") }}
 {% endblock %}
 
 {% block pagePluginsScripts %}
-    {{ block('datatableScript') }}
-    {{ block('uploadScript') }}
+    {{ block("datatablePluginsScripts") }}
+    {{ block("fileUpPluginsScripts") }}
 {% endblock %}
 
 {% block javascripts %}
-    {{ block('datatableJavascripts') }}
-    {{ block('uploadJavascripts') }}
+    {{ block("datatableJavascripts") }}
+    {{ block("fileUpJavascripts") }}
     <script type="text/javascript">
         $(function(){
-            datatable($('.my-files-table'));
-            $(document).on('click', '.delete-file-btn', function (event) {
-                var td = $(this).closest('tr').children('td');
+            datatable($(".my-files-table"));
+            $(document).on("click", ".delete-file-btn", function (event) {
+                var td = $(this).closest("tr").children("td");
                 var jsonData = {
-                    'id': td.eq(0).html(),
-                    'filename': td.eq(1).attr('data-filename'),
+                    "id": td.eq(0).html(),
+                    "filename": td.eq(1).attr("data-filename"),
                 };
 
                 $.ajax({
-                    url: '{{ path('deleteFile') }}',
-                    type: 'post',
-                    dataType: 'json',
+                    url: "{{ path("deleteFile") }}",
+                    type: "post",
+                    dataType: "json",
                     data: jsonData,
                 }).done(function (data) {
                     console.log(data);
@@ -126,41 +126,41 @@
                     console.log("未知错误！");
                 });
             });
-            $(document).on('click', '.exchange-table', function (event) {
-                $('.goods-table').toggleClass('display').toggleClass('display-hide');
-                $('.words-table').toggleClass('display').toggleClass('display-hide');
+            $(document).on("click", ".exchange-table", function (event) {
+                $(".goods-table").toggleClass("display").toggleClass("display-hide");
+                $(".words-table").toggleClass("display").toggleClass("display-hide");
             });
-            $(document).on('click', '.display-model-btn', function (event) {
+            $(document).on("click", ".display-model-btn", function (event) {
                 var _this = $(this);
-                var _btn = _this.closest('td').prevAll('td:eq(3)').children('button');
+                var _btn = _this.closest("td").prevAll("td:eq(3)").children("button");
 
                 toastr.info("正在读取文件，请稍后...", "提示", {
                     positionClass: "toast-top-center",
                     timeOut: "3000"
                 });
                 $.ajax({
-                    url: '{{ path('getShelfFileDataAjax') }}',
-                    type: 'post',
-                    dataType: 'json',
-                    data: { 'id': _this.attr('data-id') },
+                    url: "{{ path("getShelfFileDataAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": _this.attr("data-id") },
                 }).done(function (data) {
                     setTimeout(function(){
                         toastr.remove();
-                        switch (data['state']) {
-                            case 'error':
-                                _btn.attr('class', 'btn btn-xs btn-danger').html('错误');
-                                toastr.error(data['message'], '提示'); break;
-                            case 'success':
-                                _btn.attr('class', 'btn btn-xs btn-success').html('已读');
-                                window.location.href = "{{ path('displayModel') }}/" + _this.attr('data-id') + "/" + _this.attr('data-route');
-                                toastr.success(data['message'], '提示'); break;
+                        switch (data["state"]) {
+                            case "error":
+                                _btn.attr("class", "btn btn-xs btn-danger").html("错误");
+                                toastr.error(data["message"], "提示"); break;
+                            case "success":
+                                _btn.attr("class", "btn btn-xs btn-success").html("已读");
+                                window.location.href = "{{ path("displayModel") }}/" + _this.attr("data-id") + "/" + _this.attr("data-route");
+                                toastr.success(data["message"], "提示"); break;
                         }
                     }, 2500)
                 }).fail(function (data) {
                     setTimeout(function(){
                         toastr.remove();
-                        _btn.attr('class', 'btn btn-xs btn-danger').html('错误');
-                        toastr.error('未知错误！请重试！', '提示');
+                        _btn.attr("class", "btn btn-xs btn-danger").html("错误");
+                        toastr.error("未知错误！请重试！", "提示");
                     }, 2500)
 
                 });

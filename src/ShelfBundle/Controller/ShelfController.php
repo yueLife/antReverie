@@ -34,20 +34,20 @@ class ShelfController extends Controller
     public function displayModelAction($id, $route)
     {
         $this->em = $this->getDoctrine()->getManager();
-        $uploadFilesEm = $this->em->getRepository('PublicBundle:UploadFiles');
-        $shelfGoodsEm = $this->em->getRepository('ShelfBundle:ShelfGoods');
+        $uploadFilesEm = $this->em->getRepository("PublicBundle:UploadFiles");
+        $shelfGoodsEm = $this->em->getRepository("ShelfBundle:ShelfGoods");
 
         $fileInfo = $uploadFilesEm->findOneById($id);
         $shelfGoodsInfo = $shelfGoodsEm->findByFile($fileInfo);
 
         $option = $this->getShelfOptionFunc($route);
         return $this->render(
-            'ShelfBundle::Models/'.$route.'.html.twig',
+            "ShelfBundle::Models/".$route.".html.twig",
             array(
-                'id' => $id,
-                'route' => $route,
-                'data' => $shelfGoodsInfo,
-                'option' => $option,
+                "id" => $id,
+                "route" => $route,
+                "data" => $shelfGoodsInfo,
+                "option" => $option
             )
         );
     }
@@ -72,17 +72,19 @@ class ShelfController extends Controller
      */
     public function getShelfOptionFunc($route)
     {
-        $shelfUsersEm = $this->em->getRepository('ShelfBundle:ShelfUsers');
+        $shelfUsersEm = $this->em->getRepository("ShelfBundle:ShelfUsers");
         $shelfUserInfo = $shelfUsersEm->findOneByUser($this->getUser());
-        $option['personal'] = json_decode($shelfUserInfo->getPersonal());
-        $option['imgList'] = json_decode($shelfUserInfo->getImgList());
+        $option["personal"] = json_decode($shelfUserInfo->getPersonal());
+        $option["imgList"] = json_decode($shelfUserInfo->getImgList());
 
-        $platsEm = $this->em->getRepository('ShelfBundle:Plats');
+        $platsEm = $this->em->getRepository("ShelfBundle:Plats");
         $platInfo = $platsEm->findOneById($shelfUserInfo->getPlat());
-        $option['plat'] = json_decode($platInfo->getUrl());
+        $option["plat"] = json_decode($platInfo->getUrl());
 
-        $shelfModelsEm = $this->em->getRepository('ShelfBundle:ShelfModels');
-        $option['shelf'] = json_decode($shelfModelsEm->findOneByRoute($route)->getStyle());
+        $shelfModelsEm = $this->em->getRepository("ShelfBundle:ShelfModels");
+        $modelsInfo = $shelfModelsEm->findOneByRoute($route);
+        $option["shelf"] = json_decode($modelsInfo->getStyle());
+        $option["models"] = $shelfModelsEm->findByShop($modelsInfo->getShop());
 
         return $option;
     }

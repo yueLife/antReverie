@@ -22,12 +22,12 @@ class FileUtilService {
      */
     public function createDir($aimUrl)
     {
-        $aimUrl = str_replace('', '/', $aimUrl);
-        $aimDir = '';
-        $arr = explode('/', $aimUrl);
+        $aimUrl = str_replace("", "/", $aimUrl);
+        $aimDir = "";
+        $arr = explode("/", $aimUrl);
         $result = true;
         foreach ($arr as $str) {
-            $aimDir .= $str . '/';
+            $aimDir .= $str . "/";
             if (!file_exists($aimDir)) {
                 $result = mkdir($aimDir);
             }
@@ -65,10 +65,10 @@ class FileUtilService {
      */
     public function moveDir($oldDir, $aimDir, $overWrite = false)
     {
-        $aimDir = str_replace('', '/', $aimDir);
-        $aimDir = substr($aimDir, -1) == '/' ? $aimDir : $aimDir . '/';
-        $oldDir = str_replace('', '/', $oldDir);
-        $oldDir = substr($oldDir, -1) == '/' ? $oldDir : $oldDir . '/';
+        $aimDir = str_replace("", "/", $aimDir);
+        $aimDir = substr($aimDir, -1) == "/" ? $aimDir : $aimDir . "/";
+        $oldDir = str_replace("", "/", $oldDir);
+        $oldDir = substr($oldDir, -1) == "/" ? $oldDir : $oldDir . "/";
         if (!is_dir($oldDir)) {
             return false;
         }
@@ -80,7 +80,7 @@ class FileUtilService {
             return false;
         }
         while (false !== ($file = readdir($dirHandle))) {
-            if ($file == '.' || $file == '..') {
+            if ($file == "." || $file == "..") {
                 continue;
             }
             if (!is_dir($oldDir . $file)) {
@@ -125,14 +125,14 @@ class FileUtilService {
      */
     public function unlinkDir($aimDir)
     {
-        $aimDir = str_replace('', '/', $aimDir);
-        $aimDir = substr($aimDir, -1) == '/' ? $aimDir : $aimDir . '/';
+        $aimDir = str_replace("", "/", $aimDir);
+        $aimDir = substr($aimDir, -1) == "/" ? $aimDir : $aimDir . "/";
         if (!is_dir($aimDir)) {
             return false;
         }
         $dirHandle = opendir($aimDir);
         while (false !== ($file = readdir($dirHandle))) {
-            if ($file == '.' || $file == '..') {
+            if ($file == "." || $file == "..") {
                 continue;
             }
             if (!is_dir($aimDir . $file)) {
@@ -171,10 +171,10 @@ class FileUtilService {
      */
     public function copyDir($oldDir, $aimDir, $overWrite = false)
     {
-        $aimDir = str_replace('', '/', $aimDir);
-        $aimDir = substr($aimDir, -1) == '/' ? $aimDir : $aimDir . '/';
-        $oldDir = str_replace('', '/', $oldDir);
-        $oldDir = substr($oldDir, -1) == '/' ? $oldDir : $oldDir . '/';
+        $aimDir = str_replace("", "/", $aimDir);
+        $aimDir = substr($aimDir, -1) == "/" ? $aimDir : $aimDir . "/";
+        $oldDir = str_replace("", "/", $oldDir);
+        $oldDir = substr($oldDir, -1) == "/" ? $oldDir : $oldDir . "/";
         if (!is_dir($oldDir)) {
             return false;
         }
@@ -183,7 +183,7 @@ class FileUtilService {
         }
         $dirHandle = opendir($oldDir);
         while (false !== ($file = readdir($dirHandle))) {
-            if ($file == '.' || $file == '..') {
+            if ($file == "." || $file == "..") {
                 continue;
             }
             if (!is_dir($oldDir . $file)) {

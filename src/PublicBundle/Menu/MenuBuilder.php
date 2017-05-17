@@ -44,17 +44,17 @@ class MenuBuilder
      */
     public function createMainMenu(array $options)
     {
-        krsort($options['role']);
+        krsort($options["role"]);
         $pMenus = Array();
-        foreach ($options['role'] as $role) {
+        foreach ($options["role"] as $role) {
             $roleMenus = $this->doctrine->getManager()->createQuery(
                 "SELECT m FROM PublicBundle:Menus m WHERE m.action = 'sidebar' AND m.role = :role AND m.pid IS NULL ORDER BY m.sort ASC")
-                ->setParameter('role', $role)
+                ->setParameter("role", $role)
                 ->getResult();
             $pMenus = array_merge($pMenus, $roleMenus);
         }
 
-        $sidebar = $this->factory->createItem('sidebar');
+        $sidebar = $this->factory->createItem("sidebar");
         foreach ($pMenus as $pKey => $pMenu) {
             $this->addSubMenuToMenu($sidebar, $pKey, $pMenu);
             foreach ($pMenu->getChildren() as $key => $menu) {
@@ -72,27 +72,27 @@ class MenuBuilder
      */
     public function createSidebarMenu(array $options)
     {
-        krsort($options['role']);
+        krsort($options["role"]);
         $pMenus = Array();
-        foreach ($options['role'] as $role) {
+        foreach ($options["role"] as $role) {
             $roleMenus = $this->doctrine->getManager()->createQuery(
                 "SELECT m FROM PublicBundle:Menus m WHERE m.action = 'sidebar' AND m.role = :role AND m.pid IS NULL ORDER BY m.sort ASC")
-                ->setParameter('role', $role)
+                ->setParameter("role", $role)
                 ->getResult();
             $pMenus = array_merge($pMenus, $roleMenus);
         }
 
-        $sidebar = $this->factory->createItem('sidebar');
+        $sidebar = $this->factory->createItem("sidebar");
         foreach ($pMenus as $pKey => $pMenu) {
             $this->addSubMenuToMenu($sidebar, $pKey, $pMenu);
             foreach ($pMenu->getChildren() as $key => $menu) {
                 $this->addSubMenuToMenu($sidebar[$pKey], $key, $menu);
                 switch ($menu->getRoute()) {
-                    case 'displayModel':
-                        $sidebar[$pKey][$key]->seturi('#display-model-modal')->setLinkAttribute('data-toggle', 'modal');
+                    case "displayModel":
+                        $sidebar[$pKey][$key]->seturi("javascript:;");
                         break;
-                    case 'generalSettings':
-                        $sidebar[$pKey][$key]->seturi('#general-settings-modal')->setLinkAttribute('data-toggle', 'modal');
+                    case "generalSettings":
+                        $sidebar[$pKey][$key]->seturi("#general-settings-modal")->setLinkAttribute("data-toggle", "modal");
                         break;
                 }
 
@@ -112,11 +112,11 @@ class MenuBuilder
     private function addSubMenuToMenu($menu, $key, $child)
     {
         $menu->addChild($key, array(
-            'route' => $child->getRoute(),
-            'label' => $child->getTitle(),
-            'extras' => array(
-                'icon' => $child->getIcon(),
-                'description' => $child->getDescription(),
+            "route" => $child->getRoute(),
+            "label" => $child->getTitle(),
+            "extras" => array(
+                "icon" => $child->getIcon(),
+                "description" => $child->getDescription(),
             ),
         ));
         return $menu;

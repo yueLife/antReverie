@@ -32,18 +32,18 @@ class FileController extends Controller
      */
     public function uploadFileAction(Request $request)
     {
-        $uploadData =  $this->get('UploadHandlerService');
-        $data = $uploadData->response['files'][0];
+        $uploadData =  $this->get("UploadHandlerService");
+        $data = $uploadData->response["files"][0];
 
         if (empty($data->error)) {
-            $fileUtil = $this->get('FileUtilService');
-            $root = $_SERVER['DOCUMENT_ROOT'].'/Uploads/';
-            $filename = 'file_'.uniqid().'.'.pathinfo($data->name, PATHINFO_EXTENSION);
+            $fileUtil = $this->get("FileUtilService");
+            $root = $_SERVER["DOCUMENT_ROOT"]."/Uploads/";
+            $filename = "file_".uniqid().".".pathinfo($data->name, PATHINFO_EXTENSION);
 
-            if ($fileUtil->moveFile($root.'data/'.$data->name, $root.'files/'.$filename)) {
+            if ($fileUtil->moveFile($root."data/".$data->name, $root."files/".$filename)) {
                 $em = $this->getDoctrine()->getManager();
                 $newUploadFiles = new UploadFiles($this->getUser());
-                $newUploadFiles->setFilename($filename)->setOldname ($data->name)->setFileType($request->get('fileType'));
+                $newUploadFiles->setFilename($filename)->setOldname ($data->name)->setFileType($request->get("fileType"));
 
                 $em->persist($newUploadFiles);
                 $em->flush();
@@ -62,8 +62,8 @@ class FileController extends Controller
      */
     public function deleteFileAction(Request $request)
     {
-        $data['id'] = $request->get('id');
-        $data['filename'] = $request->get('filename');
+        $data["id"] = $request->get("id");
+        $data["filename"] = $request->get("filename");
         return new JsonResponse($data);
     }
 }

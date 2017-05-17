@@ -5,20 +5,20 @@
 <p> {{ WEB_INTRODUCE }} </p>
 <form action="{{ path("fos_user_security_check") }}" class="login-form" method="post">
     {% if error %}
-        {{ layouts.alertClose('danger', error|trans({}, 'FOSUserBundle'), 'login-alert') }}
+        {{ layouts.alertClose("danger", error|trans({}, "FOSUserBundle"), "login-alert") }}
     {% else %}
-        {{ layouts.alertClose('danger', null, 'display-hide login-alert') }}
+        {{ layouts.alertClose("danger", null, "display-hide login-alert") }}
     {% endif %}
-    {{ forms.input('hidden', null, ' ', '_csrf_token', csrf_token) }}
+    {{ forms.input("hidden", null, " ", "_csrf_token", csrf_token) }}
     <div class="row">
-        {{ forms.colInput(null, 'username', null, '_username', last_username, 'security.login.username'|trans({}, 'FOSUserBundle')) }}
-        {{ forms.colInput('password', 'password', null, '_password', null, 'security.login.password'|trans({}, 'FOSUserBundle')) }}
+        {{ forms.colInput(null, "username", null, "_username", last_username, "security.login.username"|trans({}, "FOSUserBundle")) }}
+        {{ forms.colInput("password", "password", null, "_password", null, "security.login.password"|trans({}, "FOSUserBundle")) }}
     </div>
     <div class="row">
         <div class="col-sm-4 col-xs-4">
             <div class="rem-password">
                 <label class="rememberme mt-checkbox mt-checkbox-outline">
-                    {{ forms.input('checkbox', 'remember_me', ' ', '_remember_me', 'on') }}{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}
+                    {{ forms.input("checkbox", "remember_me", " ", "_remember_me", "on") }}{{ "security.login.remember_me"|trans({}, "FOSUserBundle") }}
                     <span></span>
                 </label>
             </div>
@@ -28,9 +28,9 @@
                 <a href="javascript:;" id="forget-password" class="forget-password"> 忘记密码 </a>
             </div>
             <div class="new-registered">
-                <a href="{{ path('fos_user_registration_register') }}" id="new-register" class="new-register"> 注册新账号 </a>
+                <a href="{{ path("fos_user_registration_register") }}" id="new-register" class="new-register"> 注册新账号 </a>
             </div>
-            {{ forms.input('button', '_submit', 'btn green login-btn', '_submit', 'security.login.submit'|trans({}, 'FOSUserBundle')) }}
+            {{ forms.input("button", "_submit", "btn green login-btn", "_submit", "security.login.submit"|trans({}, "FOSUserBundle")) }}
         </div>
     </div>
 </form>
@@ -39,11 +39,11 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function(){
-            $(document).on('click', '.login-form .login-btn', function (event) {
-                if (!$('.login-form #username').val() || !$('.login-form #password').val()) {
-                    $('.login-alert').fadeIn().find('p').html('请输入用户名和密码！');
+            $(document).on("click", ".login-form .login-btn", function (event) {
+                if (!$(".login-form #username").val() || !$(".login-form #password").val()) {
+                    $(".login-alert").fadeIn().find("p").html("请输入用户名和密码！");
                 }else{
-                    $('.login-btn').attr('type', 'submit');
+                    $(".login-btn").attr("type", "submit");
                 }
             });
         });

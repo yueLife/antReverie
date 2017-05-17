@@ -1,11 +1,11 @@
 {% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
 
-{% use 'PublicBundle::Modules/Blocks/upload.html.twig' %}
-{% use 'PublicBundle::Modules/Blocks/datatable.html.twig' %}
+{% use "PublicBundle::Modules/Plugins/datatable.html.twig" %}
+{% use "PublicBundle::Modules/Plugins/upload.html.twig" %}
 
 {% block pagePluginsStyles %}
-    {{ block('datatableStyle') }}
-    {{ block('uploadStyle') }}
+    {{ block("datatablePluginsStyles") }}
+    {{ block("fileUpPluginsStyles") }}
 {% endblock %}
 
 {% block content %}
@@ -36,22 +36,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for file in goodsFiles %}
+                        {% for file in uploadFiles %}
                             <tr>
                                 <td>{{ file.id }}</td>
                                 <td>{{ file.oldname }}</td>
                                 <td>{{ file.user.username }}</td>
                                 <td>{{ file.uploadTime }}</td>
                                 <td>
-                                    {% if file.state == 'read' %}
-                                        {% set state = 'success' %}
-                                        {% set title = '已读' %}
-                                    {% elseif file.state == 'unread' %}
-                                        {% set state = 'warning' %}
-                                        {% set title = '未读' %}
-                                    {% elseif file.state == 'wrong' %}
-                                        {% set state = 'danger' %}
-                                        {% set title = '错误' %}
+                                    {% if file.state == "read" %}
+                                        {% set state = "success" %}
+                                        {% set title = "已读" %}
+                                    {% elseif file.state == "unread" %}
+                                        {% set state = "warning" %}
+                                        {% set title = "未读" %}
+                                    {% elseif file.state == "wrong" %}
+                                        {% set state = "danger" %}
+                                        {% set title = "错误" %}
                                     {% endif %}
                                     <button type="button" class="btn btn-xs btn-{{ state }}">{{ title }}</button>
                                 </td>
@@ -67,20 +67,20 @@
             </div>
         </div>
     </div>
-    {{ block('uploadModal') }}
+    {{ block("uploadModal") }}
 {% endblock %}
 
 {% block pagePluginsScripts %}
-    {{ block('datatableScript') }}
-    {{ block('uploadScript') }}
+    {{ block("datatablePluginsScripts") }}
+    {{ block("fileUpPluginsScripts") }}
 {% endblock %}
 
 {% block javascripts %}
-    {{ block('datatableJavascripts') }}
-    {{ block('uploadJavascripts') }}
+    {{ block("datatableJavascripts") }}
+    {{ block("fileUpJavascripts") }}
     <script type="text/javascript">
         $(function(){
-            datatable($('.all-files-table'));
+            datatable($(".all-files-table"));
         });
     </script>
 {% endblock %}

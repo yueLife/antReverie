@@ -12,6 +12,7 @@ use Doctrine\ORM\TransactionRequiredException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ShelfController
@@ -26,10 +27,10 @@ class ShelfController extends Controller
     /**
      * Use and display model
      *
-     * @Route("/displayModel/{id}/{route}", name="displayModel", defaults={"id":"", "route":""}, requirements={"id"="\d+","route"="[A-Z]*_[A-Z]*_Model"})
+     * @Route("/displayModel/{id}/{route}", name="displayModel", defaults={"id": "", "route": ""}, requirements={"id" = "\d+", "route" = "[A-Z]*_[A-Z]*_Model"})
      * @param integer $id
      * @param string $route
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function displayModelAction($id, $route)
     {

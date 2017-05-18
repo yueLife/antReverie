@@ -49,24 +49,58 @@ class FileController extends Controller
                 $em->flush();
 
                 $uploadData->response["files"][0]->id = $newUploadFiles->getId();
-                $uploadData->response["files"][0]->fileType = $newUploadFiles->getFileType();
+                $uploadData->response["files"][0]->filename = $newUploadFiles->getFilename();
                 $uploadData->response["files"][0]->uploadTime = $newUploadFiles->getUploadTime();
+                $uploadData->response["files"][0]->fileType = $newUploadFiles->getFileType();
             }
         }
         return new JsonResponse($uploadData->response);
     }
 
     /**
-     * Deleting file method
+     * Delete file method
      *
-     * @Route("/delete", name="deleteFile")
+     * @Route("/deleteFile", name="deleteFileAjax")
      * @param Request $request
      * @return JsonResponse
      */
-    public function deleteFileAction(Request $request)
+    public function deleteFileAjax(Request $request)
     {
-        $data["id"] = $request->get("id");
-        $data["filename"] = $request->get("filename");
-        return new JsonResponse($data);
+        $em = $this->getDoctrine()->getManager();
+        $uploadFilesInfo = $em->getRepository("PublicBundle:UploadFiles")
+            ->findOneBy(array("id" => $request->get("id"), "filename" => $request->get("filename")));
+        if (!$uploadFilesInfo) {
+            return new JsonResponse("error");
+        }
+
+        $uploadFilesInfo->setDel(true);
+        $em->flush();
+
+        return new JsonResponse("success");
+    }
+
+    /**
+     * Download file method
+     *
+     * @Route("/downloadFile", name="downloadFileAjax")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function downloadFileAjax(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $uploadFilesInfo = $em->getRepository("PublicBundle:UploadFiles")
+            ->findOneBy(array("id" => $request->get("id"), "filename" => $request->get("filename")));
+        if (!$uploadFilesInfo) {
+            return new JsonResponse("error");
+        }
+        $fileUtil = $this->get("FileUtilService");
+        $root = $_SERVER["DOCUMENT_ROOT"]."/Uploads/";
+        $filename = $uploadFilesInfo->getOldname();
+        if (!$fileUtil->copyFile($root."files/".$request->get("filename"), $root."temp/".$filename, true)) {
+            return new JsonResponse("error");
+        }
+
+        return new JsonResponse(array("state" => "success", "src" => "/Uploads/temp/".$uploadFilesInfo->getOldname()));
     }
 }

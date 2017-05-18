@@ -18,7 +18,7 @@
                         <span class="caption-subject bold uppercase">所有文件</span>
                     </div>
                     <div class="actions">
-                        <a href="#file-upload-modal" class="btn btn-default btn-sm">
+                        <a href="#file-upload-modal" class="btn btn-sm default btn-outline" data-toggle="modal">
                             <i class="iconfont icon-upload"></i> 文件上传 </a>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                         {% for file in uploadFiles %}
                             <tr>
                                 <td>{{ file.id }}</td>
-                                <td>{{ file.oldname }}</td>
+                                <td data-filename="{{ file.filename }}">{{ file.oldname }}</td>
                                 <td>{{ file.user.username }}</td>
                                 <td>{{ file.uploadTime }}</td>
                                 <td>
@@ -55,7 +55,7 @@
                                     <button type="button" class="btn btn-xs btn-{{ state }}">{{ title }}</button>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-xs default green-meadow-stripe">下载</button>
+                                    <button type="button" class="btn btn-xs default green-meadow-stripe download-file-btn">下载</button>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -65,6 +65,7 @@
             </div>
         </div>
     </div>
+    {% set chooseFile = true %}
     {{ block("uploadModal") }}
 {% endblock %}
 
@@ -77,8 +78,33 @@
     {{ block("datatableJavascripts") }}
     {{ block("fileUpJavascripts") }}
     <script type="text/javascript">
+        var table = datatable($(".all-files-table"));
         $(function(){
-            datatable($(".all-files-table"));
+            $(document).on("click", ".download-file-btn", function () {
+                var td = $(this).closest("tr").children("td");
+
+                $.ajax({
+                    url: "{{ path("downloadFileAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": td.eq(0).html(), "filename": td.eq(1).attr("data-filename")}
+                }).done(function (data) {
+                    if (data.state === "success") {
+                        toastr.success("正在下载，请稍后！", "成功");
+                        download(data.src);
+                    } else if (data === "error") {
+                        toastr.error("没有找到该文件！请重试！", "失败");
+                    }
+                }).fail(function () {
+                    toastr.error("未知错误！", "错误");
+                });
+            });
         });
+        function addNewFile(file){
+            state = '<button type="button" class="btn btn-xs btn-warning"> 未读 </button>';
+            operate = '<button type="button" class="btn btn-xs default green-meadow-stripe download-file-btn"> 下载 </button>';
+            var tr = addRow(table, [file.id, file.name, "{{ app.getUser().getUsername() }}", file.uploadTime, state, operate]);
+            tr.find("td:eq(1)").attr("data-filename", file.filename);
+        }
     </script>
 {% endblock %}

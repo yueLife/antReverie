@@ -9,10 +9,18 @@ $(function () {
     $(window).resize(function () {
         check_page();
     });
-})
+});
 
 function check_page () {
     $("#shelf").css("height", (($(window).height() - 265) + "px"));
+}
+
+function download(src) {
+    var IFrameRequest = document.createElement("iframe");
+    IFrameRequest.id = "IFrameRequest";
+    IFrameRequest.src = src;
+    IFrameRequest.style.display = "none";
+    document.body.appendChild(IFrameRequest);
 }
 
 /* toastr option */

@@ -71,7 +71,7 @@
                                 </td>
                                 <td> {{ file.uploadTime }} </td>
                                 <td>
-                                    <button type="button" class="btn btn-xs default red-stripe delete-file-btn"> 删除 </button><button type="button" class="btn btn-xs default green-meadow-stripe"> 下载 </button>
+                                    <button type="button" class="btn btn-xs default red-stripe delete-file-btn"> 删除 </button><button type="button" class="btn btn-xs default green-meadow-stripe download-file-btn"> 下载 </button>
                                 </td>
                                 <td>
                                     {% if file.fileType == "goodsFile" %}
@@ -107,24 +107,6 @@
     <script type="text/javascript">
         var table = datatable($(".my-files-table"));
         $(function(){
-            $(document).on("click", ".delete-file-btn", function () {
-                var td = $(this).closest("tr").children("td");
-                var jsonData = {
-                    "id": td.eq(0).html(),
-                    "filename": td.eq(1).attr("data-filename")
-                };
-
-                $.ajax({
-                    url: "{{ path("deleteFile") }}",
-                    type: "post",
-                    dataType: "json",
-                    data: jsonData
-                }).done(function (data) {
-                    console.log(data);
-                }).fail(function () {
-                    console.log("未知错误！");
-                });
-            });
             $(document).on("click", ".display-model-btn", function () {
                 var _this = $(this);
                 var _btn = _this.closest("td").prevAll("td:eq(3)").children("button");
@@ -160,10 +142,48 @@
 
                 });
             });
+            $(document).on("click", ".delete-file-btn", function () {
+                var td = $(this).closest("tr").children("td");
+
+                $.ajax({
+                    url: "{{ path("deleteFileAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": td.eq(0).html(), "filename": td.eq(1).attr("data-filename")}
+                }).done(function (data) {
+                    if (data === "success") {
+                        toastr.success("该文件已成功删除！", "成功");
+                        removeRow(table, td.closest("tr"));
+                    } else if (data === "error") {
+                        toastr.error("没有找到该文件！请重试！", "失败");
+                    }
+                }).fail(function () {
+                    toastr.error("未知错误！", "错误");
+                });
+            });
+            $(document).on("click", ".download-file-btn", function () {
+                var td = $(this).closest("tr").children("td");
+
+                $.ajax({
+                    url: "{{ path("downloadFileAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": td.eq(0).html(), "filename": td.eq(1).attr("data-filename")}
+                }).done(function (data) {
+                    if (data.state === "success") {
+                        toastr.success("正在下载，请稍后！", "成功");
+                        download(data.src);
+                    } else if (data === "error") {
+                        toastr.error("没有找到该文件！请重试！", "失败");
+                    }
+                }).fail(function () {
+                    toastr.error("未知错误！", "错误");
+                });
+            });
         });
         function addNewFile(file){
             state = '<button type="button" class="btn btn-xs btn-warning"> 未读 </button>';
-            operate = '<button type="button" class="btn btn-xs default red-stripe delete-file-btn"> 删除 </button><button type="button" class="btn btn-xs default green-meadow-stripe"> 下载 </button>';
+            operate = '<button type="button" class="btn btn-xs default red-stripe delete-file-btn"> 删除 </button><button type="button" class="btn btn-xs default green-meadow-stripe download-file-btn"> 下载 </button>';
 
             switch (file.fileType) {
                 case "goodsFile":
@@ -183,8 +203,8 @@
                     func = "未知";
                     break;
             }
-
-            table.row.add([file.id, file.name, state, fileType, file.uploadTime, operate, func]).draw();
+            var tr = addRow(table, [file.id, file.name, state, fileType, file.uploadTime, operate, func]);
+            tr.find("td:eq(1)").attr("data-filename", file.filename);
         }
     </script>
 {% endblock %}

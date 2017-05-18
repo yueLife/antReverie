@@ -57,5 +57,12 @@
                 "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
             });
         }
+        function addRow(table, row) {
+            table.row.add(row).draw();
+            return $(table.row().node());
+        }
+        function removeRow(table, tr){
+            table.row(tr).remove().draw();
+        }
     </script>
 {% endblock %}

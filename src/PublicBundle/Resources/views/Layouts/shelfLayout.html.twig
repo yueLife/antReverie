@@ -13,8 +13,8 @@
 {% block stylesheets %}
     <style>
         .tabbable-line>.tab-content{ padding:10px 0; }
-        .form-group.form-md-line-input{ margin: 0px; }
-        .padding-top{ padding-top:0px !important; }
+        .form-group.form-md-line-input{ margin: 0; }
+        .padding-top{ padding-top:0 !important; }
         .code-textarea{ height:310px; }
         .tag-img-div{ text-align:center; }
         .tag-img-div > div{ height:65px; }
@@ -310,7 +310,6 @@
     <script type="text/javascript">
         var lineNum = {{ model.lineNum|default(3) }};
         $(function() {
-            $("#general-settings-modal").modal("show");
             // 修改personalShelfData
             $(document).on("click", ".style-use-btn", function () {
                 var form = $(this).closest("form");
@@ -321,7 +320,7 @@
                     url: "{{ path("setShelfUserDataAjax") }}",
                     type: "post",
                     dataType: "json",
-                    data: form.serialize(),
+                    data: form.serialize()
                 }).done(function (data) {
                     toastr.success(data["message"], "提示", {timeOut: "1000"});
                 }).fail(function () {
@@ -336,7 +335,7 @@
                     url: "{{ path("setPersonalTagAjax") }}",
                     type: "post",
                     dataType: "json",
-                    data: {"key": input.attr("name"), "value": input.val()},
+                    data: {"key": input.attr("name"), "value": input.val()}
                 }).done(function (data) {
                     $(".tag-img-div img[data-name='" + input.attr("name") + "']").attr("src", input.val());
                     toastr.success(data["message"], "提示", {timeOut: "1000"});
@@ -352,7 +351,7 @@
                     url: "{{ path("setShelfUserDataAjax") }}",
                     type: "post",
                     dataType: "json",
-                    data: {"cate": "imgTag", "value": _this.attr("src")},
+                    data: {"cate": "imgTag", "value": _this.attr("src")}
                 }).done(function () {
                     toastr.success("使用 " + _this.attr("alt") + " 成功！", "提示", {timeOut: "1000"});
                 }).fail(function () {

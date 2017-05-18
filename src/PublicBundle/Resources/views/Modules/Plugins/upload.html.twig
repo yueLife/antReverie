@@ -1,3 +1,5 @@
+{# jQuery.fileupload.js Plugin twig #}
+{# pagePluginsStyles #}
 {% block fileUpPluginsStyles %}
     <link rel="stylesheet" href="{{ asset(GLOBAL~"plugins/fancybox/source/jquery.fancybox.css") }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset(GLOBAL~"plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css") }}" type="text/css" />
@@ -83,6 +85,7 @@
                     </script>
                     <script id="template-download" type="text/x-tmpl">
                         {% for (var i=0, file; file=o.files[i]; i++) { %}
+                        {% addNewFile(file); %}
                         <tr class="template-download fade">
                             <td>
                                 <span>{%=file.name%}</span>
@@ -147,6 +150,7 @@
     </div>
 {% endblock %}
 
+{# pagePluginsScripts #}
 {% block fileUpPluginsScripts %}
     <script src="{{ asset(GLOBAL~"plugins/fancybox/source/jquery.fancybox.pack.js") }}" type="text/javascript"></script>
     <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js") }}" type="text/javascript"></script>
@@ -164,17 +168,18 @@
     <script src="{{ asset(GLOBAL~"plugins/jquery-file-upload/js/jquery.fileupload-ui.js") }}" type="text/javascript"></script>
 {% endblock %}
 
+{# javascripts #}
 {% block fileUpJavascripts %}
     <script type="text/javascript">
         $(function(){
             uploadLayout();
-            $(document).on("click", ".fileupload-buttonbar .delete", function (e) {
+            $(document).on("click", ".fileupload-buttonbar .delete", function () {
                 $(".files .template-download").fadeOut();
             });
-            $(document).on("click", ".files .delete", function (e) {
+            $(document).on("click", ".files .delete", function () {
                 $(this).closest("tr").fadeOut();
             });
-            $("#file-upload-modal").on("hidden.bs.modal", function (e) {
+            $("#file-upload-modal").on("hidden.bs.modal", function () {
                 $(".files .template-download").remove();
             });
             $("a[data-fileType]").click(function(){
@@ -186,7 +191,6 @@
                 var fileType = $("button.fileType").attr("data-fileType");
                 data.formData = {fileType: fileType};
             }).fileupload({
-                disableImageResize: false,
                 autoUpload: false,
                 disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
                 maxFileSize: 5*1024*1024,

@@ -43,13 +43,16 @@ class FileController extends Controller
             if ($fileUtil->moveFile($root."data/".$data->name, $root."files/".$filename)) {
                 $em = $this->getDoctrine()->getManager();
                 $newUploadFiles = new UploadFiles($this->getUser());
-                $newUploadFiles->setFilename($filename)->setOldname ($data->name)->setFileType($request->get("fileType"));
+                $newUploadFiles->setFilename($filename)->setOldname($data->name)->setFileType($request->get("fileType"));
 
                 $em->persist($newUploadFiles);
                 $em->flush();
+
+                $uploadData->response["files"][0]->id = $newUploadFiles->getId();
+                $uploadData->response["files"][0]->fileType = $newUploadFiles->getFileType();
+                $uploadData->response["files"][0]->uploadTime = $newUploadFiles->getUploadTime();
             }
         }
-
         return new JsonResponse($uploadData->response);
     }
 

@@ -71,14 +71,13 @@
                                 </td>
                                 <td> {{ file.uploadTime }} </td>
                                 <td>
-                                    <button type="button" class="btn btn-xs default red-stripe delete-file-btn"> 删除 </button>
-                                    <button type="button" class="btn btn-xs default green-meadow-stripe"> 下载 </button>
+                                    <button type="button" class="btn btn-xs default red-stripe delete-file-btn"> 删除 </button><button type="button" class="btn btn-xs default green-meadow-stripe"> 下载 </button>
                                 </td>
                                 <td>
                                     {% if file.fileType == "goodsFile" %}
-                                        {% for m in shelfModels %}
+                                        {% for m in shelfModels -%}
                                         <a class="btn btn-link btn-xs font-size-14 display-model-btn" data-id="{{ file.id }}" data-route="{{ m.route }}"> {{ m.title }} </a>
-                                        {% endfor %}
+                                        {%- endfor %}
                                     {% elseif file.fileType == "wordsFile" %}
                                         <a class="btn btn-link btn-xs font-size-14"> 检测文件 </a>
                                     {% elseif file.fileType == "unusedWordsFile" %}
@@ -106,31 +105,27 @@
     {{ block("datatableJavascripts") }}
     {{ block("fileUpJavascripts") }}
     <script type="text/javascript">
+        var table = datatable($(".my-files-table"));
         $(function(){
-            datatable($(".my-files-table"));
-            $(document).on("click", ".delete-file-btn", function (event) {
+            $(document).on("click", ".delete-file-btn", function () {
                 var td = $(this).closest("tr").children("td");
                 var jsonData = {
                     "id": td.eq(0).html(),
-                    "filename": td.eq(1).attr("data-filename"),
+                    "filename": td.eq(1).attr("data-filename")
                 };
 
                 $.ajax({
                     url: "{{ path("deleteFile") }}",
                     type: "post",
                     dataType: "json",
-                    data: jsonData,
+                    data: jsonData
                 }).done(function (data) {
                     console.log(data);
-                }).fail(function (data) {
+                }).fail(function () {
                     console.log("未知错误！");
                 });
             });
-            $(document).on("click", ".exchange-table", function (event) {
-                $(".goods-table").toggleClass("display").toggleClass("display-hide");
-                $(".words-table").toggleClass("display").toggleClass("display-hide");
-            });
-            $(document).on("click", ".display-model-btn", function (event) {
+            $(document).on("click", ".display-model-btn", function () {
                 var _this = $(this);
                 var _btn = _this.closest("td").prevAll("td:eq(3)").children("button");
 
@@ -142,7 +137,7 @@
                     url: "{{ path("getShelfFileDataAjax") }}",
                     type: "post",
                     dataType: "json",
-                    data: { "id": _this.attr("data-id") },
+                    data: { "id": _this.attr("data-id") }
                 }).done(function (data) {
                     setTimeout(function(){
                         toastr.remove();
@@ -156,7 +151,7 @@
                                 toastr.success(data["message"], "提示"); break;
                         }
                     }, 2500)
-                }).fail(function (data) {
+                }).fail(function () {
                     setTimeout(function(){
                         toastr.remove();
                         _btn.attr("class", "btn btn-xs btn-danger").html("错误");
@@ -166,5 +161,30 @@
                 });
             });
         });
+        function addNewFile(file){
+            state = '<button type="button" class="btn btn-xs btn-warning"> 未读 </button>';
+            operate = '<button type="button" class="btn btn-xs default red-stripe delete-file-btn"> 删除 </button><button type="button" class="btn btn-xs default green-meadow-stripe"> 下载 </button>';
+
+            switch (file.fileType) {
+                case "goodsFile":
+                    fileType = "货架文件";
+                    func = '{% for m in shelfModels %}<a class="btn btn-link btn-xs font-size-14 display-model-btn" data-id="' + file.id + '" data-route="{{ m.route }}"> {{ m.title }} </a>{% endfor %}';
+                    break;
+                case "wordsFile":
+                    fileType = "检测文件";
+                    func = '<a class="btn btn-link btn-xs font-size-14"> 检测文件 </a>';
+                    break;
+                case "unusedWordsFile":
+                    fileType = "禁词文件";
+                    func = '<a class="btn btn-link btn-xs font-size-14"> 读取文件 </a>';
+                    break;
+                default :
+                    fileType = "未知文件";
+                    func = "未知";
+                    break;
+            }
+
+            table.row.add([file.id, file.name, state, fileType, file.uploadTime, operate, func]).draw();
+        }
     </script>
 {% endblock %}

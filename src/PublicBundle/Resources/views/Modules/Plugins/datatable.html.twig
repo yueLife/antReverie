@@ -16,7 +16,7 @@
 {% block datatableJavascripts %}
     <script type="text/javascript">
         function datatable(dom) {
-            dom.dataTable({
+            return dom.DataTable({
                 "language": {
                     "aria": {
                         "sortAscending": ": 按升序排序",
@@ -56,6 +56,6 @@
 
                 "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
             });
-        };
+        }
     </script>
 {% endblock %}

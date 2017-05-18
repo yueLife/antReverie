@@ -39,7 +39,7 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(function(){
-            $(document).on("click", ".login-form .login-btn", function (event) {
+            $(document).on("click", ".login-form .login-btn", function () {
                 if (!$(".login-form #username").val() || !$(".login-form #password").val()) {
                     $(".login-alert").fadeIn().find("p").html("请输入用户名和密码！");
                 }else{

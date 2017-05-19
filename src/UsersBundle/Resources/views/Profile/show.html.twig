@@ -8,8 +8,47 @@
     <link rel="stylesheet" href="{{ asset(PAGES~"css/profile.min.css") }}" type="text/css" />
 {% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .details{ right:unset !important;padding:0 0 0 30px !important; }
+        .details .number { padding-top:15px !important;text-align:left !important;}
+
+    </style>
+{% endblock %}
+
 {% block content %}
-123
+    <!-- BEGIN PROFILE SIDEBAR -->
+    <div class="profile-sidebar">
+        {{ app.user.getUsername() }}
+        <i class="iconfont icon-bell5 font-size-20"></i>
+
+    </div>
+    <!-- END BEGIN PROFILE SIDEBAR -->
+    <!-- BEGIN PROFILE CONTENT -->
+    <div class="profile-content">
+        <div class="row">
+            <a class="dashboard-stat blue" href="#">
+                <div class="visual fr">
+                    <i class="iconfont icon-bell"></i>
+                </div>
+                <div class="details fl">
+                    <div class="number">
+                        <span class="font-size-20"> 欢迎回来：{{ app.user.getUsername() }} </span>
+                    </div>
+                    <div class="desc"> 上次登录：{{ app.user.getLastlogin().date|date("Y-m-d H:i:s") }} </div>
+                </div>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                123
+            </div>
+            <div class="col-md-6">
+                123
+            </div>
+        </div>
+    </div>
+    <!-- END PROFILE CONTENT -->
 {% endblock %}
 
 {% block pagePluginsScripts %}

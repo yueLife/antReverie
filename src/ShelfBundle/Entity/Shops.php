@@ -42,9 +42,9 @@ class Shops
     private $plat;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="createtime", type="string", length=255)
+     * @ORM\Column(name="createtime", type="datetime")
      */
     private $createTime;
 
@@ -73,7 +73,7 @@ class Shops
      */
     public function __construct()
     {
-        $this->createTime = date('Y/m/d H:i:s', time());
+        $this->createTime = new \DateTime;
         $this->users = new ArrayCollection();
     }
 
@@ -159,7 +159,7 @@ class Shops
     /**
      * Set createTime
      *
-     * @param string $createTime
+     * @param \DateTime $createTime
      * @return Shops
      */
     public function setCreateTime($createTime)
@@ -172,7 +172,7 @@ class Shops
     /**
      * Get createTime
      *
-     * @return string
+     * @return \DateTime
      */
     public function getCreateTime()
     {

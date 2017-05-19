@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Class UsersController
  *
  * @package UsersBundle\Controller
- * @Route("/users")
+ * @Route("/profile")
  */
 class UsersController extends Controller
 {
@@ -50,7 +50,6 @@ class UsersController extends Controller
         }
 
         return array(
-            "name" => "file",
             "uploadFiles" => $uploadFilesInfo,
             "shelfModels" => $shelfModelsInfo
         );

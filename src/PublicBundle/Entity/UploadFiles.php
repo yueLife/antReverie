@@ -45,9 +45,9 @@ class UploadFiles
     protected $oldname;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="uploadTime", type="string", length=255)
+     * @ORM\Column(name="uploadTime", type="datetime")
      */
     protected $uploadTime;
 
@@ -79,7 +79,7 @@ class UploadFiles
      */
     public function __construct(Users $user)
     {
-        $this->uploadTime = date('Y/m/d H:i:s', time());
+        $this->uploadTime = new \DateTime;
         $this->user = $user;
     }
 
@@ -165,7 +165,7 @@ class UploadFiles
     /**
      * Set uploadTime
      *
-     * @param string $uploadTime
+     * @param \DateTime $uploadTime
      * @return UploadFiles
      */
     public function setUploadTime($uploadTime)
@@ -178,7 +178,7 @@ class UploadFiles
     /**
      * Get uploadTime
      *
-     * @return string
+     * @return \DateTime
      */
     public function getUploadTime()
     {

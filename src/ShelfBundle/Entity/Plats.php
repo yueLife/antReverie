@@ -36,9 +36,9 @@ class Plats
     private $url;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="createtime", type="string", length=255)
+     * @ORM\Column(name="createtime", type="datetime")
      */
     private $createTime;
 
@@ -62,7 +62,7 @@ class Plats
      */
     public function __construct()
     {
-        $this->createTime = date('Y/m/d H:i:s', time());
+        $this->createTime = new \DateTime;
     }
 
     /**
@@ -124,7 +124,7 @@ class Plats
     /**
      * Set createTime
      *
-     * @param string $createTime
+     * @param \DateTime $createTime
      * @return Plats
      */
     public function setCreateTime($createTime)
@@ -137,7 +137,7 @@ class Plats
     /**
      * Get createTime
      *
-     * @return string 
+     * @return \DateTime
      */
     public function getCreateTime()
     {

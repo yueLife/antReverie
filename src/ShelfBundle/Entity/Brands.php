@@ -29,9 +29,9 @@ class Brands
     private $brandname;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="createtime", type="string", length=255)
+     * @ORM\Column(name="createtime", type="datetime")
      */
     private $createTime;
 
@@ -55,7 +55,7 @@ class Brands
      */
     public function __construct()
     {
-        $this->createTime = date('Y/m/d H:i:s', time());
+        $this->createTime = new \DateTime;
     }
 
     /**
@@ -94,7 +94,7 @@ class Brands
     /**
      * Set createTime
      *
-     * @param string $createTime
+     * @param \DateTime $createTime
      * @return Brands
      */
     public function setCreateTime($createTime)
@@ -107,7 +107,7 @@ class Brands
     /**
      * Get createTime
      *
-     * @return string 
+     * @return \DateTime
      */
     public function getCreateTime()
     {

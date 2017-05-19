@@ -49,9 +49,9 @@ class ShelfModels
     private $style;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="createtime", type="string", length=255)
+     * @ORM\Column(name="createtime", type="datetime")
      */
     private $createTime;
 
@@ -68,7 +68,7 @@ class ShelfModels
      */
     public function __construct()
     {
-        $this->createTime = date('Y/m/d H:i:s', time());
+        $this->createTime = new \DateTime;
     }
 
     /**
@@ -176,7 +176,7 @@ class ShelfModels
     /**
      * Set createTime
      *
-     * @param string $createTime
+     * @param \DateTime $createTime
      * @return ShelfModels
      */
     public function setCreateTime($createTime)
@@ -189,7 +189,7 @@ class ShelfModels
     /**
      * Get createTime
      *
-     * @return string
+     * @return \DateTime
      */
     public function getCreateTime()
     {

@@ -24,7 +24,7 @@
 .border-none{ border:none !important; }
 .no-resize{ resize:none !important;}
 
-.fl{ float:left; }
-.fr{ float:right; }
+.fl{ float:left !important; }
+.fr{ float:right !important; }
 .mt10{ margin-top:10px !important; }
 .mb10{ margin-bottom:10px !important; }

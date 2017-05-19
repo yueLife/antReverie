@@ -45,12 +45,12 @@ class FileController extends Controller
                 $newUploadFiles = new UploadFiles($this->getUser());
                 $newUploadFiles->setFilename($filename)->setOldname($data->name)->setFileType($request->get("fileType"));
 
-                $em->persist($newUploadFiles);
-                $em->flush();
+                 $em->persist($newUploadFiles);
+                 $em->flush();
 
                 $uploadData->response["files"][0]->id = $newUploadFiles->getId();
                 $uploadData->response["files"][0]->filename = $newUploadFiles->getFilename();
-                $uploadData->response["files"][0]->uploadTime = $newUploadFiles->getUploadTime();
+                $uploadData->response["files"][0]->uploadTime = $newUploadFiles->getUploadTime()->format("Y-m-d H:i:s");
                 $uploadData->response["files"][0]->fileType = $newUploadFiles->getFileType();
             }
         }

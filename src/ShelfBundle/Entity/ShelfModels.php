@@ -22,7 +22,7 @@ class ShelfModels
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Shops")
+     * @ORM\ManyToOne(targetEntity="Shops", inversedBy="models")
      * @ORM\JoinColumn(name="shop_id", referencedColumnName="id")
      */
     private $shop;

@@ -4,6 +4,7 @@ namespace PublicBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use UsersBundle\Entity\Users;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * UploadFiles
@@ -25,7 +26,7 @@ class UploadFiles
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="UsersBundle\Entity\Users")
+     * @ORM\ManyToOne(targetEntity="UsersBundle\Entity\Users", inversedBy="files")
      * @ORM\JoinColumn(name="uid", referencedColumnName="id")
      */
     protected $user;
@@ -72,6 +73,11 @@ class UploadFiles
      */
     protected $del = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ShelfBundle\Entity\ShelfGoods", mappedBy="file")
+     */
+    protected $goods;
+
 
     /**
      * UploadFiles constructor.
@@ -81,6 +87,7 @@ class UploadFiles
     {
         $this->uploadTime = new \DateTime;
         $this->user = $user;
+        $this->goods = new ArrayCollection();
     }
 
     /**
@@ -252,5 +259,38 @@ class UploadFiles
     public function getDel()
     {
         return $this->del;
+    }
+
+    /**
+     * Add goods
+     *
+     * @param \ShelfBundle\Entity\ShelfGoods $goods
+     * @return UploadFiles
+     */
+    public function addGood(\ShelfBundle\Entity\ShelfGoods $goods)
+    {
+        $this->goods[] = $goods;
+
+        return $this;
+    }
+
+    /**
+     * Remove goods
+     *
+     * @param \ShelfBundle\Entity\ShelfGoods $goods
+     */
+    public function removeGood(\ShelfBundle\Entity\ShelfGoods $goods)
+    {
+        $this->goods->removeElement($goods);
+    }
+
+    /**
+     * Get goods
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGoods()
+    {
+        return $this->goods;
     }
 }

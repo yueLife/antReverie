@@ -25,7 +25,7 @@ class ShelfGoods
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="PublicBundle\Entity\UploadFiles")
+     * @ORM\ManyToOne(targetEntity="PublicBundle\Entity\UploadFiles", inversedBy="goods")
      * @ORM\JoinColumn(name="fid", referencedColumnName="id")
      */
     private $file;

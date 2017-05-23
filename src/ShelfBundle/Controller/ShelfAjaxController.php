@@ -24,12 +24,12 @@ use Symfony\Component\HttpFoundation\Request;
 class ShelfAjaxController extends Controller
 {
     private $em;
-    private $fileInfo;
+    private $fileData;
     private $limit = 100;
     private $root;
     private $message = array(
         "success" => array("state" => "success", "message" =>"文件读取成功！正在跳转..."),
-        "unFound" => array("state" => "error", "message" =>"文件读取失败，请重新上传！"),
+        "notFound" => array("state" => "error", "message" =>"文件读取失败，请重新上传！"),
         "readFailed" => array("state" => "error", "message" =>"文件读取失败，请重试！"),
         "dataWrong" => array("state" => "error", "message" =>"文件数据内容错误，请检查后重新上传！"),
         "idWrongStart" => "您的数据表中第 ",
@@ -55,10 +55,10 @@ class ShelfAjaxController extends Controller
         $uploadFilesEm = $this->em->getRepository("PublicBundle:UploadFiles");
         $shelfGoodsEm = $this->em->getRepository("ShelfBundle:ShelfGoods");
 
-        $this->fileInfo = $uploadFilesEm->findOneById($request->get("id"));
-        if ($this->fileInfo->getState() == "unread" && !count($shelfGoodsEm->findByFile($this->fileInfo))) {
+        $this->fileData = $uploadFilesEm->findOneById($request->get("id"));
+        if ($this->fileData->getState() == "unread" && !count($this->fileData->getGoods())) {
             $this->root = $_SERVER["DOCUMENT_ROOT"]."/Uploads/files/";
-            switch (pathinfo($this->fileInfo->getFilename(), PATHINFO_EXTENSION)) {
+            switch (pathinfo($this->fileData->getFilename(), PATHINFO_EXTENSION)) {
                 case "csv":
                     $result = $this->getCsvDataFunc(); break;
                 case "xlsx":
@@ -68,9 +68,9 @@ class ShelfAjaxController extends Controller
                     return new JsonResponse($this->message["readFailed"]);
             }
             return new JsonResponse($result);
-        } elseif ($this->fileInfo->getState() == "wrong") {
+        } elseif ($this->fileData->getState() == "wrong") {
             return new JsonResponse($this->message["dataWrong"]);
-        } elseif ($this->fileInfo->getState() == "read") {
+        } elseif ($this->fileData->getState() == "read") {
             return new JsonResponse($this->message["success"]);
         }else{
             return new JsonResponse($this->message["readFailed"]);
@@ -84,11 +84,11 @@ class ShelfAjaxController extends Controller
      */
     public function getCsvDataFunc()
     {
-        $file = $this->root.$this->fileInfo->getFilename();
+        $file = $this->root.$this->fileData->getFilename();
         if (!is_file($file)) {
-            $this->fileInfo->setState("wrong");
+            $this->fileData->setState("wrong");
             $this->em->flush();
-            return $this->message["unFound"];
+            return $this->message["notFound"];
         }
 
         $handle = fopen($file, "r");
@@ -120,7 +120,7 @@ class ShelfAjaxController extends Controller
                 default:
                     fclose($handle);
                     unset($fields);
-                    $this->fileInfo->setState("wrong");
+                    $this->fileData->setState("wrong");
                     $this->em->flush();
                     return $this->message["dataWrong"];
             }
@@ -154,19 +154,19 @@ class ShelfAjaxController extends Controller
 
             if (isset($tmpData["state"]) && $tmpData["state"] == "error") {
                 $this->em->getConnection()->rollback();
-                $this->fileInfo->setState("wrong");
+                $this->fileData->setState("wrong");
                 $this->em->flush();
                 return $tmpData; // $result
             }
 
             foreach ($tmpData as $key => $val) {
                 $finalData = array_merge($this->nullData, $val);
-                $goods = new ShelfGoods($this->fileInfo);
+                $goods = new ShelfGoods($this->fileData);
                 $goods->setGoodsname($finalData["goodsname"])->setGoodsnameSub($finalData["goodsnameSub"])->setGoodsBn($finalData["goodsBn"])->setGoodsId($finalData["goodsId"])->setIntroduce($finalData["introduce"])->setDetailIntroduce($finalData["detailIntroduce"])->setImgUrl($finalData["imgUrl"])->setTagPrice($finalData["tagPrice"])->setActPrice($finalData["actPrice"])->setCouPrice($finalData["couPrice"])->setUnit($finalData["unit"]);
                 $this->em->persist($goods);
                 $this->em->flush();
             }
-            $this->fileInfo->setState("read");
+            $this->fileData->setState("read");
             $this->em->flush();
             $this->em->clear();
         }
@@ -223,7 +223,7 @@ class ShelfAjaxController extends Controller
      */
     public function getExcelDataFunc()
     {
-        return $this->fileInfo->getFilename();
+        return $this->fileData->getFilename();
     }
 
     /**
@@ -236,9 +236,8 @@ class ShelfAjaxController extends Controller
     public function setShelfUserDataAjax(Request $request)
     {
         $this->em = $this->getDoctrine()->getManager();
-        $shelfUsersEm = $this->em->getRepository("ShelfBundle:ShelfUsers");
-        $shelfUsersInfo = $shelfUsersEm->findOneByUser($this->getUser());
-        $personal = json_decode($shelfUsersInfo->getPersonal(), true);
+        $shelfUserInfo = $this->getUser()->getShelfUser();
+        $personal = json_decode($shelfUserInfo->getPersonal(), true);
 
         if (($cate = $request->get("cate")) == "imgTag") {
             $personal[$cate] = $request->get("value");
@@ -272,7 +271,7 @@ class ShelfAjaxController extends Controller
             $personal[$cate] = $style;
             $personal["style"][$cate] = $styleArr;
         }
-        $shelfUsersInfo->setPersonal(json_encode($personal));
+        $shelfUserInfo->setPersonal(json_encode($personal));
         $this->em->flush();
 
         return new JsonResponse(array("state" => "success", "message" =>"设置成功！"));

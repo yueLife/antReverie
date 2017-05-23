@@ -3,6 +3,7 @@
 namespace ShelfBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Brands
@@ -49,6 +50,16 @@ class Brands
      */
     private $del = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Shops", mappedBy="brand")
+     */
+    private $shops;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ShelfUsers", mappedBy="brand")
+     */
+    private $shelfUsers;
+
 
     /**
      * Brands constructor.
@@ -56,6 +67,8 @@ class Brands
     public function __construct()
     {
         $this->createTime = new \DateTime;
+        $this->shops = new ArrayCollection();
+        $this->shelfUsers = new ArrayCollection();
     }
 
     /**
@@ -84,7 +97,7 @@ class Brands
     /**
      * Get brandname
      *
-     * @return string 
+     * @return string
      */
     public function getBrandname()
     {
@@ -130,7 +143,7 @@ class Brands
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -153,10 +166,76 @@ class Brands
     /**
      * Get del
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDel()
     {
         return $this->del;
+    }
+
+    /**
+     * Add shops
+     *
+     * @param \ShelfBundle\Entity\Shops $shops
+     * @return Brands
+     */
+    public function addShop(\ShelfBundle\Entity\Shops $shops)
+    {
+        $this->shops[] = $shops;
+
+        return $this;
+    }
+
+    /**
+     * Remove shops
+     *
+     * @param \ShelfBundle\Entity\Shops $shops
+     */
+    public function removeShop(\ShelfBundle\Entity\Shops $shops)
+    {
+        $this->shops->removeElement($shops);
+    }
+
+    /**
+     * Get shops
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShops()
+    {
+        return $this->shops;
+    }
+
+    /**
+     * Add shelfUsers
+     *
+     * @param \ShelfBundle\Entity\ShelfUsers $shelfUsers
+     * @return Brands
+     */
+    public function addShelfUser(\ShelfBundle\Entity\ShelfUsers $shelfUsers)
+    {
+        $this->shelfUsers[] = $shelfUsers;
+
+        return $this;
+    }
+
+    /**
+     * Remove shelfUsers
+     *
+     * @param \ShelfBundle\Entity\ShelfUsers $shelfUsers
+     */
+    public function removeShelfUser(\ShelfBundle\Entity\ShelfUsers $shelfUsers)
+    {
+        $this->shelfUsers->removeElement($shelfUsers);
+    }
+
+    /**
+     * Get shelfUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShelfUsers()
+    {
+        return $this->shelfUsers;
     }
 }

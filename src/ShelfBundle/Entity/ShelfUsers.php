@@ -25,7 +25,7 @@ class ShelfUsers
     /**
      * @var integer
      *
-     * @ORM\OneToOne(targetEntity="UsersBundle\Entity\Users")
+     * @ORM\OneToOne(targetEntity="UsersBundle\Entity\Users", inversedBy="shelfUser")
      * @ORM\JoinColumn(name="uid", referencedColumnName="id")
      */
     private $user;
@@ -45,13 +45,13 @@ class ShelfUsers
     private $imgList;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Plats")
+     * @ORM\ManyToOne(targetEntity="Plats", inversedBy="shelfUsers")
      * @ORM\JoinColumn(name="plat_id", referencedColumnName="id")
      */
     private $plat;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Brands")
+     * @ORM\ManyToOne(targetEntity="Brands", inversedBy="shelfUsers")
      * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
      */
     private $brand;
@@ -161,7 +161,7 @@ class ShelfUsers
     /**
      * Get plat
      *
-     * @return \ShelfBundle\Entity\Plats 
+     * @return \ShelfBundle\Entity\Plats
      */
     public function getPlat()
     {
@@ -184,7 +184,7 @@ class ShelfUsers
     /**
      * Get brand
      *
-     * @return \ShelfBundle\Entity\Brands 
+     * @return \ShelfBundle\Entity\Brands
      */
     public function getBrand()
     {

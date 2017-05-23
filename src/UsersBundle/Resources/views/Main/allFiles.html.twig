@@ -35,7 +35,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for file in uploadFiles %}
+                        {% for file in uploadFiles if file.del is sameas(false) %}
                             <tr>
                                 <td>{{ file.id }}</td>
                                 <td data-filename="{{ file.filename }}">{{ file.oldname }}</td>

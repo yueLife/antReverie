@@ -43,7 +43,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for file in uploadFiles %}
+                        {% for file in uploadFiles if file.del is sameas(false) %}
                             <tr>
                                 <td> {{ file.id }} </td>
                                 <td data-filename="{{ file.filename }}"> {{ file.oldname }} </td>
@@ -75,7 +75,7 @@
                                 </td>
                                 <td>
                                     {% if file.fileType == "goodsFile" %}
-                                        {% for m in shelfModels -%}
+                                        {% for m in shelfModels if m.del is sameas(false) -%}
                                         <a class="btn btn-link btn-xs font-size-14 display-model-btn" data-id="{{ file.id }}" data-route="{{ m.route }}"> {{ m.title }} </a>
                                         {%- endfor %}
                                     {% elseif file.fileType == "wordsFile" %}
@@ -188,7 +188,7 @@
             switch (file.fileType) {
                 case "goodsFile":
                     fileType = "货架文件";
-                    func = '{% for m in shelfModels %}<a class="btn btn-link btn-xs font-size-14 display-model-btn" data-id="' + file.id + '" data-route="{{ m.route }}"> {{ m.title }} </a>{% endfor %}';
+                    func = '{% for m in shelfModels if m.del is sameas(false)  %}<a class="btn btn-link btn-xs font-size-14 display-model-btn" data-id="' + file.id + '" data-route="{{ m.route }}"> {{ m.title }} </a>{% endfor %}';
                     break;
                 case "wordsFile":
                     fileType = "检测文件";

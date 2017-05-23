@@ -12,16 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class UploadFilesRepository extends EntityRepository
 {
-    /**
-     * Query the user is not deleted file
-     *
-     * @param Entity $user
-     * @param string $fileType
-     * @return mixed
-     */
-    public function findByUserFileType($user, $fileType)
-    {
-        $fileInfo = $this->findBy(array("user" => $user, "del" => false, "fileType" => $fileType));
-        return $fileInfo;
-    }
 }

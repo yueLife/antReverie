@@ -169,7 +169,7 @@
                                     <table class="table mb10">
                                         <tr><th> 其他样式模板 </th></tr>
                                     </table>
-                                    {% for key,m in option.models %}
+                                    {% for key,m in option.models if m.del is sameas(false) %}
                                     <div class="col-md-3">
                                         <a href="{{ path("displayModel", {"id": id, "route": m.route}) }}">{{ m.title }}</a>
                                     </div>

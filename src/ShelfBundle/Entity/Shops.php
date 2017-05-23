@@ -30,13 +30,13 @@ class Shops
     private $shopname;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Brands")
+     * @ORM\ManyToOne(targetEntity="Brands", inversedBy="shops")
      * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
      */
     private $brand;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Plats")
+     * @ORM\ManyToOne(targetEntity="Plats", inversedBy="shops")
      * @ORM\JoinColumn(name="plat_id", referencedColumnName="id")
      */
     private $plat;
@@ -63,10 +63,16 @@ class Shops
     private $del = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UsersBundle\Entity\Users")
+     * @ORM\ManyToMany(targetEntity="UsersBundle\Entity\Users", inversedBy="shops")
      * @ORM\JoinTable(name="sy_users_shops")
      */
     private $users;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ShelfModels", mappedBy="shop")
+     */
+    private $models;
+
 
     /**
      * Shops constructor.
@@ -75,6 +81,7 @@ class Shops
     {
         $this->createTime = new \DateTime;
         $this->users = new ArrayCollection();
+        $this->models = new ArrayCollection();
     }
 
     /**
@@ -251,10 +258,43 @@ class Shops
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Add models
+     *
+     * @param \ShelfBundle\Entity\ShelfModels $models
+     * @return Shops
+     */
+    public function addModel(\ShelfBundle\Entity\ShelfModels $models)
+    {
+        $this->models[] = $models;
+
+        return $this;
+    }
+
+    /**
+     * Remove models
+     *
+     * @param \ShelfBundle\Entity\ShelfModels $models
+     */
+    public function removeModel(\ShelfBundle\Entity\ShelfModels $models)
+    {
+        $this->models->removeElement($models);
+    }
+
+    /**
+     * Get models
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getModels()
+    {
+        return $this->models;
     }
 }

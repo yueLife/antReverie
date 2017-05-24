@@ -22,9 +22,13 @@
 .cursor-default{ cursor:default !important;}
 .cursor-pointer{ cursor:pointer !important;}
 .border-none{ border:none !important; }
+.display-none { display: none !important; }
 .no-resize{ resize:none !important;}
+.tool-tip:hover{ text-decoration:none; }
 
 .fl{ float:left !important; }
 .fr{ float:right !important; }
 .mt10{ margin-top:10px !important; }
 .mb10{ margin-bottom:10px !important; }
+
+tbody td { padding-left:18px !important; }

@@ -9,6 +9,7 @@ $(function () {
     $(window).resize(function () {
         check_page();
     });
+    $(".tool-tip").tooltip();
 });
 
 function check_page () {

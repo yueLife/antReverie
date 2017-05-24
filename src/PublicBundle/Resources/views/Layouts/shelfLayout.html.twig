@@ -309,7 +309,7 @@
     {{ block("CPJavascripts") }}
     <script type="text/javascript">
         var lineNum = {{ model.lineNum|default(3) }};
-        $(function() {
+        $(function () {
             // 修改personalShelfData
             $(document).on("click", ".style-use-btn", function () {
                 var form = $(this).closest("form");

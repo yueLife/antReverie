@@ -171,7 +171,7 @@
 {# javascripts #}
 {% block fileUpJavascripts %}
     <script type="text/javascript">
-        $(function(){
+        $(function (){
             uploadLayout();
             $(document).on("click", ".fileupload-buttonbar .delete", function () {
                 $(".files .template-download").fadeOut();
@@ -182,7 +182,7 @@
             $("#file-upload-modal").on("hidden.bs.modal", function () {
                 $(".files .template-download").remove();
             });
-            $("a[data-fileType]").click(function(){
+            $("a[data-fileType]").click(function (){
                 $("button.fileType").attr("data-fileType", $(this).attr("data-fileType")).find("span").html($(this).html());
             })
         });

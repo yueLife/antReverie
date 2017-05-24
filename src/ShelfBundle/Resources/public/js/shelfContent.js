@@ -13,7 +13,7 @@ var bgColor = "";
 
 $(function () {
     // 单个添加到货架
-    $(document).on("click", ".add-block .add-btn", function() {
+    $(document).on("click", ".add-block .add-btn", function () {
         if (!$(this).hasClass("disabled")) {
             var shelfBox = $(this).closest(".shelf-box");
             changeStyle(shelfBox);
@@ -42,7 +42,7 @@ $(function () {
     $(document).on("click", ".edit-delete", function () {
         var box = $(this).parents("div[data-index]");
         var idx = box.attr("data-index");
-        box.animate({ "width": 0, "height": 0 }, 400, function() {
+        box.animate({ "width": 0, "height": 0 }, 400, function () {
             box.remove();
         });
         $(".add-all-btn").fadeIn(500);
@@ -61,7 +61,7 @@ $(function () {
     });
 
     // 显示鼠标工具栏
-    $(document).on("mouseenter", ".shelf-new-data div[data-index]", function() {
+    $(document).on("mouseenter", ".shelf-new-data div[data-index]", function () {
         var shelfBox = $(this);
         shelfBox.css({ "position": "relative" });
         var bw = shelfBox.width();
@@ -83,12 +83,12 @@ $(function () {
     });
 
     // 隐藏鼠标工具栏
-    $(document).on("mouseleave", ".shelf-new-data .edit-tool", function() {
+    $(document).on("mouseleave", ".shelf-new-data .edit-tool", function () {
         $(".shelf-new-data .edit-tool").remove();
     });
 
     // 替换按钮操作
-    $(document).on("click", ".edit-replace", function() {
+    $(document).on("click", ".edit-replace", function () {
         var box = $(this).parents("div[data-index]");
         if (box.hasClass("shelf-tmp-box")) {
             box.removeClass("shelf-tmp-box");
@@ -99,7 +99,7 @@ $(function () {
     });
 
     // 元素左右移动
-    $(document).on("click", ".btn-left,.btn-right", function() {
+    $(document).on("click", ".btn-left,.btn-right", function () {
         // 获取当前模块的列位置
         var box = $(this).parents("div[data-index]");
         var idx1 = $(this).closest(".shelf-data").children("div").length;
@@ -126,7 +126,7 @@ $(function () {
     });
 
     // 元素上下移动
-    $(document).on("click", ".btn-up,.btn-down", function() {
+    $(document).on("click", ".btn-up,.btn-down", function () {
         var box = $(this).parents("div[data-index]");
         var idx1 = $(this).closest(".shelf-data").children("div").length;
         var idx2 = $(this).closest(".shelf-data").find("div[data-index]").length;
@@ -185,7 +185,7 @@ $(function () {
     });
 
     // 获取通屏高度
-    $(document).on("click", ".get-screen-ht-btn", function() {
+    $(document).on("click", ".get-screen-ht-btn", function () {
         var _div = $(".shelf-new-data > div");
         var ht = Math.ceil(_div.size() / lineNum) * _div.outerHeight(true) - (_div.outerHeight(true)-_div.height());
         $(this).closest(".input-group").find("input").val(ht);
@@ -218,7 +218,7 @@ $(function () {
     });
 
     // 手动修改高度
-    $(document).on("focus", "#tm-screen-height, #jd-screen-height", function() {
+    $(document).on("focus", "#tm-screen-height, #jd-screen-height", function () {
         recoverScreenBtnStyle();
     });
 

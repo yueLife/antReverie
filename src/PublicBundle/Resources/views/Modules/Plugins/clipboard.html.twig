@@ -8,9 +8,9 @@
 {# javascripts #}
 {% block ClipJavascripts %}
     <script type="text/javascript">
-        $(function(){
+        $(function (){
             var clip = new Clipboard(ClipBtn);
-            clip.on("success", function() {
+            clip.on("success", function () {
                 if (typeof toastr === "undefined") {
                     alert("复制成功！");
                 }else {
@@ -18,7 +18,7 @@
                 }
             });
 
-            clip.on("error", function() {
+            clip.on("error", function () {
                 if (typeof toastr === "undefined") {
                     alert("复制失败！");
                 }else {

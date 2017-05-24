@@ -17,9 +17,12 @@
                         <i class="iconfont icon-file font-size-20 font-white"></i>
                         <span class="caption-subject bold uppercase"> 我的文件 </span>
                     </div>
-                    <div class="actions">
-                        <a href="#file-upload-modal" class="btn btn-sm default btn-outline" data-toggle="modal">
-                            <i class="iconfont icon-upload"></i> 文件上传 </a>
+                    <div class="tools">
+                        <a href="#file-upload-modal" class="font-white tool-tip" data-toggle="modal" data-placement="top" title="文件上传"><i class="iconfont icon-upload"></i></a>
+                        <a href="javascript:;" class="collapse" data-original-title="折叠/展开"> </a>
+                        <a href="javascript:;" class="reload display-none" data-original-title="刷新"> </a>
+                        <a href="javascript:;" class="fullscreen" data-original-title="全屏"> </a>
+                        <a href="javascript:;" class="remove" data-original-title="移除"> </a>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -32,7 +35,7 @@
                                 <th style="width:80px !important;"> 文件类型 </th>
                                 <th style="width:130px !important;"> 上传时间 </th>
                                 <th style="width:80px !important;"> 操作 </th>
-                                {% spaceless %}
+                                {%- spaceless %}
                                 {% if shelfModels|length > 3 %}
                                     {% set width = shelfModels|length * 65 %}
                                 {% else %}
@@ -105,8 +108,8 @@
     {{ block("datatableJavascripts") }}
     {{ block("fileUpJavascripts") }}
     <script type="text/javascript">
-        var table = datatable($(".my-files-table"));
-        $(function(){
+        var table = datatable($(".my-files-table"), "", true);
+        $(function (){
             $(document).on("click", ".display-model-btn", function () {
                 var _this = $(this);
                 var _btn = _this.closest("td").prevAll("td:eq(3)").children("button");
@@ -121,7 +124,7 @@
                     dataType: "json",
                     data: { "id": _this.attr("data-id") }
                 }).done(function (data) {
-                    setTimeout(function(){
+                    setTimeout(function (){
                         toastr.remove();
                         switch (data["state"]) {
                             case "error":
@@ -134,7 +137,7 @@
                         }
                     }, 2500)
                 }).fail(function () {
-                    setTimeout(function(){
+                    setTimeout(function (){
                         toastr.remove();
                         _btn.attr("class", "btn btn-xs btn-danger").html("错误");
                         toastr.error("未知错误！请重试！", "提示");
@@ -144,6 +147,7 @@
             });
             $(document).on("click", ".delete-file-btn", function () {
                 var td = $(this).closest("tr").children("td");
+                $(".reload").click();
 
                 $.ajax({
                     url: "{{ path("deleteFileAjax") }}",
@@ -163,6 +167,7 @@
             });
             $(document).on("click", ".download-file-btn", function () {
                 var td = $(this).closest("tr").children("td");
+                $(".reload").click();
 
                 $.ajax({
                     url: "{{ path("downloadFileAjax") }}",

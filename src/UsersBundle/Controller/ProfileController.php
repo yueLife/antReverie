@@ -15,9 +15,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-
 /**
  * Class ProfileController
+ *
  * @package UsersBundle\Controller
  * @Route("/profile")
  */
@@ -29,15 +29,16 @@ class ProfileController extends BaseController
      */
     public function showAction()
     {
-        $em = $this->container->get("doctrine")->getManager();
+        $usersEm = $this->container->get("doctrine")->getRepository("UsersBundle:Users");
         $user = $this->container->get('security.context')->getToken()->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException("当前用户没有访问权限！");
         }
 
-        $shops = $user->getShops();
+        $shopsData = $user->getShops();
+        $shop = $usersEm->findCurrentShop($user);
 
-        return $this->container->get("templating")->renderResponse("FOSUserBundle:Profile:show.html.".$this->container->getParameter("fos_user.template.engine"), array("user" => $user));
+        return $this->container->get("templating")->renderResponse("FOSUserBundle:Profile:show.html.".$this->container->getParameter("fos_user.template.engine"), array("shops" => $shopsData, "currentShop" => $shop));
     }
 
     /**
@@ -48,7 +49,7 @@ class ProfileController extends BaseController
      */
     public function userFileAction()
     {
-        $em = $this->container->get("doctrine")->getManager();
+        $usersEm = $this->container->get("doctrine")->getRepository("UsersBundle:Users");
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $filesData = $user->getFiles();
@@ -64,9 +65,7 @@ class ProfileController extends BaseController
             }
         }
 
-        $shop = $em->createQuery("
-              SELECT s FROM ShelfBundle:Shops AS s JOIN ShelfBundle:ShelfUsers AS u WITH s.plat = u.plat AND s.brand = u.brand WHERE u.user = :user"
-        )->setParameter("user", $user)->getSingleResult();
+        $shop = $usersEm->findCurrentShop($user);
         $shelfModelsData = $shop->getModels();
 
         return array(

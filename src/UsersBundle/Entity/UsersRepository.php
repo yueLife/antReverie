@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class UsersRepository extends EntityRepository
 {
+    /**
+     * Find current shop
+     *
+     * @param Entity $user
+     * @return mixed
+     */
+    public function findCurrentShop($user)
+    {
+        return $this->_em->createQuery("
+              SELECT s FROM ShelfBundle:Shops AS s JOIN ShelfBundle:ShelfUsers AS u WITH s.plat = u.plat AND s.brand = u.brand WHERE u.user = :user"
+        )->setParameter("user", $user)->getSingleResult();
+    }
 }

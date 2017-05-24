@@ -15,7 +15,7 @@
 {# javascripts #}
 {% block datatableJavascripts %}
     <script type="text/javascript">
-        function datatable(dom) {
+        function datatable(dom, order = "desc", scrollX = false) {
             return dom.DataTable({
                 "language": {
                     "aria": {
@@ -35,16 +35,16 @@
                         "last": "末页",
                         "first": "首页",
                         "page": "",
-                        "pageOf": "共"
+                        "pageOf": ""
                     }
                 },
 
-                buttons: [],
-                scrollX:        true,
-                deferRender:    true,
+                "buttons": [],
+                "scrollX": scrollX,
+                "deferRender": true,
 
                 "order": [
-                    [0, "desc"]
+                    [0, order]
                 ],
 
                 "lengthMenu": [

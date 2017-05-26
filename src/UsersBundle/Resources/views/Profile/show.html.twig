@@ -18,7 +18,10 @@
     </style>
 {% endblock %}
 
+{% set msg = "以数字、字母和下划线组成的6-12位密码" %}
+
 {% block content %}
+    {{ dump(app.user) }}
     <!-- BEGIN PROFILE SIDEBAR -->
     <div class="profile-sidebar">
         <!-- PORTLET MAIN -->
@@ -31,13 +34,12 @@
             <!-- END SIDEBAR USER TITLE -->
             <!-- SIDEBAR BUTTONS -->
             <div class="profile-userbuttons">
-                <button type="button" class="btn btn-circle green btn-sm"> 修改密码 </button>
-                <button type="button" class="btn btn-circle red btn-sm"> 修改邮箱 </button>
+                <a href="#change-passwd-modal" class="btn btn-circle green btn-sm" data-toggle="modal"> 修改密码 </a>
+                <a href="#change-email-modal" class="btn btn-circle red btn-sm" data-toggle="modal"> 修改邮箱 </a>
             </div>
             <!-- END SIDEBAR BUTTONS -->
             <!-- SIDEBAR MENU -->
-            <div class="profile-usermenu">
-            </div>
+            <div class="profile-usermenu"></div>
             <!-- END MENU -->
         </div>
         <!-- END PORTLET MAIN -->
@@ -100,6 +102,51 @@
         </div>
     </div>
     <!-- END PROFILE CONTENT -->
+
+    <!-- change-passwd-modal -->
+    <div class="modal fade" id="change-passwd-modal" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title"> 修改密码 </h4>
+                </div>
+                <div class="modal-body">
+                    <form action="#" class="form-horizontal change-passwd-form">
+                        <div class="form-body">
+                            {{ metronic.msgFlInput("原密码", "old-passwd", "password", "oldPasswd", "", "请输入原密码", msg) }}
+                            {{ metronic.msgFlInput("新密码", "new-passwd", "password", "newPasswd", "", "请输入新密码", msg) }}
+                            {{ metronic.msgFlInput("确认密码", "re-passwd", "password", "rePasswd", "", "请确认新密码", msg) }}
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
+                    <button type="button" class="btn green change-passwd-btn"> 修改 </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- change-email-modal -->
+    <div class="modal fade" id="change-email-modal" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title"> 修改邮箱 </h4>
+                </div>
+                <div class="modal-body"> Modal body goes here </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn green">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 {% endblock %}
 
 {% block pagePluginsScripts %}
@@ -117,6 +164,7 @@
     <script type="text/javascript">
         var table = datatable($(".user-shops-table"), "asc");
         $(function () {
+            $("#change-passwd-modal").modal("show");
             $(document).on("click", ".use-shop-btn", function () {
                 var currentTr = $(this).closest("tr");
                 var tr = $(".current-shop-btn").closest("tr");
@@ -128,19 +176,38 @@
                     dataType: "json",
                     data: {"shopId": currentTr.children("td:eq(0)").html()}
                 }).done(function (data) {
-                    if (data === "success") {
+                    if (data.state === "success") {
                         toastr.success("修改成功！", "成功");
                         tr.children("td:eq(3)").html(currentTr.children("td:eq(3)").children().detach());
                         currentTr.children("td:eq(2)").html(tr.children("td:eq(2)").children().detach());
-                    } else if (data === "error") {
+                    } else if (data.state === "error") {
                         toastr.error("修改失败！请重试！", "失败");
                     }
-                    console.log(data);
                 }).fail(function () {
                     toastr.error("未知错误！请重试！", "失败");
                 });
             });
-
+            $(document).on("keyup", ".change-passwd-form input", function () {
+                validatePasswd($(this));
+            });
+            $(document).on("click", ".change-passwd-btn", function () {
+                if (checkPasswd($(".change-passwd-form input"))) {
+                    $.ajax({
+                        url: "{{ path("changePasswdAjax") }}",
+                        type: "post",
+                        dataType: "json",
+                        data: $(".change-passwd-form").serialize()
+                    }).done(function (data) {
+                        if (data.state === "success") {
+                            toastr.success("修改成功！", "成功");
+                        } else if (data.state === "error") {
+                            toastr.error(data.msg, "失败");
+                        }
+                    }).fail(function () {
+                        toastr.error("未知错误！请重试！", "失败");
+                    });
+                }
+            });
         })
     </script>
 {% endblock %}

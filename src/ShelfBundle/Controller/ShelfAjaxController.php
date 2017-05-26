@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Class ShelfAjaxController
  *
  * @package ShelfBundle\Controller
- * @Route("/ajax/shelf")
+ * @Route("/shelf/ajax")
  */
 class ShelfAjaxController extends Controller
 {

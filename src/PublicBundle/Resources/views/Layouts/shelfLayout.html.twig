@@ -46,18 +46,18 @@
             <div class="form-body">
                 <div class="col-md-6">
                     {% if cate and cate|slice(3, 5) == "Title" %}
-                        {{ metronic.floatingInput("标题", cate~"-title", "", "title", value.title) }}
+                        {{ metronic.FlInput("标题", "", cate~"-title", "title", value.title) }}
                     {% endif %}
-                    {{ metronic.floatingInput("字体大小", cate~"-size", "", "size", value.size) }}
-                    {{ metronic.floatingInput("字体族科", cate~"-family", "", "family", value.family) }}
+                    {{ metronic.FlInput("字体大小", "", cate~"-size", "size", value.size) }}
+                    {{ metronic.FlInput("字体族科", "", cate~"-family", "family", value.family) }}
                     {{ metronic.colorPick("字体颜色", cate~"-font-color", "color", value.color) }}
                     <div class="form-group form-md-checkboxes">
                         <label> 常用样式 </label>
                         <div class="md-checkbox-inline">
                             {% if value.weight == "bold" %}{% set checked = "checked" %}{% else %}{% set checked = "" %}{% endif %}
-                            {{ metronic.floatingCheckbox("粗体", cate~"-weight", "weight", "bold", checked) }}
+                            {{ metronic.FlCheckbox("粗体", cate~"-weight", "weight", "bold", checked) }}
                             {% if value.italic == "italic" %}{% set checked = "checked" %}{% else %}{% set checked = "" %}{% endif %}
-                            {{ metronic.floatingCheckbox("斜体", cate~"-italic", "italic", "italic", checked) }}
+                            {{ metronic.FlCheckbox("斜体", cate~"-italic", "italic", "italic", checked) }}
                         </div>
                         <div class="md-radio-inline">
                             {% if value.line == "line-through" %}
@@ -67,8 +67,8 @@
                                 {% set lineThrough = "" %}
                                 {% set lineNone = "checked" %}
                             {% endif %}
-                            {{ metronic.floatingRadio("中划线", cate~"-line-through", "line", "line-through", lineThrough) }}
-                            {{ metronic.floatingRadio("没有", cate~"-line-none", "line", "none", lineNone) }}
+                            {{ metronic.FlRadio("中划线", cate~"-line-through", "line", "line-through", lineThrough) }}
+                            {{ metronic.FlRadio("没有", cate~"-line-none", "line", "none", lineNone) }}
                         </div>
                     </div>
                     <button type="button" class="btn dark btn-outline style-use-btn"> 使用 </button>
@@ -79,7 +79,7 @@
     </div>
 {% endmacro %}
 {% macro inputRightGroup(title, anchor, value, btnClass, btn) %}
-    <div class="form-group form-md-line-input form-md-floating-label has-success">
+    <div class="form-group form-md-line-input form-md-floating-label">
         <div class="input-group input-group-sm">
             <div class="input-group-control">
                 <input type="text" id="{{ anchor }}" class="form-control input-sm" name="{{ anchor }}" value="{{ value|default("") }}">

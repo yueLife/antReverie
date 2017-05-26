@@ -19,9 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
  * Class FileController
  *
  * @package PublicBundle\Controller
- * @Route("/files")
+ * @Route("/profile/files")
  */
-class FileController extends Controller
+class FilesController extends Controller
 {
     /**
      * File upload function

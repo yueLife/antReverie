@@ -23,9 +23,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ProfileController extends BaseController
 {
+
     /**
      * Show the user's file
      *
+     * @return mixed
      */
     public function showAction()
     {
@@ -46,6 +48,7 @@ class ProfileController extends BaseController
      *
      * @Route("/files", name="userFile")
      * @Template("UsersBundle::Main/userFile.html.twig")
+     * @return array
      */
     public function userFileAction()
     {
@@ -54,7 +57,7 @@ class ProfileController extends BaseController
 
         $filesData = $user->getFiles();
         foreach ($filesData as $key => $file) {
-            if (!$user->hasRole("ROLE_GOODS") && $file->getFileType() == "goodsFile") {
+            if (!$user->hasRole("ROLE_SHELF") && $file->getFileType() == "goodsFile") {
                 unset($filesData[$key]);
             }
             if (!$user->hasRole("ROLE_WORDS") && $file->getFileType() == "wordsFile") {
@@ -79,6 +82,7 @@ class ProfileController extends BaseController
      *
      * @Route("/allFiles", name="allFiles")
      * @Template("UsersBundle::Main/allFiles.html.twig")
+     * @return array
      */
     public function allFilesAction()
     {
@@ -87,7 +91,7 @@ class ProfileController extends BaseController
         $uploadFilesEm = $em->getRepository("PublicBundle:UploadFiles");
 
         $uploadFilesData = $goodsFilesData = $wordsFilesData = $unusedWordsFileData = [];
-        if ($user->hasRole("ROLE_GOODS")) {
+        if ($user->hasRole("ROLE_SHELF")) {
             $goodsFilesData = $uploadFilesEm->findByFileType("goodsFile");
             $uploadFilesData = array_merge($uploadFilesData, $goodsFilesData);
         }

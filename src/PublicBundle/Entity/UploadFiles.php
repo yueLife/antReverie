@@ -78,6 +78,16 @@ class UploadFiles
      */
     protected $goods;
 
+    /**
+     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\CheckResult", mappedBy="file")
+     */
+    protected $result;
+
+    /**
+     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\UnusedWords", mappedBy="file")
+     */
+    protected $unusedWord;
+
 
     /**
      * UploadFiles constructor.
@@ -292,5 +302,71 @@ class UploadFiles
     public function getGoods()
     {
         return $this->goods;
+    }
+
+    /**
+     * Add result
+     *
+     * @param \WordsBundle\Entity\CheckResult $result
+     * @return UploadFiles
+     */
+    public function addResult(\WordsBundle\Entity\CheckResult $result)
+    {
+        $this->result[] = $result;
+
+        return $this;
+    }
+
+    /**
+     * Remove result
+     *
+     * @param \WordsBundle\Entity\CheckResult $result
+     */
+    public function removeResult(\WordsBundle\Entity\CheckResult $result)
+    {
+        $this->result->removeElement($result);
+    }
+
+    /**
+     * Get result
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * Add unusedWord
+     *
+     * @param \WordsBundle\Entity\UnusedWords $unusedWord
+     * @return UploadFiles
+     */
+    public function addUnusedWord(\WordsBundle\Entity\UnusedWords $unusedWord)
+    {
+        $this->unusedWord[] = $unusedWord;
+
+        return $this;
+    }
+
+    /**
+     * Remove unusedWord
+     *
+     * @param \WordsBundle\Entity\UnusedWords $unusedWord
+     */
+    public function removeUnusedWord(\WordsBundle\Entity\UnusedWords $unusedWord)
+    {
+        $this->unusedWord->removeElement($unusedWord);
+    }
+
+    /**
+     * Get unusedWord
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUnusedWord()
+    {
+        return $this->unusedWord;
     }
 }

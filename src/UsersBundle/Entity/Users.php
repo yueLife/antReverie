@@ -33,7 +33,7 @@ class Users extends BaseUser
     /**
      * @ORM\OneToMany(targetEntity="PublicBundle\Entity\UploadFiles", mappedBy="user")
      */
-    private $files;
+    protected $files;
 
     /**
      * @ORM\ManyToMany(targetEntity="ShelfBundle\Entity\Shops", mappedBy="users")
@@ -43,7 +43,17 @@ class Users extends BaseUser
     /**
      * @ORM\OneToOne(targetEntity="ShelfBundle\Entity\ShelfUsers", mappedBy="user")
      */
-    private $shelfUser;
+    protected $shelfUser;
+
+    /**
+     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\UnusedWords", mappedBy="adder")
+     */
+    protected $addWord;
+
+    /**
+     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\UnusedWords", mappedBy="deleter")
+     */
+    protected $delWord;
 
 
     /**
@@ -161,10 +171,76 @@ class Users extends BaseUser
     /**
      * Get shelfUser
      *
-     * @return \ShelfBundle\Entity\ShelfUsers 
+     * @return \ShelfBundle\Entity\ShelfUsers
      */
     public function getShelfUser()
     {
         return $this->shelfUser;
+    }
+
+    /**
+     * Add addWord
+     *
+     * @param \WordsBundle\Entity\UnusedWords $addWord
+     * @return Users
+     */
+    public function addAddWord(\WordsBundle\Entity\UnusedWords $addWord)
+    {
+        $this->addWord[] = $addWord;
+
+        return $this;
+    }
+
+    /**
+     * Remove addWord
+     *
+     * @param \WordsBundle\Entity\UnusedWords $addWord
+     */
+    public function removeAddWord(\WordsBundle\Entity\UnusedWords $addWord)
+    {
+        $this->addWord->removeElement($addWord);
+    }
+
+    /**
+     * Get addWord
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAddWord()
+    {
+        return $this->addWord;
+    }
+
+    /**
+     * Add delWord
+     *
+     * @param \WordsBundle\Entity\UnusedWords $delWord
+     * @return Users
+     */
+    public function addDelWord(\WordsBundle\Entity\UnusedWords $delWord)
+    {
+        $this->delWord[] = $delWord;
+
+        return $this;
+    }
+
+    /**
+     * Remove delWord
+     *
+     * @param \WordsBundle\Entity\UnusedWords $delWord
+     */
+    public function removeDelWord(\WordsBundle\Entity\UnusedWords $delWord)
+    {
+        $this->delWord->removeElement($delWord);
+    }
+
+    /**
+     * Get delWord
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDelWord()
+    {
+        return $this->delWord;
     }
 }

@@ -21,7 +21,6 @@
 {% set msg = "以数字、字母和下划线组成的6-12位密码" %}
 
 {% block content %}
-    {{ dump(app.user) }}
     <!-- BEGIN PROFILE SIDEBAR -->
     <div class="profile-sidebar">
         <!-- PORTLET MAIN -->
@@ -164,7 +163,6 @@
     <script type="text/javascript">
         var table = datatable($(".user-shops-table"), "asc");
         $(function () {
-            $("#change-passwd-modal").modal("show");
             $(document).on("click", ".use-shop-btn", function () {
                 var currentTr = $(this).closest("tr");
                 var tr = $(".current-shop-btn").closest("tr");

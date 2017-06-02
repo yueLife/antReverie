@@ -46,12 +46,12 @@ class Users extends BaseUser
     protected $shelfUser;
 
     /**
-     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\UnusedWords", mappedBy="adder")
+     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\Words", mappedBy="adder")
      */
     protected $addWord;
 
     /**
-     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\UnusedWords", mappedBy="deleter")
+     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\Words", mappedBy="deleter")
      */
     protected $delWord;
 
@@ -181,10 +181,10 @@ class Users extends BaseUser
     /**
      * Add addWord
      *
-     * @param \WordsBundle\Entity\UnusedWords $addWord
+     * @param \WordsBundle\Entity\Words $addWord
      * @return Users
      */
-    public function addAddWord(\WordsBundle\Entity\UnusedWords $addWord)
+    public function addAddWord(\WordsBundle\Entity\Words $addWord)
     {
         $this->addWord[] = $addWord;
 
@@ -194,9 +194,9 @@ class Users extends BaseUser
     /**
      * Remove addWord
      *
-     * @param \WordsBundle\Entity\UnusedWords $addWord
+     * @param \WordsBundle\Entity\Words $addWord
      */
-    public function removeAddWord(\WordsBundle\Entity\UnusedWords $addWord)
+    public function removeAddWord(\WordsBundle\Entity\Words $addWord)
     {
         $this->addWord->removeElement($addWord);
     }
@@ -214,10 +214,10 @@ class Users extends BaseUser
     /**
      * Add delWord
      *
-     * @param \WordsBundle\Entity\UnusedWords $delWord
+     * @param \WordsBundle\Entity\Words $delWord
      * @return Users
      */
-    public function addDelWord(\WordsBundle\Entity\UnusedWords $delWord)
+    public function addDelWord(\WordsBundle\Entity\Words $delWord)
     {
         $this->delWord[] = $delWord;
 
@@ -227,9 +227,9 @@ class Users extends BaseUser
     /**
      * Remove delWord
      *
-     * @param \WordsBundle\Entity\UnusedWords $delWord
+     * @param \WordsBundle\Entity\Words $delWord
      */
-    public function removeDelWord(\WordsBundle\Entity\UnusedWords $delWord)
+    public function removeDelWord(\WordsBundle\Entity\Words $delWord)
     {
         $this->delWord->removeElement($delWord);
     }

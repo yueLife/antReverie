@@ -3,12 +3,12 @@
 {% use "PublicBundle::Modules/Plugins/datatable.html.twig" %}
 
 {% block pagePluginsStyles %}
-    {{ block("datatablePluginsStyles") }}
-    <link rel="stylesheet" href="{{ asset(GLOBAL~"plugins/bootstrap-fileinput/bootstrap-fileinput.css") }}" type="text/css" />
+    {{- block("datatablePluginsStyles") -}}
+    <link rel="stylesheet" href="{{ asset("Metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css") }}" type="text/css" />
 {% endblock %}
 
 {% block pageStyles %}
-    <link rel="stylesheet" href="{{ asset(PAGES~"css/profile.min.css") }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset("Metronic/pages/css/profile.min.css") }}" type="text/css" />
 {% endblock %}
 
 {% block stylesheets %}
@@ -18,9 +18,8 @@
     </style>
 {% endblock %}
 
-{% set msg = "以数字、字母和下划线组成的6-12位密码" %}
-
 {% block content %}
+    {%- set msg = "以数字、字母和下划线组成的6-12位密码" -%}
     <!-- BEGIN PROFILE SIDEBAR -->
     <div class="profile-sidebar">
         <!-- PORTLET MAIN -->
@@ -85,14 +84,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            {% for shop in shops if shop.del is sameas(false) %}
+                            {%- for shop in shops if shop.del is sameas(false) -%}
                                 <tr>
                                     <td> {{ shop.id }} </td>
                                     <td> {{ shop.shopname }} </td>
-                                    <td>{% if shop == currentShop %}<button type="button" class="btn btn-xs btn-danger current-shop-btn"> 当前 </button>{% endif %}</td>
-                                    <td>{% if shop != currentShop %}<button type="button" class="btn btn-xs green-jungle btn-outline use-shop-btn"> 使用当前店铺 </button>{% endif %}</td>
+                                    <td>{%- if shop == currentShop -%}
+                                            {{- forms.btn("xs", "red", "当前", "current-shop-btn cursor-default") -}}
+                                        {%- endif -%}</td>
+                                    <td>{%- if shop != currentShop -%}
+                                            {{- forms.outlineBtn("xs", "green-jungle", "使用当前店铺", "use-shop-btn") -}}
+                                        {%- endif -%}</td>
                                 </tr>
-                            {% endfor %}
+                            {%- endfor -%}
                             </tbody>
                         </table>
                     </div>
@@ -113,15 +116,15 @@
                 <div class="modal-body">
                     <form action="#" class="form-horizontal change-passwd-form">
                         <div class="form-body">
-                            {{ metronic.msgFlInput("原密码", "old-passwd", "password", "oldPasswd", "", "请输入原密码", msg) }}
-                            {{ metronic.msgFlInput("新密码", "new-passwd", "password", "newPasswd", "", "请输入新密码", msg) }}
-                            {{ metronic.msgFlInput("确认密码", "re-passwd", "password", "rePasswd", "", "请确认新密码", msg) }}
+                            {{- metronic.msgFlInput("原密码", "old-passwd", "password", "oldPasswd", "", "请输入原密码", msg) -}}
+                            {{- metronic.msgFlInput("新密码", "new-passwd", "password", "newPasswd", "", "请输入新密码", msg) -}}
+                            {{- metronic.msgFlInput("确认密码", "re-passwd", "password", "rePasswd", "", "请确认新密码", msg) -}}
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
-                    <button type="button" class="btn green change-passwd-btn"> 修改 </button>
+                    {{- forms.closeModalBtn() -}}
+                    {{- forms.btn("", "green", "修改", "change-passwd-btn") -}}
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -138,8 +141,8 @@
                 </div>
                 <div class="modal-body"> Modal body goes here </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn green">Save changes</button>
+                    {{- forms.closeModalBtn() -}}
+                    {{- forms.btn("", "green", "修改") -}}
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -149,17 +152,17 @@
 {% endblock %}
 
 {% block pagePluginsScripts %}
-    {{ block("datatablePluginsScripts") }}
-    <script src="{{ asset(GLOBAL~"plugins/bootstrap-fileinput/bootstrap-fileinput.js") }}" type="text/javascript"></script>
-    <script src="{{ asset(GLOBAL~"plugins/jquery.sparkline.min.js") }}" type="text/javascript"></script>
+    {{- block("datatablePluginsScripts") -}}
+    <script src="{{ asset("Metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js") }}" type="text/javascript"></script>
+    <script src="{{ asset("Metronic/global/plugins/jquery.sparkline.min.js") }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block pageScripts %}
-    <script src="{{ asset(PAGES~"scripts/profile.min.js") }}" type="text/javascript"></script>
+    <script src="{{ asset("Metronic/pages/scripts/profile.min.js") }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block javascripts %}
-    {{ block("datatableJavascripts") }}
+    {{- block("datatableJavascripts") -}}
     <script type="text/javascript">
         var table = datatable($(".user-shops-table"), "asc");
         $(function () {

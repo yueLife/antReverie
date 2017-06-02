@@ -1,0 +1,33 @@
+{% block baseStylesheets %}
+    <!-- BEGIN GLOBAL PLUGINS STYLES -->
+    <link rel="stylesheet" href="{{ asset("Metronic/global/plugins/font-awesome/css/font-awesome.min.css") }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset("Metronic/global/plugins/simple-line-icons/simple-line-icons.min.css") }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset("Metronic/global/plugins/bootstrap/css/bootstrap.min.css") }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset("Metronic/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css") }}" type="text/css" />
+    <!-- END GLOBAL PLUGINS STYLES -->
+
+    <!-- BEGIN PAGE PLUGINS STYLES -->
+    {% block pagePluginsStyles %}{% endblock %}
+    <!-- END PAGE PLUGINS STYLES -->
+
+    <!-- BEGIN GLOBAL STYLES -->
+    <link rel="stylesheet" href="{{ asset("Metronic/global/plugins/bootstrap-toastr/toastr.min.css") }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset("Metronic/global/css/components-rounded.min.css") }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset("Metronic/global/css/plugins.min.css") }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset("bundles/public/css/global.css") }}" type="text/css">
+    <!-- END GLOBAL STYLES -->
+
+    <!-- BEGIN PAGE STYLES -->
+    {% block pageStyles %}{% endblock %}
+    <!-- END PAGE STYLES -->
+
+    <!-- BEGIN GLOBAL LAYOUT STYLES -->
+    {% block globalLayoutStyles %}
+        <link rel="stylesheet" href="{{ asset("Metronic/layouts/layout4/css/layout.min.css") }}"  type="text/css" />
+        <link rel="stylesheet" href="{{ asset("Metronic/layouts/layout4/css/themes/light.min.css") }}" type="text/css" id="style_color" />
+    {% endblock %}
+    <!-- END GLOBAL LAYOUT STYLES -->
+
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_z1ktoepo8mzk6gvi.css" type="text/css">
+    {% block stylesheets %}{% endblock %}
+{% endblock %}

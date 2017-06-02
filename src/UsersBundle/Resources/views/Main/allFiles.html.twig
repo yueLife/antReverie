@@ -4,8 +4,8 @@
 {% use "PublicBundle::Modules/Plugins/upload.html.twig" %}
 
 {% block pagePluginsStyles %}
-    {{ block("datatablePluginsStyles") }}
-    {{ block("fileUpPluginsStyles") }}
+    {{- block("datatablePluginsStyles") -}}
+    {{- block("fileUpPluginsStyles") -}}
 {% endblock %}
 
 {% block content %}
@@ -38,48 +38,48 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for file in uploadFiles if file.del is sameas(false) %}
+                        {%- for file in uploadFiles if file.del is sameas(false) -%}
                             <tr>
                                 <td>{{ file.id }}</td>
                                 <td data-filename="{{ file.filename }}">{{ file.oldname }}</td>
                                 <td>{{ file.user.username }}</td>
                                 <td>{{ file.uploadTime.date|date("Y-m-d H:i:s") }}</td>
                                 <td>
-                                    {% if file.state == "read" %}
-                                        {% set state = "success" %}
-                                        {% set title = "已读" %}
-                                    {% elseif file.state == "unread" %}
-                                        {% set state = "warning" %}
-                                        {% set title = "未读" %}
-                                    {% elseif file.state == "wrong" %}
-                                        {% set state = "danger" %}
-                                        {% set title = "错误" %}
-                                    {% endif %}
-                                    <button type="button" class="btn btn-xs btn-{{ state }}">{{ title }}</button>
+                                    {%- if file.state == "read" -%}
+                                        {%- set state = "success" -%}
+                                        {%- set title = "已读" -%}
+                                    {%- elseif file.state == "unread" -%}
+                                        {%- set state = "warning" -%}
+                                        {%- set title = "未读" -%}
+                                    {%- elseif file.state == "wrong" -%}
+                                        {%- set state = "danger" -%}
+                                        {%- set title = "错误" -%}
+                                    {%- endif %}
+                                    {{- forms.btn("xs", "btn-"~state, title, "cursor-default") -}}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-xs default green-meadow-stripe download-file-btn">下载</button>
+                                    {{- forms.stripeBtn("xs", "green-meadow", "下载", "download-file-btn") -}}
                                 </td>
                             </tr>
-                        {% endfor %}
+                        {%- endfor -%}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    {% set chooseFile = true %}
-    {{ block("uploadModal") }}
+    {%- set chooseFile = true -%}
+    {{- block("uploadModal") -}}
 {% endblock %}
 
 {% block pagePluginsScripts %}
-    {{ block("datatablePluginsScripts") }}
-    {{ block("fileUpPluginsScripts") }}
+    {{- block("datatablePluginsScripts") -}}
+    {{- block("fileUpPluginsScripts") -}}
 {% endblock %}
 
 {% block javascripts %}
-    {{ block("datatableJavascripts") }}
-    {{ block("fileUpJavascripts") }}
+    {{- block("datatableJavascripts") -}}
+    {{- block("fileUpJavascripts") -}}
     <script type="text/javascript">
         var table = datatable($(".all-files-table"));
         $(function (){
@@ -105,8 +105,8 @@
             });
         });
         function addNewFile(file){
-            state = '<button type="button" class="btn btn-xs btn-warning"> 未读 </button>';
-            operate = '<button type="button" class="btn btn-xs default green-meadow-stripe download-file-btn"> 下载 </button>';
+            state = '{{- forms.btn("xs", "btn-warning", "未读", "cursor-default") -}}';
+            operate = '{{- forms.stripeBtn("xs", "green-meadow", "下载", "download-file-btn") -}}';
             var tr = addRow(table, [file.id, file.name, "{{ app.user.username }}", file.uploadTime, state, operate]);
             tr.find("td:eq(1)").attr("data-filename", file.filename);
         }

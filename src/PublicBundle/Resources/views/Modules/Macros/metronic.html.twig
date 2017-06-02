@@ -1,29 +1,29 @@
 {# Metronic Floating Labels #}
-{% macro input(anchor, type, name, value, placeholder) %}
+{%- macro input(anchor, type, name, value, placeholder) -%}
     <input type="{{ type|default("text") }}" id="{{ anchor }}" class="form-control" name="{{ name }}" value="{{ value|default("") }}" placeholder="{{ placeholder|default("") }}">
-{% endmacro %}
+{%- endmacro -%}
 
-{% macro FlInput(title, anchor, type, name, value, placeholder) %}
-    {% import _self as self %}
+{%- macro FlInput(title, anchor, type, name, value, placeholder) %}
+    {%- import _self as self -%}
     <div class="form-group form-md-line-input form-md-floating-label">
-        {{ self.input(anchor, type, name, value, placeholder) }}
+        {{- self.input(anchor, type, name, value, placeholder) -}}
         <label for="{{ anchor }}"> {{ title }} </label>
     </div>
-{% endmacro %}
+{%- endmacro -%}
 
-{% macro msgFlInput(title, anchor, type, name, value, placeholder, message) %}
-    {% import _self as self %}
+{%- macro msgFlInput(title, anchor, type, name, value, placeholder, message) -%}
+    {%- import _self as self -%}
     <div class="form-group form-md-line-input">
         <label class="col-md-3 control-label" for="{{ anchor }}"> {{ title }} </label>
         <div class="col-md-9">
-            {{ self.input(anchor, type, name, value, placeholder) }}
+            {{- self.input(anchor, type, name, value, placeholder) -}}
             <div class="form-control-focus"> </div>
             <span class="help-block"> {{ message }} </span>
         </div>
     </div>
-{% endmacro %}
+{%- endmacro -%}
 
-{% macro FlCheckbox(title, anchor, name, value, checked) %}
+{%- macro FlCheckbox(title, anchor, name, value, checked) -%}
     <div class="md-checkbox">
         <input type="checkbox" id="{{ anchor }}" class="md-check" name="{{ name }}" value="{{ value }}" {% if checked %}checked{% endif %}>
         <label for="{{ anchor }}">
@@ -31,9 +31,9 @@
             <span class="check"></span>
             <span class="box"></span> {{ title }} </label>
     </div>
-{% endmacro %}
+{%- endmacro -%}
 
-{% macro FlRadio(title, anchor, name, value, checked) %}
+{%- macro FlRadio(title, anchor, name, value, checked) -%}
     <div class="md-radio">
         <input type="radio" id="{{ anchor }}" class="md-radiobtn" name="{{ name }}" value="{{ value }}" {% if checked %}checked{% endif %}>
         <label for="{{ anchor }}">
@@ -41,12 +41,12 @@
             <span class="check"></span>
             <span class="box"></span> {{ title }} </label>
     </div>
-{% endmacro %}
+{%- endmacro -%}
 
 {# Must Use ColorPick #}
-{% macro colorPick(title, anchor, name, value) %}
+{%- macro colorPick(title, anchor, name, value) -%}
     <div class="form-group form-md-line-input form-md-floating-label padding-top">
         <label for="{{ anchor }}"> {{ title }} </label>
         <input type="text" id="{{ anchor }}" class="form-control color-pick" name="{{ name }}" value="#{{ value }}" data-position="bottom right" >
     </div>
-{% endmacro %}
+{%- endmacro -%}

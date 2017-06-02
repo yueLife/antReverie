@@ -1,37 +1,37 @@
 {% extends 'knp_menu.html.twig' %}
 
-{% macro attributes(attributes) %}
-    {% for name, value in attributes %}
+{%- macro attributes(attributes) -%}
+    {%- for name, value in attributes -%}
         {%- if value is not none and value is not same as(false) -%}
             {{- ' %s="%s"'|format(name, value is same as(true) ? name|e : value|e)|raw -}}
         {%- endif -%}
     {%- endfor -%}
-{% endmacro %}
+{%- endmacro -%}
 
 {% block root %}
-    {% set listAttributes = item.childrenAttributes %}
+    {%- set listAttributes = item.childrenAttributes -%}
     <div class="page-sidebar-wrapper">
         <div class="page-sidebar navbar-collapse collapse">
-            {{ block('list') -}}
+            {{- block('list') -}}
         </div>
     </div>
 {% endblock %}
 
 {% block list %}
-    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
-        <ul class="{% if item.children.0.hasChildren %}page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200{% else %}sub-menu{% endif %}">
-            {{ block('children') }}
+    {%- if item.hasChildren and options.depth is not same as(0) and item.displayChildren -%}
+        <ul class="{%- if item.children.0.hasChildren -%}page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200{%- else -%}sub-menu{%- endif -%}">
+            {{- block('children') -}}
         </ul>
-    {% endif %}
+    {%- endif -%}
 {% endblock %}
 
 {% block linkElement %}
-    {% import _self as knp_menu %}
-    <li class="nav-item start {% if matcher.isCurrent(item) %}active open{%- endif %}">
+    {%- import _self as knp_menu -%}
+    <li class="nav-item start {% if matcher.isCurrent(item) -%}active open{%- endif -%}">
         <a href="{{ item.uri }}" class="nav-link "{{ knp_menu.attributes(item.linkAttributes) }}>
             <i class="iconfont icon-{{ item.getExtra('icon') }}"></i>
-            <span class="title">{{ block('label') }}</span>
-            {% if matcher.isCurrent(item) %}<span class="selected"></span>{%- endif %}
+            <span class="title">{{- block('label') -}}</span>
+            {%- if matcher.isCurrent(item) -%}<span class="selected"></span>{%- endif -%}
         </a>
     </li>
 {% endblock %}
@@ -39,8 +39,8 @@
 {% block spanElement %}
     <a href="javascript:;" class="nav-link nav-toggle">
         <i class="iconfont icon-{{ item.getExtra('icon') }}"></i>
-        <span class="title">{{ block('label') }}</span>
+        <span class="title">{{- block('label') -}}</span>
         <span class="selected"></span>
-        <span class="arrow{% for child in item.children if matcher.isCurrent(child) %} open{% endfor %}"></span>
+        <span class="arrow {% for child in item.children if matcher.isCurrent(child) -%}open{%- endfor -%}"></span>
     </a>
 {% endblock %}

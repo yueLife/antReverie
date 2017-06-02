@@ -79,14 +79,14 @@ class UploadFiles
     protected $goods;
 
     /**
-     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\CheckResult", mappedBy="file")
+     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\WordsResult", mappedBy="file")
      */
     protected $result;
 
     /**
-     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\UnusedWords", mappedBy="file")
+     * @ORM\OneToMany(targetEntity="WordsBundle\Entity\Words", mappedBy="file")
      */
-    protected $unusedWord;
+    protected $words;
 
 
     /**
@@ -307,10 +307,10 @@ class UploadFiles
     /**
      * Add result
      *
-     * @param \WordsBundle\Entity\CheckResult $result
+     * @param \WordsBundle\Entity\WordsResult $result
      * @return UploadFiles
      */
-    public function addResult(\WordsBundle\Entity\CheckResult $result)
+    public function addResult(\WordsBundle\Entity\WordsResult $result)
     {
         $this->result[] = $result;
 
@@ -320,9 +320,9 @@ class UploadFiles
     /**
      * Remove result
      *
-     * @param \WordsBundle\Entity\CheckResult $result
+     * @param \WordsBundle\Entity\WordsResult $result
      */
-    public function removeResult(\WordsBundle\Entity\CheckResult $result)
+    public function removeResult(\WordsBundle\Entity\WordsResult $result)
     {
         $this->result->removeElement($result);
     }
@@ -338,35 +338,35 @@ class UploadFiles
     }
 
     /**
-     * Add unusedWord
+     * Add words
      *
-     * @param \WordsBundle\Entity\UnusedWords $unusedWord
+     * @param \WordsBundle\Entity\Words $words
      * @return UploadFiles
      */
-    public function addUnusedWord(\WordsBundle\Entity\UnusedWords $unusedWord)
+    public function addWord(\WordsBundle\Entity\Words $words)
     {
-        $this->unusedWord[] = $unusedWord;
+        $this->words[] = $words;
 
         return $this;
     }
 
     /**
-     * Remove unusedWord
+     * Remove words
      *
-     * @param \WordsBundle\Entity\UnusedWords $unusedWord
+     * @param \WordsBundle\Entity\Words $words
      */
-    public function removeUnusedWord(\WordsBundle\Entity\UnusedWords $unusedWord)
+    public function removeWord(\WordsBundle\Entity\Words $words)
     {
-        $this->unusedWord->removeElement($unusedWord);
+        $this->words->removeElement($words);
     }
 
     /**
-     * Get unusedWord
+     * Get words
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getUnusedWord()
+    public function getWords()
     {
-        return $this->unusedWord;
+        return $this->words;
     }
 }

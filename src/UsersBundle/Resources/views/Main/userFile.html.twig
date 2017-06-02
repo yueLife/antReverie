@@ -4,8 +4,8 @@
 {% use "PublicBundle::Modules/Plugins/upload.html.twig" %}
 
 {% block pagePluginsStyles %}
-    {{ block("datatablePluginsStyles") }}
-    {{ block("fileUpPluginsStyles") }}
+    {{- block("datatablePluginsStyles") -}}
+    {{- block("fileUpPluginsStyles") -}}
 {% endblock %}
 
 {% block content %}
@@ -35,78 +35,79 @@
                                 <th style="width:80px !important;"> 文件类型 </th>
                                 <th style="width:130px !important;"> 上传时间 </th>
                                 <th style="width:80px !important;"> 操作 </th>
-                                {%- spaceless %}
-                                {% if shelfModels|length > 3 %}
-                                    {% set width = shelfModels|length * 65 %}
-                                {% else %}
-                                    {% set width = 200 %}
-                                {% endif %}
-                                {% endspaceless -%}
+                                {%- if shelfModels|length > 3 -%}
+                                    {%- set width = shelfModels|length * 65 -%}
+                                {%- else -%}
+                                    {%- set width = 200 -%}
+                                {%- endif -%}
                                 <th style="width:{{ width }}px !important;"> 功能 </th>
                             </tr>
                         </thead>
                         <tbody>
-                        {% for file in uploadFiles if file.del is sameas(false) %}
+                        {%- for file in uploadFiles if file.del is sameas(false) -%}
                             <tr>
                                 <td> {{ file.id }} </td>
                                 <td data-filename="{{ file.filename }}"> {{ file.oldname }} </td>
                                 <td>
-                                    {% if file.state == "read" %}
-                                        {% set state = "success" %}
-                                        {% set title = "已读" %}
-                                    {% elseif file.state == "unread" %}
-                                        {% set state = "warning" %}
-                                        {% set title = "未读" %}
-                                    {% elseif file.state == "wrong" %}
-                                        {% set state = "danger" %}
-                                        {% set title = "错误" %}
-                                    {% endif %}
-                                    <button type="button" class="btn btn-xs btn-{{ state }}"> {{ title }} </button>
+                                    {%- if file.state == "read" -%}
+                                        {%- set state = "success" -%}
+                                        {%- set title = "已读" -%}
+                                    {%- elseif file.state == "unread" -%}
+                                        {%- set state = "warning" -%}
+                                        {%- set title = "未读" -%}
+                                    {%- elseif file.state == "wrong" -%}
+                                        {%- set state = "danger" -%}
+                                        {%- set title = "错误" -%}
+                                    {%- endif -%}
+                                    {{- forms.btn("xs", "btn-"~state, title, "cursor-default") -}}
                                 </td>
                                 <td>
-                                    {% if file.fileType == "goodsFile" %}
+                                    {%- if file.fileType == "goodsFile" -%}
                                         货架文件
-                                    {% elseif file.fileType == "wordsFile" %}
+                                    {%- elseif file.fileType == "wordsFile" -%}
                                         检测文件
-                                    {% elseif file.fileType == "unusedWordsFile" %}
+                                    {%- elseif file.fileType == "unusedWordsFile" -%}
                                         禁词文件
-                                    {% endif %}
+                                    {%- endif -%}
                                 </td>
-                                <td> {{ file.uploadTime.date|date("Y-m-d H:i:s") }} </td>
+                                <td> {{- file.uploadTime.date|date("Y-m-d H:i:s") -}} </td>
                                 <td>
-                                    <button type="button" class="btn btn-xs default red-stripe delete-file-btn"> 删除 </button><button type="button" class="btn btn-xs default green-meadow-stripe download-file-btn"> 下载 </button>
+                                    {{- forms.stripeBtn("xs", "red", "删除", "delete-file-btn") -}}
+                                    {{- forms.stripeBtn("xs", "green-meadow", "下载", "download-file-btn") -}}
                                 </td>
                                 <td>
-                                    {% if file.fileType == "goodsFile" %}
-                                        {% for m in shelfModels if m.del is sameas(false) -%}
+                                    {%- if file.fileType == "goodsFile" -%}
+                                        {%- for m in shelfModels if m.del is sameas(false) -%}
                                         <a class="btn btn-link btn-xs font-size-14 display-model-btn" data-id="{{ file.id }}" data-route="{{ m.route }}"> {{ m.title }} </a>
-                                        {%- endfor %}
-                                    {% elseif file.fileType == "wordsFile" %}
-                                        <a class="btn btn-link btn-xs font-size-14"> 检测文件 </a>
-                                    {% elseif file.fileType == "unusedWordsFile" %}
-                                        <a class="btn btn-link btn-xs font-size-14  detect-file-btn"> 读取文件 </a>
-                                    {% endif %}
+                                        {%- endfor -%}
+                                    {%- elseif file.fileType == "wordsFile" -%}
+                                        {{- forms.btn("xs", "btn-link", "检测文件", "font-size-14 detect-file-btn") -}}
+                                        <a href="#" class="btn btn-link btn-xs font-size-14"> 下载检测后文件 </a>
+                                    {%- elseif file.fileType == "unusedWordsFile" -%}
+                                        {{- forms.btn("xs", "btn-link", "读取文件", "font-size-14 read-file-btn") -}}
+                                        <a href="{{ path("words") }}" class="btn btn-link btn-xs font-size-14"> 查看禁词 </a>
+                                    {%- endif -%}
                                 </td>
                             </tr>
-                        {% endfor %}
+                        {%- endfor -%}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    {% set chooseFile = true %}
-    {{ block("uploadModal") }}
+    {%- set chooseFile = true -%}
+    {{- block("uploadModal") -}}
 {% endblock %}
 
 {% block pagePluginsScripts %}
-    {{ block("datatablePluginsScripts") }}
-    {{ block("fileUpPluginsScripts") }}
+    {{- block("datatablePluginsScripts") -}}
+    {{- block("fileUpPluginsScripts") -}}
 {% endblock %}
 
 {% block javascripts %}
-    {{ block("datatableJavascripts") }}
-    {{ block("fileUpJavascripts") }}
+    {{- block("datatableJavascripts") -}}
+    {{- block("fileUpJavascripts") -}}
     <script type="text/javascript">
         var table = datatable($(".my-files-table"), "", true);
         $(function (){
@@ -189,32 +190,32 @@
                 });
             });
             /* Words User Javascript */
-            $(document).on("click", ".detect-file-btn", function () {
+            $(document).on("click", ".read-file-btn", function () {
                 var _this = $(this);
                 var id = parseInt(_this.closest("tr").children("td").eq(0).html());
                 var _btn = _this.closest("td").prevAll("td:eq(3)").children("button");
 
-//                toastr.info("正在读取文件，请稍后...", "提示", {
-//                    positionClass: "toast-top-center",
-//                    timeOut: "3000"
-//                });
+                toastr.info("正在读取文件，请稍后...", "提示", {
+                    positionClass: "toast-top-center",
+                    timeOut: "3000"
+                });
                 $.ajax({
                     url: "{{ path("readWordsFileDataAjax") }}",
                     type: "post",
                     dataType: "json",
                     data: { "id": id }
                 }).done(function (data) {
-//                    setTimeout(function (){
-//                        toastr.remove();
-//                        switch (data["state"]) {
-//                            case "error":
-//                                _btn.attr("class", "btn btn-xs btn-danger").html("错误");
-//                                toastr.error(data["message"], "提示"); break;
-//                            case "success":
-//                                _btn.attr("class", "btn btn-xs btn-success").html("已读");
-//                                toastr.success(data["message"], "提示"); break;
-//                        }
-//                    }, 2500)
+                    setTimeout(function (){
+                        toastr.remove();
+                        switch (data["state"]) {
+                            case "error":
+                                _btn.attr("class", "btn btn-xs btn-danger").html("错误");
+                                toastr.error(data["message"], "提示"); break;
+                            case "success":
+                                _btn.attr("class", "btn btn-xs btn-success").html("已读");
+                                toastr.success(data["message"], "提示"); break;
+                        }
+                    }, 2500)
                     console.log(data);
                 }).fail(function () {
                     setTimeout(function (){
@@ -227,21 +228,21 @@
             });
         });
         function addNewFile(file){
-            state = '<button type="button" class="btn btn-xs btn-warning"> 未读 </button>';
-            operate = '<button type="button" class="btn btn-xs default red-stripe delete-file-btn"> 删除 </button><button type="button" class="btn btn-xs default green-meadow-stripe download-file-btn"> 下载 </button>';
+            state = '{{- forms.btn("xs", "btn-warning", "未读", "cursor-default") -}}';
+            operate = '{{- forms.stripeBtn("xs", "red", "删除", "delete-file-btn") -}}{{- forms.stripeBtn("xs", "green-meadow", "下载", "download-file-btn") -}}';
 
             switch (file.fileType) {
                 case "goodsFile":
                     fileType = "货架文件";
-                    func = '{% for m in shelfModels if m.del is sameas(false)  %}<a class="btn btn-link btn-xs font-size-14 display-model-btn" data-route="{{ m.route }}"> {{ m.title }} </a>{% endfor %}';
+                    func = '{%- for m in shelfModels if m.del is sameas(false)  -%}<a class="btn btn-link btn-xs font-size-14 display-model-btn" data-route="{{ m.route }}"> {{ m.title }} </a>{%- endfor -%}';
                     break;
                 case "wordsFile":
                     fileType = "检测文件";
-                    func = '<a class="btn btn-link btn-xs font-size-14"> 检测文件 </a>';
+                    func = '{{- forms.btn("xs", "btn-link", "检测文件", "font-size-14 detect-file-btn") -}}<a href="#" class="btn btn-link btn-xs font-size-14"> 下载检测后文件 </a>';
                     break;
                 case "unusedWordsFile":
                     fileType = "禁词文件";
-                    func = '<a class="btn btn-link btn-xs font-size-14"> 读取文件 </a>';
+                    func = '{{- forms.btn("xs", "btn-link", "读取文件", "font-size-14 read-file-btn") -}}<a href="{{ path("words") }}" class="btn btn-link btn-xs font-size-14"> 查看禁词 </a>';
                     break;
                 default :
                     fileType = "未知文件";

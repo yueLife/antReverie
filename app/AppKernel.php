@@ -19,11 +19,12 @@ class AppKernel extends Kernel
             // Third Bundle
             new FOS\UserBundle\FOSUserBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             new PublicBundle\PublicBundle(),
             new UsersBundle\UsersBundle(),
             new AdminBundle\AdminBundle(),
-            new WordsBundle\WordsBundle(),
             new ShelfBundle\ShelfBundle(),
+            new WordsBundle\WordsBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

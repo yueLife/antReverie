@@ -1,11 +1,37 @@
-{% macro input(type, id, class, name, value='', placeholder='') %}
+{%- macro input(type, id, class, name, value='', placeholder='') -%}
     <input type="{{ type|default('text') }}" id="{{ id }}" class="{{ class|default('form-control placeholder-no-fix form-group') }}" name="{{ name }}" value="{{ value }}" placeholder="{{ placeholder }}" autocomplete="off" />
-{% endmacro input %}
+{%- endmacro input -%}
 
-{% macro colInput(type, id, class, name, value, placeholder)%}
-    {% import _self as forms %}
-
+{%- macro colInput(type, id, class, name, value, placeholder) -%}
+    {%- import _self as forms -%}
     <div class="col-sm-6 col-xs-12">
-        {{ forms.input(type, id, class, name, value, placeholder) }}
+        {{- forms.input(type, id, class, name, value, placeholder) -}}
     </div>
-{% endmacro colInput %}
+{%- endmacro colInput -%}
+
+{# Button #}
+{%- macro defaultBtn(size, colorType, title, class, data) -%}
+    <button type="button" class="btn {{ size|default("") }} {{ colorType }} {{ class|default("") }}"{%- for k,v in data %} {{ k }}="{{ v }}"{%- endfor -%}> {{ title }} </button>
+{%- endmacro -%}
+
+{%- macro btn(size, color, title, class, data) -%}
+    {%- import _self as forms -%}
+    {{- forms.defaultBtn("btn-"~size, color, title, class, data) -}}
+{%- endmacro -%}
+
+{%- macro stripeBtn(size, color, title, class, data) -%}
+    {%- import _self as forms -%}
+    {{- forms.defaultBtn("btn-"~size, color~"-stripe", title, class, data) -}}
+{%- endmacro -%}
+
+{%- macro outlineBtn(size, color, title, class, data) -%}
+    {%- import _self as forms -%}
+    {{- forms.defaultBtn("btn-"~size, color~" btn-outline", title, class, data) -}}
+{%- endmacro -%}
+
+{%- macro closeModalBtn() -%}
+    {%- import _self as forms -%}
+    {%- set outlineData = {"data-dismiss":"modal"} -%}
+    {{- forms.outlineBtn("", "dark btn-outline", "关闭", "", outlineData) -}}
+{%- endmacro -%}
+

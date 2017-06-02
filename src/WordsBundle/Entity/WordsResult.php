@@ -5,12 +5,12 @@ namespace WordsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CheckResult
+ * WordsResult
  *
- * @ORM\Table(name="sy_check_result")
- * @ORM\Entity(repositoryClass="WordsBundle\Entity\CheckResultRepository")
+ * @ORM\Table(name="sy_words_result")
+ * @ORM\Entity(repositoryClass="WordsBundle\Entity\WordsResultRepository")
  */
-class CheckResult
+class WordsResult
 {
     /**
      * @var integer
@@ -59,7 +59,7 @@ class CheckResult
 
 
     /**
-     * CheckResult constructor.
+     * WordsResult constructor.
      */
     public function __construct()
     {
@@ -80,7 +80,7 @@ class CheckResult
      * Set file
      *
      * @param \PublicBundle\Entity\UploadFiles $file
-     * @return CheckResult
+     * @return WordsResult
      */
     public function setFile(\PublicBundle\Entity\UploadFiles $file = null)
     {
@@ -102,7 +102,7 @@ class CheckResult
      * Set sheet
      *
      * @param string $sheet
-     * @return CheckResult
+     * @return WordsResult
      */
     public function setSheet($sheet)
     {
@@ -125,7 +125,7 @@ class CheckResult
      * Set cell
      *
      * @param string $cell
-     * @return CheckResult
+     * @return WordsResult
      */
     public function setCell($cell)
     {
@@ -148,7 +148,7 @@ class CheckResult
      * Set word
      *
      * @param string $word
-     * @return CheckResult
+     * @return WordsResult
      */
     public function setWord($word)
     {
@@ -171,7 +171,7 @@ class CheckResult
      * Set createTime
      *
      * @param \DateTime $createTime
-     * @return CheckResult
+     * @return WordsResult
      */
     public function setCreateTime($createTime)
     {

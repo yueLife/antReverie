@@ -34,9 +34,9 @@ function validatePasswd(input) {
     } else if (!patrn.exec(input.val())) {
         arr = ["error", "success", "您的密码长度必须为数字、字母或下划线!"];
     } else {
-        arr = ["success","error",  "{{ msg }}"];
+        arr = ["success","error",  "以数字、字母和下划线组成的6-12位密码"];
     }
-    input.closest("div.form-group").addClass("has-" + arr[0]).removeClass("has-" + arr[1]).find(".help-block").html(arr[2]);
+    input.focus().closest("div.form-group").addClass("has-" + arr[0]).removeClass("has-" + arr[1]).find(".help-block").html(arr[2]);
 }
 function checkPasswd(input){
     var val = [], arr = [];
@@ -49,7 +49,7 @@ function checkPasswd(input){
     }
     if (val[1] !== val[2]) {
         arr = ["error", "success", "您输入的两次密码不一致，请重新输入！"];
-        input.eq(2).closest("div.form-group").addClass("has-" + arr[0]).removeClass("has-" + arr[1]).find(".help-block").html(arr[2]);
+        input.eq(2).focus().closest("div.form-group").addClass("has-" + arr[0]).removeClass("has-" + arr[1]).find(".help-block").html(arr[2]);
         return false;
     }
 
@@ -73,4 +73,20 @@ toastr.options = {
     "hideEasing": "linear",
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
+};
+
+Date.prototype.Format = function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
 };

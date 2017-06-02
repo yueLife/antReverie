@@ -5,12 +5,12 @@ namespace WordsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * UnusedWords
+ * Words
  *
- * @ORM\Table(name="sy_unused_words")
- * @ORM\Entity(repositoryClass="WordsBundle\Entity\UnusedWordsRepository")
+ * @ORM\Table(name="sy_words")
+ * @ORM\Entity(repositoryClass="WordsBundle\Entity\WordsRepository")
  */
-class UnusedWords
+class Words
 {
     /**
      * @var integer
@@ -24,14 +24,14 @@ class UnusedWords
     /**
      * @var string
      *
-     * @ORM\Column(name="word", type="string", length=255)
+     * @ORM\Column(name="word", type="string", length=255, unique=true)
      */
     private $word;
 
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="PublicBundle\Entity\UploadFiles", inversedBy="unusedWord")
+     * @ORM\ManyToOne(targetEntity="PublicBundle\Entity\UploadFiles", inversedBy="words")
      * @ORM\JoinColumn(name="fid", referencedColumnName="id")
      */
     private $file;
@@ -55,7 +55,7 @@ class UnusedWords
      * @var integer
      *
      * @ORM\ManyToOne(targetEntity="UsersBundle\Entity\Users", inversedBy="delWord")
-     * @ORM\JoinColumn(name="deleter_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="deleter_id", referencedColumnName="id", nullable=true)
      */
     private $deleter;
 
@@ -75,7 +75,7 @@ class UnusedWords
 
 
     /**
-     * UnusedWords constructor.
+     * Words constructor.
      */
     public function __construct()
     {
@@ -96,7 +96,7 @@ class UnusedWords
      * Set word
      *
      * @param string $word
-     * @return UnusedWords
+     * @return Words
      */
     public function setWord($word)
     {
@@ -119,7 +119,7 @@ class UnusedWords
      * Set adder
      *
      * @param \UsersBundle\Entity\Users $adder
-     * @return UnusedWords
+     * @return Words
      */
     public function setAdder(\UsersBundle\Entity\Users $adder = null)
     {
@@ -142,7 +142,7 @@ class UnusedWords
      * Set addTime
      *
      * @param \DateTime $addTime
-     * @return UnusedWords
+     * @return Words
      */
     public function setAddTime($addTime)
     {
@@ -165,7 +165,7 @@ class UnusedWords
      * Set deleter
      *
      * @param \UsersBundle\Entity\Users $deleter
-     * @return UnusedWords
+     * @return Words
      */
     public function setDeleter(\UsersBundle\Entity\Users $deleter = null)
     {
@@ -188,7 +188,7 @@ class UnusedWords
      * Set delTime
      *
      * @param \DateTime $delTime
-     * @return UnusedWords
+     * @return Words
      */
     public function setDelTime($delTime)
     {
@@ -211,7 +211,7 @@ class UnusedWords
      * Set del
      *
      * @param boolean $del
-     * @return UnusedWords
+     * @return Words
      */
     public function setDel($del)
     {
@@ -234,7 +234,7 @@ class UnusedWords
      * Set file
      *
      * @param \PublicBundle\Entity\UploadFiles $file
-     * @return UnusedWords
+     * @return Words
      */
     public function setFile(\PublicBundle\Entity\UploadFiles $file = null)
     {

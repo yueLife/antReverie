@@ -8,12 +8,12 @@
 
 namespace WordsBundle\Controller;
 
-use Doctrine\ORM\TransactionRequiredException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use WordsBundle\Entity\Words;
 
 /**
  * Class WordsAjaxController
@@ -28,7 +28,7 @@ class WordsAjaxController extends Controller
     private $limit = 100;
     private $root;
     private $message = array(
-        "success" => array("state" => "success", "message" =>"文件读取成功！正在跳转..."),
+        "success" => array("state" => "success", "message" =>"文件读取成功！"),
         "notFound" => array("state" => "error", "message" =>"文件读取失败，请重新上传！"),
         "readFailed" => array("state" => "error", "message" =>"文件读取失败，请重试！"),
         "dataWrong" => array("state" => "error", "message" =>"文件数据内容错误，请检查后重新上传！"),
@@ -53,10 +53,9 @@ class WordsAjaxController extends Controller
     {
         $this->em = $this->getDoctrine()->getManager();
         $uploadFilesEm = $this->em->getRepository("PublicBundle:UploadFiles");
-        $unusedWordsEm = $this->em->getRepository("WordsBundle:UnusedWords");
 
         $this->fileData = $uploadFilesEm->findOneById($request->get("id"));
-        if ($this->fileData->getState() == "unread" && !count($this->fileData->getGoods())) {
+        if ($this->fileData->getState() == "unread" && !count($this->fileData->getWords())) {
             $this->root = $_SERVER["DOCUMENT_ROOT"]."/Uploads/files/";
             switch (pathinfo($this->fileData->getFilename(), PATHINFO_EXTENSION)) {
                 case "csv":
@@ -84,7 +83,31 @@ class WordsAjaxController extends Controller
      */
     public function getExcelDataFunc()
     {
-        return $this->fileData->getFilename();
+        $wordsEm = $this->em->getRepository("WordsBundle:Words");
+        $excelFile = $this->root.$this->fileData->getFilename();
+        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject($excelFile);
+
+        $sheetCount = $phpExcelObject->getSheetCount();
+        for ($i = 0,$num = 0; $i < $sheetCount; $i++) {
+            $sheet = $phpExcelObject->setActiveSheetIndex($i);
+            $sheetName = $sheet->getTitle();
+            $cellCol = $sheet->getCellCollection();
+
+            if (count($cellCol) > 0) {
+                foreach ($cellCol as $k => $v) {
+                    $inWord = $sheet->getCell($v)->getValue();
+                    if (count($wordsEm->findOneByWord($inWord))) continue;
+
+                    $newWord = new Words();
+                    $newWord->setWord($inWord)->setAdder($this->getUser())->setFile($this->fileData);
+                    $this->em->persist($newWord);
+                    $this->em->flush();
+                }
+            }
+            $this->fileData->setState("read");
+            $this->em->flush();
+        }
+        return $this->message["success"];
     }
 
     /**
@@ -95,5 +118,28 @@ class WordsAjaxController extends Controller
     public function getCsvDataFunc()
     {
         return $this->fileData->getFilename();
+    }
+
+    /**
+     * @Route("/delRecoverWord", name="delRecoverWordAjax")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function delRecoverWordAjax(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $wordData = $em->getRepository("WordsBundle:Words")
+            ->findOneBy(array("id" => $request->get("id")));
+
+        if (!$wordData) return new JsonResponse("error");
+
+        if ($wordData->getDel()) {
+            $wordData->setDel($operate = false)->setAdder($this->getUser())->setAddTime(new \DateTime());
+        }else{
+            $wordData->setDel($operate = true)->setDeleter($this->getUser())->setDelTime(new \DateTime());
+        }
+        $em->flush();
+
+        return new JsonResponse(array("state" => "success", "operate" => $operate));
     }
 }

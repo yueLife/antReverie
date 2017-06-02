@@ -22,5 +22,18 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class WordsController extends Controller
 {
-
+    /**
+     * Show all words
+     *
+     * @Route("", name="words")
+     * @Template("WordsBundle::Main/words.html.twig")
+     * @return array
+     */
+    public function wordsAction()
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $wordsEm = $em->getRepository("WordsBundle:Words");
+        $wordsData = $wordsEm->findAll();
+        return array("words" => $wordsData);
+    }
 }

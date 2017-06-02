@@ -3,11 +3,11 @@
 {% use "PublicBundle::Modules/Plugins/clipboard.html.twig" %}
 {% use "PublicBundle::Modules/Plugins/colorPick.html.twig" %}
 
-{% block pagePluginsStyles %}{{ block("CPPluginsStyles") }}{% endblock %}
+{% block pagePluginsStyles %}{{- block("CPPluginsStyles") -}}{% endblock %}
 
 {% block pageStyles %}
-    <link rel="stylesheet" href="{{ asset(SHELF_CSS~route|replace({"_": "/", "_Model": "_Model"})~".css") }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset(SHELF_CSS~"shelfContent.css") }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset("bundles/shelf/css/"~route|replace({"_": "/", "_Model": "_Model"})~".css") }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset("bundles/shelf/css/shelfContent.css") }}" type="text/css" />
 {% endblock %}
 
 {% block stylesheets %}
@@ -45,35 +45,44 @@
             <input type="text" class="display-hide" name="cate" value="{{ cate }}">
             <div class="form-body">
                 <div class="col-md-6">
-                    {% if cate and cate|slice(3, 5) == "Title" %}
-                        {{ metronic.FlInput("标题", "", cate~"-title", "title", value.title) }}
-                    {% endif %}
-                    {{ metronic.FlInput("字体大小", "", cate~"-size", "size", value.size) }}
-                    {{ metronic.FlInput("字体族科", "", cate~"-family", "family", value.family) }}
-                    {{ metronic.colorPick("字体颜色", cate~"-font-color", "color", value.color) }}
+                    {%- if cate and cate|slice(3, 5) == "Title" -%}
+                        {{- metronic.FlInput("标题", "", cate~"-title", "title", value.title) -}}
+                    {%- endif -%}
+                    {{- metronic.FlInput("字体大小", "", cate~"-size", "size", value.size) -}}
+                    {{- metronic.FlInput("字体族科", "", cate~"-family", "family", value.family) -}}
+                    {{- metronic.colorPick("字体颜色", cate~"-font-color", "color", value.color) -}}
                     <div class="form-group form-md-checkboxes">
                         <label> 常用样式 </label>
                         <div class="md-checkbox-inline">
-                            {% if value.weight == "bold" %}{% set checked = "checked" %}{% else %}{% set checked = "" %}{% endif %}
-                            {{ metronic.FlCheckbox("粗体", cate~"-weight", "weight", "bold", checked) }}
-                            {% if value.italic == "italic" %}{% set checked = "checked" %}{% else %}{% set checked = "" %}{% endif %}
-                            {{ metronic.FlCheckbox("斜体", cate~"-italic", "italic", "italic", checked) }}
+                            {%- if value.weight == "bold" -%}
+                                {%- set checked = "checked" -%}
+                            {%- else -%}
+                                {%- set checked = "" -%}
+                            {%- endif -%}
+                            {{- metronic.FlCheckbox("粗体", cate~"-weight", "weight", "bold", checked) -}}
+
+                            {%- if value.italic == "italic" -%}
+                                {%- set checked = "checked" -%}
+                            {%- else -%}
+                                {%- set checked = "" -%}
+                            {%- endif -%}
+                            {{- metronic.FlCheckbox("斜体", cate~"-italic", "italic", "italic", checked) -}}
                         </div>
                         <div class="md-radio-inline">
-                            {% if value.line == "line-through" %}
-                                {% set lineThrough = "checked" %}
-                                {% set lineNone = "" %}
-                            {% else %}
-                                {% set lineThrough = "" %}
-                                {% set lineNone = "checked" %}
-                            {% endif %}
-                            {{ metronic.FlRadio("中划线", cate~"-line-through", "line", "line-through", lineThrough) }}
-                            {{ metronic.FlRadio("没有", cate~"-line-none", "line", "none", lineNone) }}
+                            {%- if value.line == "line-through" -%}
+                                {%- set lineThrough = "checked" -%}
+                                {%- set lineNone = "" -%}
+                            {%- else -%}
+                                {%- set lineThrough = "" -%}
+                                {%- set lineNone = "checked" -%}
+                            {%- endif -%}
+                            {{- metronic.FlRadio("中划线", cate~"-line-through", "line", "line-through", lineThrough) -}}
+                            {{- metronic.FlRadio("没有", cate~"-line-none", "line", "none", lineNone) -}}
                         </div>
                     </div>
                     <button type="button" class="btn dark btn-outline style-use-btn"> 使用 </button>
                 </div>
-                {{ self.preview(cate~"-title-preview", cate~"-text-preview", cate) }}
+                {{- self.preview(cate~"-title-preview", cate~"-text-preview", cate) -}}
             </div>
         </form>
     </div>
@@ -93,7 +102,7 @@
 {% endmacro %}
 {% macro screen(self, plat, start, end, active) %}
     <div class="tab-pane {{ plat }}-screen fade {{ active }}" data-plat="{{ plat }}">
-        {{ self.inputRightGroup("通屏高度", plat~"-screen-height", 6400, "get-screen-ht-btn", "获取高度") }}
+        {{- self.inputRightGroup("通屏高度", plat~"-screen-height", 6400, "get-screen-ht-btn", "获取高度") -}}
         <div class="form-group form-md-line-input form-md-floating-label">
             <textarea id="{{ plat }}-screen-start" class="form-control no-resize" rows="4" readonly>{{ start }}</textarea>
             <label for="{{ plat }}-screen-start"> 通屏代码开头 </label>
@@ -106,11 +115,159 @@
     </div>
 {% endmacro %}
 
-{% set p = option.personal %}
-{% set s = option.shelf %}
+{%- set p = option.personal -%}
+{%- set s = option.shelf -%}
 
 {% block content %}
-    {% import _self as self %}
+    {%- import _self as self -%}
+    <div class="modal fade bs-modal-lg" id="general-settings-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="tabbable-line tabs-below">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <ul class="nav nav-tabs">
+                            {{- layouts.liTabPane("display-model-tab", "model-format", "其他模板", "active") -}}
+                            {{- layouts.liTabPane("create-code-tab", "edit", "生成代码") -}}
+                            {{- layouts.liTabPane("edit-style-tab", "spanner", "设置样式") -}}
+                            {{- layouts.liTabPane("set-tag-tab", "tag", "设置标签") -}}
+                            {{- layouts.liTabPane("add-screen-tab", "screen", "添加通屏") -}}
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade display-model-tab active in">
+                                <div style="height:350px;">
+                                    <table class="table mb10">
+                                        <tr><th> 其他样式模板 </th></tr>
+                                    </table>
+                                    {%- for key,m in option.models if m.del is sameas(false) -%}
+                                        <div class="col-md-3">
+                                            <a href="{{ path("displayModel", {"id": id, "route": m.route}) }}">{{ m.title }}</a>
+                                        </div>
+                                    {%- endfor -%}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade create-code-tab">
+                                <div style="height:350px;">
+                                    <div class="row">
+                                        <textarea class="form-control code-textarea no-resize" rows="18"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade edit-style-tab">
+                                <div style="height:350px;">
+                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <ul class="nav nav-tabs tabs-left">
+                                            {{- layouts.liTabPane("actTitle-tab", "", "活动标题", "active") -}}
+                                            {{- layouts.liTabPane("actPrice-tab", "", "活动价格") -}}
+                                            {{- layouts.liTabPane("couTitle-tab", "", "优惠标题") -}}
+                                            {{- layouts.liTabPane("couPrice-tab", "", "优惠价格") -}}
+                                            {{- layouts.liTabPane("tagTitle-tab", "", "吊牌标题") -}}
+                                            {{- layouts.liTabPane("tagPrice-tab", "", "吊牌价格") -}}
+                                            {{- layouts.liTabPane("other-color-tab", "", "其他颜色") -}}
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <div class="tab-content">
+                                            {{- self.styleForm(metronic, self, "actTitle", p.style.actTitle, "active in") -}}
+                                            {{- self.styleForm(metronic, self, "actPrice", p.style.actPrice) -}}
+                                            {{- self.styleForm(metronic, self, "couTitle", p.style.couTitle) -}}
+                                            {{- self.styleForm(metronic, self, "couPrice", p.style.couPrice) -}}
+                                            {{- self.styleForm(metronic, self, "tagTitle", p.style.tagTitle) -}}
+                                            {{- self.styleForm(metronic, self, "tagPrice", p.style.tagPrice) -}}
+                                            <div class="tab-pane other-color-tab fade">
+                                                <form role="form" data-cate="otherColor">
+                                                    <input type="text" class="display-hide" name="cate" value="otherColor">
+                                                    <div class="form-body">
+                                                        <div class="col-md-6">
+                                                            {{- metronic.colorPick("主标题颜色", "main-title-color", "mainTitleColor", p.mainTitleColor) -}}
+                                                            {{- metronic.colorPick("整体背景颜色", "bg-color", "bgColor", p.bgColor) -}}
+                                                            {{- forms.outlineBtn("", "dark btn-outline", "使用", "mt10 style-use-btn") -}}
+
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            {{- metronic.colorPick("副标题颜色", "sub-title-color", "subTitleColor", p.subTitleColor) -}}
+                                                            {{- metronic.colorPick("单个背景颜色", "box-color", "boxColor", p.boxColor) -}}
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade set-tag-tab">
+                                <div style="height:350px;">
+                                    <div class="col-md-6">
+                                        <div class="tag-img-div"><img src="{{ option.imgList.saleOut }}" alt="售罄图片" class="cursor-pointer" data-name="saleOut"></div>
+                                        <div class="tag-input-div display-hide">
+                                            {{- self.inputRightGroup("售罄图片", "saleOut", option.imgList.saleOut, "ch-tag-img-btn", "替换") -}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="tag-img-div">
+                                            <div><img src="{{ option.imgList.firstImg }}" alt="备用标签1" class="cursor-pointer" data-name="firstImg"></div>
+                                            <div><img src="{{ option.imgList.secondImg }}" alt="备用标签2" class="cursor-pointer" data-name="secondImg"></div>
+                                            <div><img src="{{ option.imgList.thirdImg }}" alt="备用标签3" class="cursor-pointer" data-name="thirdImg"></div>
+                                            <div><img src="{{ option.imgList.fourthImg }}" alt="备用标签4" class="cursor-pointer" data-name="fourthImg"></div>
+                                            <div><img src="{{ option.imgList.fifthImg }}" alt="备用标签5" class="cursor-pointer" data-name="fifthImg"></div>
+                                        </div>
+                                        <div class="tag-input-div display-hide">
+                                            {{- self.inputRightGroup("备用标签1", "firstImg", option.imgList.firstImg, "ch-tag-img-btn", "替换") -}}
+                                            {{- self.inputRightGroup("备用标签2", "secondImg", option.imgList.secondImg, "ch-tag-img-btn", "替换") -}}
+                                            {{- self.inputRightGroup("备用标签3", "thirdImg", option.imgList.thirdImg, "ch-tag-img-btn", "替换") -}}
+                                            {{- self.inputRightGroup("备用标签4", "fourthImg", option.imgList.fourthImg, "ch-tag-img-btn", "替换") -}}
+                                            {{- self.inputRightGroup("备用标签5", "fifthImg", option.imgList.fifthImg, "ch-tag-img-btn", "替换") -}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade add-screen-tab">
+                                <div style="height:350px;">
+                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <ul class="nav nav-tabs tabs-left">
+                                            {{- layouts.liTabPane("tm-screen", "", "天猫通屏", "active in") -}}
+                                            {{- layouts.liTabPane("jd-screen", "", "京东通屏") -}}
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <div class="tab-content">
+                                            {{- self.screen(self, "tm", '<div style="height:6400px;"><div class="sn-simple-logo" style="width:1920px;height:6400px;border:none;padding:0;top:auto;left:50%;"><div class="sn-simple-logo" style="width:1920px;height:6400px;border:none;padding:0;top:auto;left:-960px;"><div style="margin:0 auto;">', "</div></div></div></div>", "active in") -}}
+                                            {{- self.screen(self, "jd", '<div style="width:1920px; height:6400px; background:rgba(255,255,255,1)"><div style=" width:1200px; height:6400px; margin:0 auto;"><div style="margin:0 auto;">', "</div></div></div>") -}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="tab-content">
+                        <div class="tab-pane display-model-tab active">
+                            {{- forms.closeModalBtn() -}}
+                        </div>
+                        <div class="tab-pane create-code-tab">
+                            {%- set copyBtnData = {"data-clipboard-target":".code-textarea"} -%}
+                            {{- forms.outlineBtn("", "dark btn-outline", "复制代码", "copy-code-btn", copyBtnData) -}}
+                            {{- forms.closeModalBtn() -}}
+                        </div>
+                        <div class="tab-pane edit-style-tab">
+                            {{- forms.closeModalBtn() -}}
+                        </div>
+                        <div class="tab-pane set-tag-tab">
+                            {{- forms.outlineBtn("", "dark btn-outline", "替换", "show-tag-img-btn") -}}
+                            {{- forms.closeModalBtn() -}}
+                        </div>
+                        <div class="tab-pane add-screen-tab">
+                            {{- forms.closeModalBtn() -}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- general-settings-modal -->
     <div class="portlet light">
         <div class="portlet-body">
             <div id="shelf" style="overflow:auto;">
@@ -148,165 +305,20 @@
             </div>
         </div>
     </div>
-
-    <!-- general-settings-modal -->
-    <div class="modal fade bs-modal-lg" id="general-settings-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="tabbable-line tabs-below">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                        <ul class="nav nav-tabs">
-                            {{ layouts.liTabPane("display-model-tab", "model-format", "其他模板", "active") }}
-                            {{ layouts.liTabPane("create-code-tab", "edit", "生成代码") }}
-                            {{ layouts.liTabPane("edit-style-tab", "spanner", "设置样式") }}
-                            {{ layouts.liTabPane("set-tag-tab", "tag", "设置标签") }}
-                            {{ layouts.liTabPane("add-screen-tab", "screen", "添加通屏") }}
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane fade display-model-tab active in">
-                                <div style="height:350px;">
-                                    <table class="table mb10">
-                                        <tr><th> 其他样式模板 </th></tr>
-                                    </table>
-                                    {% for key,m in option.models if m.del is sameas(false) %}
-                                    <div class="col-md-3">
-                                        <a href="{{ path("displayModel", {"id": id, "route": m.route}) }}">{{ m.title }}</a>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <div class="tab-pane fade create-code-tab">
-                                <div style="height:350px;">
-                                    <div class="row">
-                                        <textarea class="form-control code-textarea no-resize" rows="18"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade edit-style-tab">
-                                <div style="height:350px;">
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                        <ul class="nav nav-tabs tabs-left">
-                                            {{ layouts.liTabPane("actTitle-tab", "", "活动标题", "active") }}
-                                            {{ layouts.liTabPane("actPrice-tab", "", "活动价格") }}
-                                            {{ layouts.liTabPane("couTitle-tab", "", "优惠标题") }}
-                                            {{ layouts.liTabPane("couPrice-tab", "", "优惠价格") }}
-                                            {{ layouts.liTabPane("tagTitle-tab", "", "吊牌标题") }}
-                                            {{ layouts.liTabPane("tagPrice-tab", "", "吊牌价格") }}
-                                            {{ layouts.liTabPane("other-color-tab", "", "其他颜色") }}
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <div class="tab-content">
-                                            {{ self.styleForm(metronic, self, "actTitle", p.style.actTitle, "active in") }}
-                                            {{ self.styleForm(metronic, self, "actPrice", p.style.actPrice) }}
-                                            {{ self.styleForm(metronic, self, "couTitle", p.style.couTitle) }}
-                                            {{ self.styleForm(metronic, self, "couPrice", p.style.couPrice) }}
-                                            {{ self.styleForm(metronic, self, "tagTitle", p.style.tagTitle) }}
-                                            {{ self.styleForm(metronic, self, "tagPrice", p.style.tagPrice) }}
-                                            <div class="tab-pane other-color-tab fade">
-                                                <form role="form" data-cate="otherColor">
-                                                    <input type="text" class="display-hide" name="cate" value="otherColor">
-                                                    <div class="form-body">
-                                                        <div class="col-md-6">
-                                                            {{ metronic.colorPick("主标题颜色", "main-title-color", "mainTitleColor", p.mainTitleColor) }}
-                                                            {{ metronic.colorPick("整体背景颜色", "bg-color", "bgColor", p.bgColor) }}
-                                                            <button type="button" class="btn dark btn-outline mt10 style-use-btn"> 使用 </button>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            {{ metronic.colorPick("副标题颜色", "sub-title-color", "subTitleColor", p.subTitleColor) }}
-                                                            {{ metronic.colorPick("单个背景颜色", "box-color", "boxColor", p.boxColor) }}
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade set-tag-tab">
-                                <div style="height:350px;">
-                                    <div class="col-md-6">
-                                        <div class="tag-img-div"><img src="{{ option.imgList.saleOut }}" alt="售罄图片" class="cursor-pointer" data-name="saleOut"></div>
-                                        <div class="tag-input-div display-hide">
-                                            {{ self.inputRightGroup("售罄图片", "saleOut", option.imgList.saleOut, "ch-tag-img-btn", "替换") }}
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="tag-img-div">
-                                            <div><img src="{{ option.imgList.firstImg }}" alt="备用标签1" class="cursor-pointer" data-name="firstImg"></div>
-                                            <div><img src="{{ option.imgList.secondImg }}" alt="备用标签2" class="cursor-pointer" data-name="secondImg"></div>
-                                            <div><img src="{{ option.imgList.thirdImg }}" alt="备用标签3" class="cursor-pointer" data-name="thirdImg"></div>
-                                            <div><img src="{{ option.imgList.fourthImg }}" alt="备用标签4" class="cursor-pointer" data-name="fourthImg"></div>
-                                            <div><img src="{{ option.imgList.fifthImg }}" alt="备用标签5" class="cursor-pointer" data-name="fifthImg"></div>
-                                        </div>
-                                        <div class="tag-input-div display-hide">
-                                        {{ self.inputRightGroup("备用标签1", "firstImg", option.imgList.firstImg, "ch-tag-img-btn", "替换") }}
-                                        {{ self.inputRightGroup("备用标签2", "secondImg", option.imgList.secondImg, "ch-tag-img-btn", "替换") }}
-                                        {{ self.inputRightGroup("备用标签3", "thirdImg", option.imgList.thirdImg, "ch-tag-img-btn", "替换") }}
-                                        {{ self.inputRightGroup("备用标签4", "fourthImg", option.imgList.fourthImg, "ch-tag-img-btn", "替换") }}
-                                        {{ self.inputRightGroup("备用标签5", "fifthImg", option.imgList.fifthImg, "ch-tag-img-btn", "替换") }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade add-screen-tab">
-                                <div style="height:350px;">
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                        <ul class="nav nav-tabs tabs-left">
-                                            {{ layouts.liTabPane("tm-screen", "", "天猫通屏", "active") }}
-                                            {{ layouts.liTabPane("jd-screen", "", "京东通屏") }}
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <div class="tab-content">
-                                            {{ self.screen(self, "tm", '<div style="height:6400px;"><div class="sn-simple-logo" style="width:1920px;height:6400px;border:none;padding:0;top:auto;left:50%;"><div class="sn-simple-logo" style="width:1920px;height:6400px;border:none;padding:0;top:auto;left:-960px;"><div style="margin:0 auto;">', "</div></div></div></div>", "active in") }}
-                                            {{ self.screen(self, "tm", '<div style="width:1920px; height:6400px; background:rgba(255,255,255,1)"><div style=" width:1200px; height:6400px; margin:0 auto;"><div style="margin:0 auto;">', "</div></div></div>") }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="tab-content">
-                        <div class="tab-pane display-model-tab active">
-                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
-                        </div>
-                        <div class="tab-pane create-code-tab">
-                            <button type="button" class="btn dark btn-outline copy-code-btn" data-clipboard-target=".code-textarea"> 复制代码 </button>
-                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
-                        </div>
-                        <div class="tab-pane edit-style-tab">
-                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
-                        </div>
-                        <div class="tab-pane set-tag-tab">
-                            <button type="button" class="btn dark btn-outline show-tag-img-btn"> 替换 </button>
-                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
-                        </div>
-                        <div class="tab-pane add-screen-tab">
-                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"> 关闭 </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}
 
 {% block pagePluginsScripts %}
-    {{ block("ClipPluginsScripts") }}
-    {{ block("CPPluginsScripts") }}
+    {{- block("ClipPluginsScripts") -}}
+    {{- block("CPPluginsScripts") -}}
 {% endblock %}
 
 {% block pageScripts %}
-    <script src="{{ asset(SHELF_JS~"shelfContent.js") }}" type="text/javascript"></script>
+    <script src="{{ asset("bundles/shelf/js/shelfContent.js") }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block javascripts %}
-    {{ block("ClipJavascripts") }}
-    {{ block("CPJavascripts") }}
+    {{- block("ClipJavascripts") -}}
+    {{- block("CPJavascripts") -}}
     <script type="text/javascript">
         var lineNum = {{ model.lineNum|default(3) }};
         $(function () {

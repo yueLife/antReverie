@@ -70,9 +70,9 @@ $(function () {
 
         var editTmp = '';
         editTmp += '<div class="edit-tool" style="width:' + bw + 'px;height:' + bh + 'px;">';
-        editTmp += '<button type="button" class="btn btn-default tool-btn edit-sale-out"> 售罄 </button>';
-        editTmp += '<button type="button" class="btn btn-default tool-btn edit-delete"> 移除 </button>';
-        editTmp += '<button type="button" class="btn btn-default tool-btn edit-replace"> 替换 </button>';
+        editTmp += '{{ forms.btn("", "btn-default", "售罄", "tool-btn edit-sale-out")}}';
+        editTmp += '{{ forms.btn("", "btn-default", "移除", "tool-btn edit-delete")}}';
+        editTmp += '{{ forms.btn("", "btn-default", "替换", "tool-btn edit-replace")}}';
         for (var i = 0; i < 4; i++) {
             editTmp += '<button type="button" class="btn green tool-arrow-btn btn-' + arr[i] + '"><span class="icon icon-angle-' + arr[i] + '"></span></button>';
         }

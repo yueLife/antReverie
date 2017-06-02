@@ -17,7 +17,6 @@
 
 # Parameters
 /app/config/parameters.yml
-/app/config/generalParameters.yml
 /app/config/parameters.ini
 
 # Managed by Composer

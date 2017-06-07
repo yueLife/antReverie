@@ -31,14 +31,14 @@ class ProfileController extends BaseController
      */
     public function showAction()
     {
-        $usersEm = $this->container->get("doctrine")->getRepository("UsersBundle:Users");
+        $usersRepo = $this->container->get("doctrine")->getRepository("UsersBundle:Users");
         $user = $this->container->get('security.context')->getToken()->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException("当前用户没有访问权限！");
         }
 
         $shopsData = $user->getShops();
-        $shop = $usersEm->findCurrentShop($user);
+        $shop = $usersRepo->findCurrentShop($user);
 
         return $this->container->get("templating")->renderResponse("FOSUserBundle:Profile:show.html.".$this->container->getParameter("fos_user.template.engine"), array("shops" => $shopsData, "currentShop" => $shop));
     }
@@ -52,7 +52,7 @@ class ProfileController extends BaseController
      */
     public function userFileAction()
     {
-        $usersEm = $this->container->get("doctrine")->getRepository("UsersBundle:Users");
+        $usersRepo = $this->container->get("doctrine")->getRepository("UsersBundle:Users");
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $filesData = $user->getFiles();
@@ -60,15 +60,15 @@ class ProfileController extends BaseController
             if (!$user->hasRole("ROLE_SHELF") && $file->getFileType() == "goodsFile") {
                 unset($filesData[$key]);
             }
-            if (!$user->hasRole("ROLE_WORDS") && $file->getFileType() == "wordsFile") {
+            if (!$user->hasRole("ROLE_WORDS") && $file->getFileType() == "detectionFile") {
                 unset($filesData[$key]);
             }
-            if (!$user->hasRole("ROLE_WORDS") && $file->getFileType() == "unusedWordsFile") {
+            if (!$user->hasRole("ROLE_WORDS") && $file->getFileType() == "wordsFile") {
                 unset($filesData[$key]);
             }
         }
 
-        $shop = $usersEm->findCurrentShop($user);
+        $shop = $usersRepo->findCurrentShop($user);
         $shelfModelsData = $shop->getModels();
 
         return array(
@@ -88,17 +88,17 @@ class ProfileController extends BaseController
     {
         $em = $this->container->get("doctrine")->getManager();
         $user = $this->container->get('security.context')->getToken()->getUser();
-        $uploadFilesEm = $em->getRepository("PublicBundle:UploadFiles");
+        $uploadFilesRepo = $em->getRepository("PublicBundle:UploadFiles");
 
-        $uploadFilesData = $goodsFilesData = $wordsFilesData = $unusedWordsFileData = [];
+        $uploadFilesData = $goodsFilesData = $detectionFileData = $wordsFileData = [];
         if ($user->hasRole("ROLE_SHELF")) {
-            $goodsFilesData = $uploadFilesEm->findByFileType("goodsFile");
+            $goodsFilesData = $uploadFilesRepo->findBy(array("fileType" => "goodsFile"));
             $uploadFilesData = array_merge($uploadFilesData, $goodsFilesData);
         }
         if ($user->hasRole("ROLE_WORDS")) {
-            $wordsFilesData = $uploadFilesEm->findByFileType("wordsFile");
-            $unusedWordsFileData = $uploadFilesEm->findByFileType("unusedWordsFile");
-            $uploadFilesData = array_merge($uploadFilesData, $wordsFilesData, $unusedWordsFileData);
+            $detectionFileData = $uploadFilesRepo->findBy(array("fileType" => "detectionFile"));
+            $wordsFileData = $uploadFilesRepo->findBy(array("fileType" => "wordsFile"));
+            $uploadFilesData = array_merge($uploadFilesData, $detectionFileData, $wordsFileData);
         }
 
         return array(

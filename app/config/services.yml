@@ -19,3 +19,6 @@ services:
     #UploadHandle
     UploadHandlerService:
         class: PublicBundle\Services\UploadHandlerService
+
+    GetMessageService:
+        class: PublicBundle\Services\GetMessageService

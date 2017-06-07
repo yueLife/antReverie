@@ -32,17 +32,13 @@ class ProfileAjaxController extends Controller
     public function changeUserShopAjax(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $shopsEm = $em->getRepository("ShelfBundle:Shops");
-        $shelfUsersEm = $em->getRepository("ShelfBundle:ShelfUsers");
-        if (!$request->get("shopId")) {
-            return new JsonResponse("error");
-        }
-        $shopData = $shopsEm->findOneById($request->get("shopId"));
-        $brand = $shopData->getBrand();
-        $plat = $shopData->getPlat();
+        $shopsRepo = $em->getRepository("ShelfBundle:Shops");
+        $shelfUsersRepo = $em->getRepository("ShelfBundle:ShelfUsers");
+        if (!$request->get("shopId")) return new JsonResponse("error");
 
-        $shelfUserData = $shelfUsersEm->findOneByUser($this->getUser());
-        $shelfUserData->setPlat($plat)->setBrand($brand);
+        $shopData = $shopsRepo->findOneById($request->get("shopId"));
+        $shelfUserData = $shelfUsersRepo->findOneByUser($this->getUser());
+        $shelfUserData->setPlat($shopData->getPlat())->setBrand($shopData->getBrand());
         $em->flush();
 
         return new JsonResponse(array('state' => 'success'));
@@ -59,9 +55,7 @@ class ProfileAjaxController extends Controller
     {
         $validation = $this->validatePasswdFunc($request->get("oldPasswd"), $request->get("newPasswd"), $request->get("rePasswd"));
 
-        if ($validation["state"] === "error") {
-            return new JsonResponse($validation);
-        }
+        if ($validation["state"] === "error") return new JsonResponse($validation);
 
         $em = $this->getDoctrine()->getManager();
         $options = array('cost' => 13, 'salt' => $this->getUser()->getSalt());

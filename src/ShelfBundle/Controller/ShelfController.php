@@ -33,25 +33,25 @@ class ShelfController extends Controller
     public function displayModelAction($id, $route)
     {
         $em = $this->getDoctrine()->getManager();
-        $uploadFilesEm = $em->getRepository("PublicBundle:UploadFiles");
-        $fileGoodsData = $uploadFilesEm->findOneById($id)->getGoods();
+        $uploadFilesRepo = $em->getRepository("PublicBundle:UploadFiles");
+        $goodsData = $uploadFilesRepo->findOneBy(array("id" => $id))->getGoods();
 
         $shelfUserData = $this->getUser()->getShelfUser();
         $option["personal"] = json_decode($shelfUserData->getPersonal());
         $option["imgList"] = json_decode($shelfUserData->getImgList());
         $option["plat"] = json_decode($shelfUserData->getPlat()->getUrl());
 
-        $shelfModelsEm = $em->getRepository("ShelfBundle:ShelfModels");
-        $modelsData = $shelfModelsEm->findOneByRoute($route);
+        $shelfModelsRepo = $em->getRepository("ShelfBundle:ShelfModels");
+        $modelsData = $shelfModelsRepo->findOneBy(array("route" => $route));
         $option["shelf"] = json_decode($modelsData->getStyle());
-        $option["models"] = $shelfModelsEm->findByShop($modelsData->getShop());
+        $option["models"] = $shelfModelsRepo->findBy(array("shop" => $modelsData->getShop()));
 
         return $this->render(
             "ShelfBundle::Models/".$route.".html.twig",
             array(
                 "id" => $id,
                 "route" => $route,
-                "fileGoods" => $fileGoodsData,
+                "fileGoods" => $goodsData,
                 "option" => $option
             )
         );

@@ -32,8 +32,8 @@ class WordsController extends Controller
     public function wordsAction()
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $wordsEm = $em->getRepository("WordsBundle:Words");
-        $wordsData = $wordsEm->findAll();
+        $wordsRepo = $em->getRepository("WordsBundle:Words");
+        $wordsData = $wordsRepo->findAll();
         return array("words" => $wordsData);
     }
 }

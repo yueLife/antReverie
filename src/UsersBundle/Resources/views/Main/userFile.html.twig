@@ -50,23 +50,23 @@
                                 <td data-filename="{{ file.filename }}"> {{ file.oldname }} </td>
                                 <td>
                                     {%- if file.state == "read" -%}
-                                        {%- set state = "success" -%}
+                                        {%- set state = "green-meadow" -%}
                                         {%- set title = "已读" -%}
                                     {%- elseif file.state == "unread" -%}
-                                        {%- set state = "warning" -%}
+                                        {%- set state = "yellow-lemon" -%}
                                         {%- set title = "未读" -%}
                                     {%- elseif file.state == "wrong" -%}
-                                        {%- set state = "danger" -%}
+                                        {%- set state = "red" -%}
                                         {%- set title = "错误" -%}
                                     {%- endif -%}
-                                    {{- forms.btn("xs", "btn-"~state, title, "cursor-default") -}}
+                                    {{- forms.btn("xs", state, title, "cursor-default") -}}
                                 </td>
                                 <td>
                                     {%- if file.fileType == "goodsFile" -%}
                                         货架文件
-                                    {%- elseif file.fileType == "wordsFile" -%}
+                                    {%- elseif file.fileType == "detectionFile" -%}
                                         检测文件
-                                    {%- elseif file.fileType == "unusedWordsFile" -%}
+                                    {%- elseif file.fileType == "wordsFile" -%}
                                         禁词文件
                                     {%- endif -%}
                                 </td>
@@ -80,11 +80,11 @@
                                         {%- for m in shelfModels if m.del is sameas(false) -%}
                                         <a class="btn btn-link btn-xs font-size-14 display-model-btn" data-id="{{ file.id }}" data-route="{{ m.route }}"> {{ m.title }} </a>
                                         {%- endfor -%}
+                                    {%- elseif file.fileType == "detectionFile" -%}
+                                        {{- forms.btn("xs", "btn-link", "检测文件", "font-size-14 read-detect-file-btn") -}}
+                                        {{- forms.btn("xs", "btn-link", "下载标记文件", "font-size-14 download-mark-file-btn") -}}
                                     {%- elseif file.fileType == "wordsFile" -%}
-                                        {{- forms.btn("xs", "btn-link", "检测文件", "font-size-14 detect-file-btn") -}}
-                                        <a href="#" class="btn btn-link btn-xs font-size-14"> 下载检测后文件 </a>
-                                    {%- elseif file.fileType == "unusedWordsFile" -%}
-                                        {{- forms.btn("xs", "btn-link", "读取文件", "font-size-14 read-file-btn") -}}
+                                        {{- forms.btn("xs", "btn-link", "读取文件", "font-size-14 read-words-file-btn") -}}
                                         <a href="{{ path("words") }}" class="btn btn-link btn-xs font-size-14"> 查看禁词 </a>
                                     {%- endif -%}
                                 </td>
@@ -155,15 +155,15 @@
             /* Shelf User Javascript */
             $(document).on("click", ".display-model-btn", function () {
                 var _this = $(this);
-                var id = parseInt(_this.closest("tr").children("td").eq(0).html());
-                var _btn = _this.closest("td").prevAll("td:eq(3)").children("button");
+                var td = $(this).closest("tr").find("td");
+                var id = parseInt(td.eq(0).html());
 
                 toastr.info("正在读取文件，请稍后...", "提示", {
                     positionClass: "toast-top-center",
                     timeOut: "3000"
                 });
                 $.ajax({
-                    url: "{{ path("getShelfFileDataAjax") }}",
+                    url: "{{ path("readShelfFileAjax") }}",
                     type: "post",
                     dataType: "json",
                     data: { "id": id }
@@ -172,28 +172,26 @@
                         toastr.remove();
                         switch (data["state"]) {
                             case "error":
-                                _btn.attr("class", "btn btn-xs btn-danger").html("错误");
+                                table.cell(td.eq(2)).data('{{- forms.btn("xs", "red", "错误", "cursor-default") -}}');
                                 toastr.error(data["message"], "提示"); break;
                             case "success":
-                                _btn.attr("class", "btn btn-xs btn-success").html("已读");
+                                table.cell(td.eq(2)).data('{{- forms.btn("xs", "green-meadow", "已读", "cursor-default") -}}');
                                 window.location.href = "{{ path("displayModel") }}/" + id + "/" + _this.attr("data-route");
                                 toastr.success(data["message"], "提示"); break;
                         }
-                    }, 2500)
+                    }, 2500);
                 }).fail(function () {
                     setTimeout(function (){
                         toastr.remove();
-                        _btn.attr("class", "btn btn-xs btn-danger").html("错误");
+                        table.cell(td.eq(2)).data('{{- forms.btn("xs", "red", "错误", "cursor-default") -}}');
                         toastr.error("未知错误！请重试！", "提示");
                     }, 2500)
 
                 });
             });
             /* Words User Javascript */
-            $(document).on("click", ".read-file-btn", function () {
-                var _this = $(this);
-                var id = parseInt(_this.closest("tr").children("td").eq(0).html());
-                var _btn = _this.closest("td").prevAll("td:eq(3)").children("button");
+            $(document).on("click", ".read-words-file-btn", function () {
+                var td = $(this).closest("tr").find("td");
 
                 toastr.info("正在读取文件，请稍后...", "提示", {
                     positionClass: "toast-top-center",
@@ -203,32 +201,85 @@
                     url: "{{ path("readWordsFileDataAjax") }}",
                     type: "post",
                     dataType: "json",
-                    data: { "id": id }
+                    data: { "id": table.cell(td.eq(0)).data() }
                 }).done(function (data) {
                     setTimeout(function (){
                         toastr.remove();
                         switch (data["state"]) {
                             case "error":
-                                _btn.attr("class", "btn btn-xs btn-danger").html("错误");
+                                table.cell(td.eq(2)).data('{{- forms.btn("xs", "red", "错误", "cursor-default") -}}');
                                 toastr.error(data["message"], "提示"); break;
                             case "success":
-                                _btn.attr("class", "btn btn-xs btn-success").html("已读");
+                                table.cell(td.eq(2)).data('{{- forms.btn("xs", "green-meadow", "已读", "cursor-default") -}}');
                                 toastr.success(data["message"], "提示"); break;
                         }
-                    }, 2500)
-                    console.log(data);
+                    }, 2500);
                 }).fail(function () {
                     setTimeout(function (){
                         toastr.remove();
-                        _btn.attr("class", "btn btn-xs btn-danger").html("错误");
+                        table.cell(td.eq(2)).data('{{- forms.btn("xs", "red", "错误", "cursor-default") -}}');
                         toastr.error("未知错误！请重试！", "提示");
                     }, 2500)
 
                 });
             });
+            $(document).on("click", ".read-detect-file-btn", function () {
+
+                var td = $(this).closest("tr").find("td");
+
+                toastr.info("正在检测文件，请稍后...", "提示", {
+                    positionClass: "toast-top-center",
+                    timeOut: "3000"
+                });
+                $.ajax({
+                    url: "{{ path("readWordsFileDataAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": table.cell(td.eq(0)).data() }
+                }).done(function (data) {
+                    setTimeout(function (){
+                        toastr.remove();
+                        switch (data["state"]) {
+                            case "error":
+                                table.cell(td.eq(2)).data('{{- forms.btn("xs", "red", "错误", "cursor-default") -}}');
+                                toastr.error(data["message"], "提示"); break;
+                            case "success":
+                                table.cell(td.eq(2)).data('{{- forms.btn("xs", "green-meadow", "已读", "cursor-default") -}}');
+                                toastr.success(data["message"], "提示"); break;
+                        }
+                    }, 2500);
+                }).fail(function () {
+                    setTimeout(function (){
+                        toastr.remove();
+                        table.cell(td.eq(2)).data('{{- forms.btn("xs", "red", "错误", "cursor-default") -}}');
+                        toastr.error("未知错误！请重试！", "提示");
+                    }, 2500)
+
+                });
+            });
+            $(document).on("click", ".download-mark-file-btn", function () {
+                var td = $(this).closest("tr").children("td");
+                $(".reload").click();
+
+                $.ajax({
+                    url: "{{ path("downloadMarkFileAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": table.cell(td.eq(0)).data(), "filename": td.eq(1).attr("data-filename")}
+                }).done(function (data) {
+                    if (data.state === "success") {
+                        toastr.success("正在下载，请稍后！", "成功");
+                        download(data.src);
+                    } else if (data === "error") {
+                        toastr.error("没有找到该文件！请重试！", "失败");
+                    }
+                }).fail(function () {
+                    toastr.error("未知错误！", "错误");
+                });
+            });
         });
         function addNewFile(file){
-            state = '{{- forms.btn("xs", "btn-warning", "未读", "cursor-default") -}}';
+            state = '{{- forms.btn("xs", "yellow-lemon", "未读", "cursor-default") -}}';
             operate = '{{- forms.stripeBtn("xs", "red", "删除", "delete-file-btn") -}}{{- forms.stripeBtn("xs", "green-meadow", "下载", "download-file-btn") -}}';
 
             switch (file.fileType) {
@@ -236,13 +287,13 @@
                     fileType = "货架文件";
                     func = '{%- for m in shelfModels if m.del is sameas(false)  -%}<a class="btn btn-link btn-xs font-size-14 display-model-btn" data-route="{{ m.route }}"> {{ m.title }} </a>{%- endfor -%}';
                     break;
-                case "wordsFile":
+                case "detectionFile":
                     fileType = "检测文件";
-                    func = '{{- forms.btn("xs", "btn-link", "检测文件", "font-size-14 detect-file-btn") -}}<a href="#" class="btn btn-link btn-xs font-size-14"> 下载检测后文件 </a>';
+                    func = '{{- forms.btn("xs", "btn-link", "检测文件", "font-size-14 read-detect-file-btn") -}}<a href="#" class="btn btn-link btn-xs font-size-14"> 下载标记文件 </a>';
                     break;
-                case "unusedWordsFile":
+                case "wordsFile":
                     fileType = "禁词文件";
-                    func = '{{- forms.btn("xs", "btn-link", "读取文件", "font-size-14 read-file-btn") -}}<a href="{{ path("words") }}" class="btn btn-link btn-xs font-size-14"> 查看禁词 </a>';
+                    func = '{{- forms.btn("xs", "btn-link", "读取文件", "font-size-14 read-words-file-btn") -}}<a href="{{ path("words") }}" class="btn btn-link btn-xs font-size-14"> 查看禁词 </a>';
                     break;
                 default :
                     fileType = "未知文件";

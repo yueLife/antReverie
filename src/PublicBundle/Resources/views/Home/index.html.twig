@@ -2,5 +2,11 @@
 
 {% block body %}
     Hello {{ name }}!
-    <a href="{{ path("fos_user_security_login") }}">登录</a>
+    <ul>
+        <li><a href="{{ path("fos_user_security_login") }}">登录</a></li>
+        <li><a href="{{ path("allFiles") }}">所有文件</a></li>
+        <li><a href="{{ path("userFile") }}">我的文件</a></li>
+        <li><a href="{{ path("fos_user_profile_show") }}">个人中心</a></li>
+        <li><a href="{{ path("words") }}">禁词列表</a></li>
+    </ul>
 {% endblock %}

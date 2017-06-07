@@ -73,7 +73,7 @@
                 $(".reload").click();
 
                 $.ajax({
-                    url: "{{ path("delRecoverWordAjax") }}",
+                    url: "{{ path("delRecoverWordsAjax") }}",
                     type: "post",
                     dataType: "json",
                     data: { "id": td.eq(0).html()}

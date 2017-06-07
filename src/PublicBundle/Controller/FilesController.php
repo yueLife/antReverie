@@ -32,21 +32,20 @@ class FilesController extends Controller
      */
     public function uploadFileAction(Request $request)
     {
-        $uploadData =  $this->get("UploadHandlerService");
+        $uploadData =  $this->get("uploadhandlerservice");
         $data = $uploadData->response["files"][0];
 
         if (empty($data->error)) {
-            $fileUtil = $this->get("FileUtilService");
             $root = $_SERVER["DOCUMENT_ROOT"]."/Uploads/";
             $filename = "file_".uniqid().".".pathinfo($data->name, PATHINFO_EXTENSION);
 
-            if ($fileUtil->moveFile($root."data/".$data->name, $root."files/".$filename)) {
+            if ($this->get("fileutilservice")->moveFile($root."data/".$data->name, $root."files/".$filename)) {
                 $em = $this->getDoctrine()->getManager();
                 $newUploadFile = new UploadFiles($this->getUser());
                 $newUploadFile->setFilename($filename)->setOldname($data->name)->setFileType($request->get("fileType"));
 
-                 $em->persist($newUploadFile);
-                 $em->flush();
+                $em->persist($newUploadFile);
+                $em->flush();
 
                 $uploadData->response["files"][0]->id = $newUploadFile->getId();
                 $uploadData->response["files"][0]->filename = $newUploadFile->getFilename();
@@ -67,13 +66,11 @@ class FilesController extends Controller
     public function deleteFileAjax(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $uploadFileData = $em->getRepository("PublicBundle:UploadFiles")
+        $uploadFileRepo = $em->getRepository("PublicBundle:UploadFiles")
             ->findOneBy(array("id" => $request->get("id"), "filename" => $request->get("filename")));
-        if (!$uploadFileData) {
-            return new JsonResponse("error");
-        }
+        if (!$uploadFileRepo) return new JsonResponse("error");
 
-        $uploadFileData->setDel(true);
+        $uploadFileRepo->setDel(true);
         $em->flush();
 
         return new JsonResponse("success");
@@ -89,19 +86,14 @@ class FilesController extends Controller
     public function downloadFileAjax(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $uploadFileData = $em->getRepository("PublicBundle:UploadFiles")
+        $uploadFileRepo = $em->getRepository("PublicBundle:UploadFiles")
             ->findOneBy(array("id" => $request->get("id"), "filename" => $request->get("filename")));
-        if (!$uploadFileData) {
-            return new JsonResponse("error");
-        }
+        if (!$uploadFileRepo) return new JsonResponse("error");
 
-        $fileUtil = $this->get("FileUtilService");
-        $root = $_SERVER["DOCUMENT_ROOT"]."/Uploads/";
-        $filename = $uploadFileData->getOldname();
-        if (!$fileUtil->copyFile($root."files/".$request->get("filename"), $root."temp/".$filename, true)) {
-            return new JsonResponse("error");
-        }
+        $filUrl = $this->get("getmessageservice")->getPathMsg("uploadFile").$request->get("filename");
+        $aimUrl = $this->get("getmessageservice")->getPathMsg("temp").$uploadFileRepo->getOldname();
+        if (!$this->get("fileutilservice")->copyFile($filUrl, $aimUrl, true)) return new JsonResponse("error");
 
-        return new JsonResponse(array("state" => "success", "src" => "/Uploads/temp/".$uploadFileData->getOldname()));
+        return new JsonResponse(array("state" => "success", "src" => "/Uploads/temp/".$uploadFileRepo->getOldname()));
     }
 }

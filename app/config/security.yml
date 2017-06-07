@@ -36,8 +36,10 @@ security:
         - { path: ^/admin,     role: ROLE_ADMIN }
         - { path: ^/shelf,     role: ROLE_SHELF }
         - { path: ^/words,     role: ROLE_WORDS }
+        - { path: ^/michelin,  role: ROLE_MICHELIN }
 
     role_hierarchy:
-        ROLE_ADMIN: ROLE_SUPER_ADMIN
-        ROLE_WORDS: [ROLE_WORDS, ROLE_USER, ROLE_SUPER_ADMIN]
-        ROLE_SHELF: [ROLE_SHELF, ROLE_USER, ROLE_SUPER_ADMIN]
+        ROLE_ADMIN:    ROLE_SUPER_ADMIN
+        ROLE_WORDS:    [ROLE_WORDS, ROLE_USER, ROLE_SUPER_ADMIN]
+        ROLE_SHELF:    [ROLE_SHELF, ROLE_USER, ROLE_SUPER_ADMIN]
+        ROLE_MICHELIN: [ROLE_MICHELIN, ROLE_USER, ROLE_SUPER_ADMIN]

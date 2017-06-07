@@ -1,0 +1,465 @@
+{% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
+
+{% use "PublicBundle::Modules/Plugins/clipboard.html.twig" %}
+
+{% block pagePluginsStyles %}{{- block("CPPluginsStyles") -}}{% endblock %}
+
+{% block pageStyles %}
+    <link rel="stylesheet" href="{{ asset('bundles/michelin/css/michelinTMStore.css') }}">
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        tbody td{ padding-left:0 !important;}
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="mcl" class="row">
+        <div class="col-md-9">
+            <div id="mcl-store">
+                <div id="preview" data-store-page='{{ listNum }}'>
+                    <div class="J_TWidget" data-widget-config="{'easing':'easeOutStrong','activeTriggerCls':'ks-active','effect':'fade','viewSize':[904],'navCls':'city-child','triggerType':'click','contentCls':'city_address','autoplay':false}" data-widget-type="Carousel">
+                        <div class="city-div">
+                            <div class="city-div-title">
+                                <div class="pro">省</div>
+                                <div class="cit">城&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;市</div>
+                            </div>
+                            <div class="prov-table">
+                                <table>
+                                    {% for p in provGroup %}
+                                        <tr data-area-id='{{ p.areaId }}'>
+                                            <td class="prov-letter comLetter">{{ p.letter }}</td>
+                                            <td class="prov-name">{{ p.areaname }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                            <div class="city-table">
+                                <a class="city-ck">
+                                    <ul class="city-child">
+                                        {% for p in provGroup %}{% for c in p.city %}<li data-city-id="{{ c.areaId }}" data-spell="{{ c.areaSpell }}>">{{ c.areaname }}</li>{% endfor %}<li data-parent-id="{{ p.areaId }}"></li><br>{% endfor %}
+                                    </ul>
+                                </a>
+                            </div>
+                        </div>
+                        <img src="https://gdp.alicdn.com/imgextra/i3/2302551350/TB20irHlFXXXXXtXFXXXXXXXXXX-2302551350.jpg">
+                        <a name="show_address"></a>
+                        <ul class="city_address">
+                            {% for c in cityGroup %}
+                                <li data-city-group="{{ c.areaId }}">
+                                    <div class="city-name">
+                                        <span>{{ c.areaname }}</span> |<span>{{ c.areaSpell }}</span>
+                                    </div>
+                                    <div class="fr add">
+                                        <button class="btn green-stripe">添加</button>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="store">
+                                        {% for ch in c.children %}
+                                            <dl class="remove" data-store-id="{{ ch.id }}">
+                                                <dt data-number="{{ ch.number }}">{{ ch.storename }}</dt>
+                                                <dd>地址：{{ ch.address }}</dd>
+                                            </dl>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="clear"></div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="code_con" style="display:none;"></div>
+                <div class="box_con" style="display:none;">
+                    <dl class="remove">
+                        <dt></dt>
+                        <dd></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="portlet box green-meadow">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-handbag"></i>功能操作
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse">
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="extend">
+                        <span class="btn btn-sm default red-sunglo-stripe">操作:</span><br>
+                        <a class="btn btn-xs red-sunglo get-code-tm">生成代码</a>&nbsp;|
+                    </div>
+                    <div class="extend">
+                        <span class="btn btn-sm default blue-madison-stripe">门店:</span><br>
+                        {% for i in 1..4 %}
+                        <a href="{{ path('TMStore') }}/{{ i }}" class="btn btn-xs blue-madison">门店{{ i }}</a>{% if i != 4 %}&nbsp;|{% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="extend" id="province">
+                        <span class="btn btn-sm default yellow-gold-stripe">省份:</span><br>
+                        {% for p in province %}<button class="btn btn-xs yellow-gold" data-area-id='{{ p.id }}' data-area-spell='{{ p.areaSpell }}'>{{ p.areaname }}</button>{% endfor %}
+                    </div>
+                    <div class="extend" id="city">
+                        <span class="btn btn-sm default green-stripe">城市:</span><br>
+                        {% for c in city %}<button class="btn btn-xs green" data-area-id='{{ c.id }}' data-parent-id='{{ c.pid }}' data-area-spell='{{ c.areaSpell }}'>{{ c.areaname }}</button>{% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="finalCodeModalLabel">代码</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <textarea class="form-control code_txt code-textarea" rows="15" id="zeroContent"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id='copy_code' data-clipboard-target=".code-textarea">复制到剪切板</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addStoreModal" tabindex="-1" role="dialog" aria-labelledby="addStoreModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="addStoreModalLabel">添加门店</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="store-name" class="col-sm-3 control-label">门店名：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="store-name" placeholder="请输入门店名" name="name" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="store-address" class="col-sm-3 control-label">门店地址：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="store-address" placeholder="请输入门店地址" name="address" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="store-number" class="col-sm-3 control-label">门店编号：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="store-number" placeholder="请输入门店编号" name="number" >
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary add-store">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editStoreModal" tabindex="-1" role="dialog" aria-labelledby="editStoreModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="editStoreModalLabel">编辑门店</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="store-name" class="col-sm-3 control-label">门店名：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="store-name" placeholder="请输入门店名" name="name" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="store-address" class="col-sm-3 control-label">门店地址：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="store-address" placeholder="请输入门店地址" name="address" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="store-number" class="col-sm-3 control-label">门店编号：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="store-number" placeholder="请输入门店编号" name="number" >
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pagePluginsScripts %}{{- block("ClipPluginsScripts") -}}{% endblock %}
+
+{% block javascripts %}
+    {{- block("ClipJavascripts") -}}
+    <script type="text/javascript">
+        var ClipBtn = "#copy_code";
+        $(function(){
+            var li_br_obj = new Object();
+            // 省市选择
+            $(document).on('click', '#province .btn', function() {
+                $('#province .green').removeClass('green').addClass('yellow-gold');
+                $(this).removeClass('yellow-gold').addClass('green');
+                var area_id = $(this).attr('data-area-id');
+                $('#city').fadeIn().find('button').css('display', 'none').siblings('[data-parent-id="' + area_id + '"]').fadeIn();
+            });
+            $(document).on('click', '#city .btn', function() {
+                $('#city .yellow-gold').removeClass('yellow-gold').addClass('green');
+                $(this).removeClass('green').addClass('yellow-gold');
+                var obj = Object();
+                obj['listNum'] = $('#preview').attr('data-store-page');
+                obj['name'] = $(this).html();
+                obj['spell'] = $(this).attr('data-area-spell');
+                obj['areaId'] = $(this).attr('data-area-id');
+                obj['parentId'] = $(this).attr('data-parent-id');
+
+                var li = $('#preview .city-table [data-parent-id="' + obj['parentId'] + '"]');
+                if (!li.closest('ul').find('li').is('[data-city-id="' + obj['areaId'] + '"]')) {
+                    li.before('<li data-city-id="' + obj['areaId'] + '" data-spell="' + obj['spell'] + '">' + obj['name'] + '</li>');
+                    li.prev().addClass('nobr').prev().removeClass('nobr');
+
+                    $.ajax({
+                        url  : "{{ path('addStoreCityAjax') }}",
+                        type : "post",
+                        data : 'json=' + JSON.stringify(obj),
+                        success:function(data) {
+                            if (data.action == 'reload') {
+                                window.location.reload();
+                            }
+                        }
+                    })
+                }
+            });
+            // 显示城市的门店
+            $(document).on('click', '.city-child li', function() {
+                var city_id = $(this).attr('data-city-id');
+                $('#preview .city_address li').css('display', 'none').removeClass('open');
+                $('#preview .city_address li[data-city-group="' + city_id + '"]').css('display', 'block').addClass('open');
+            });
+            // 删除门店所在城市
+            $(document).on('dblclick', '.city-child li', function() {
+                var obj = new Object();
+                obj['cityId'] = $(this).attr('data-city-id');
+                obj['cityName'] = $(this).html();
+
+                var confirmResult = delConfirm(obj['cityName']);
+                if (confirmResult) {
+                    $('#preview .city_address li[data-city-group="' + obj['cityId'] + '"]').remove();
+                    $.ajax({
+                        url  : "{{ path('delStoreCityAjax') }}",
+                        type : "post",
+                        data: 'json=' + JSON.stringify(obj),
+                        success:function(data) {
+                            console.log(data);
+                        }
+                    })
+                    window.location.reload();
+                    $(this).remove();
+                }
+            });
+            // 显示工具条
+            $(document).on('mouseenter', '.remove', function() {
+                var list_block = $(this);
+                list_block.css({ 'position': 'relative' });
+                var b_w = list_block.width();
+                var b_h = list_block.height();
+
+                var edit_tmp = '';
+                edit_tmp += '<div class="edit_tool" style="width:' + b_w + 'px;height:' + b_h + 'px;">';
+                edit_tmp += '<button type="button" class="btn btn-danger del-store">删除</button>';
+                edit_tmp += '<button type="button" class="btn btn-primary edit-store">编辑</button>';
+                edit_tmp += '</div>';
+
+                list_block.append(edit_tmp);
+                return false;
+            });
+            $(document).on('mouseleave', '.store .edit_tool', function(e) {
+                $('.store .edit_tool').remove();
+            });
+            // 删除门店
+            $(document).on('click', '.del-store', function() {
+                var _this = $(this).closest('dl');
+                var obj = new Object();
+                obj['storeId'] = _this.attr('data-store-id');
+
+                $.ajax({
+                    url  : "{{ path('delStoreAjax') }}",
+                    type : "post",
+                    data: 'json=' + JSON.stringify(obj),
+                    success:function(data) {
+                        if (data.state == 'success') {
+                            _this.remove();
+                        }
+                    }
+                })
+            });
+            // 编辑门店信息
+            $(document).on('click', '.edit-store', function() {
+                var _this = $(this).closest('dl').children();
+                var store_id = $(this).closest('dl').attr('data-store-id');
+                var store_name = _this.eq(0).html();
+                var store_address = _this.eq(1).html();
+                var store_number = _this.eq(0).attr('data-number');
+                $('#editStoreModal #store-name').val(store_name);
+                $('#editStoreModal #store-name').attr('data-store-id', store_id);
+                $('#editStoreModal #store-address').val(store_address.substring(3));
+                $('#editStoreModal #store-number').val(store_number);
+                $('#editStoreModal').modal('show');
+            });
+            $(document).on('click', '#editStoreModal .btn-primary', function() {
+                var obj = new Object();
+                obj['id'] = $('#editStoreModal #store-name').attr('data-store-id');
+                obj['name'] = $('#editStoreModal #store-name').val();
+                obj['address'] = $('#editStoreModal #store-address').val();
+                obj['number'] = $('#editStoreModal #store-number').val();
+                var _this = $('.remove[data-store-id="' + obj['id'] + '"]');
+
+                $.ajax({
+                    url  : "{{ path('editStoreAjax') }}",
+                    type : "post",
+                    data: 'json=' + JSON.stringify(obj),
+                    success:function(data) {
+                        if (data.state == 'success') {
+                            $('#editStoreModal').modal('hide');
+                            _this.find('dt').html(obj['name']);
+                            _this.find('dt').attr('data-number', obj['number']);
+                            _this.find('dd').html('地址：' + obj['address']);
+                        }else{
+                            alert('修改失败')
+                        }
+                    }
+                })
+            });
+            // 添加门店
+            $(document).on('click', '.add .btn', function() {
+                $('#addStoreModal').modal('show');
+                $('#store-name').val('');
+                $('#store-address').val('');
+                $('#store-number').val('');
+                var cid = $('#preview .open').attr('data-city-group');
+                $('#addStoreModal #store-name').attr('data-cid', cid);
+            });
+            $(document).on('click', '.add-store', function() {
+                var obj = new Object();
+                obj['cid'] = $('#addStoreModal #store-name').attr('data-cid');
+                obj['name'] = $('#addStoreModal #store-name').val();
+                obj['address'] = $('#addStoreModal #store-address').val();
+                obj['number'] = $('#addStoreModal #store-number').val();
+
+                $.ajax({
+                    url  : "{{ path('addStoreAjax') }}",
+                    type : "post",
+                    data: 'json=' + JSON.stringify(obj),
+                    success:function(data) {
+                        if (data.state == 'success') {
+                            $('.box_con dl').attr('data-store-id', data.id);
+                            $('.box_con dt').html(obj['name']);
+                            $('.box_con dt').attr('data-number', obj['number']);
+                            $('.box_con dd').html('地址：' + obj['address']);
+                            var clone = $('.box_con dl').clone();
+                            $('#preview .open .store').append(clone);
+                            $('#addStoreModal').modal('hide');
+                        }else{
+                            alert('添加失败')
+                        }
+                    }
+                })
+            });
+
+            // 生成代码
+            $(document).on('click', '.get-code-tm', function() {
+                $(".code_con").html($("#preview").html());
+                $(".code_con").find('.add').remove();
+                $(".code_con").find('li').removeClass('open');
+                $(".code_con").find('.remove').removeAttr('data-store-id');
+                $(".code_con").find('dt').removeAttr('data-number');
+                $(".code_con").find('.city-child li').removeAttr('data-spell').removeAttr('data-city-id');
+                $(".code_con").find('li[data-parent-id]').remove();
+                $(".code_con").find('.city-table a').eq(0).attr('href', '#show_address');
+                $(".code_con").find('.remove').removeAttr('class')
+                $(".code_con").find('.comLetter').removeClass('comLetter');
+                $(".code_con").find('[data-area-id]').removeAttr('data-area-id');
+                $(".code_con").find('[data-city-group]').removeAttr('data-city-group');
+
+                $(".code_con").find('br').each(function(i) {
+                    var x = $(this).prevAll('li').length;
+                    li_br_obj[i] = x;
+                });
+                for (i in li_br_obj) {
+                    var eq = Number(li_br_obj[i]) + Number(i) - 1;
+                    $(".code_con").find('.city_address li').eq(eq).after('<li></li>');
+                }
+                var code = '<div class="preview">';
+                code += $(".code_con").html().replace(/\n+/g, "").replace(/  +/g, "");
+                code += '</div>';
+
+                $('#zeroContent').val(code);
+                $('.bs-example-modal-lg').modal('show');
+            });
+            $(document).on('click', '.get-code-jd', function() {
+            });
+
+            // 判断是否存在
+            $('#addStoreModal #store-name').blur(function() {
+                var _new = $(this).val();
+                $('dt').each(function(i) {
+                    if ($(this).html() == _new) {
+                        alert('您已添加该门店！')
+                    }
+                });
+            });
+            $('#preview .city_address li').eq(0).css('display', 'block').addClass('open');
+            comLetter();
+        })
+        function comLetter(){
+            var arr = new Array();
+            var j = 0;
+            var row = 1;
+            $('.comLetter').each(function(i) {
+                if ($(this).html() == $('.comLetter').eq(i+1).html()) {
+                    row++;
+                    $('.comLetter').eq(i+1).addClass('removeLetter');
+                }else{
+                    arr[j] = row;
+                    j++;
+                    row = 1;
+                }
+            });
+            $('.removeLetter').closest('tr').addClass('prov-top');
+            $('.removeLetter').remove();
+            $('.comLetter').each(function(i) {
+                $(this).attr('rowspan', arr[i]);
+            });
+            $("#preview").find('.city-child').each(function(i) {
+                $(this).find('br').prev().prev().addClass('nobr');
+            });
+        }
+
+        // 门店删除确认
+        function delConfirm(city){
+            var del = confirm("是否删除 " + city + " 城市！")
+            if (del){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    </script>
+{% endblock %}

@@ -29,16 +29,12 @@ class Words
     private $word;
 
     /**
-     * @var integer
-     *
      * @ORM\ManyToOne(targetEntity="PublicBundle\Entity\UploadFiles", inversedBy="words")
      * @ORM\JoinColumn(name="fid", referencedColumnName="id")
      */
     private $file;
 
     /**
-     * @var integer
-     *
      * @ORM\ManyToOne(targetEntity="UsersBundle\Entity\Users", inversedBy="addWord")
      * @ORM\JoinColumn(name="adder_id", referencedColumnName="id")
      */
@@ -52,8 +48,6 @@ class Words
     private $addTime;
 
     /**
-     * @var integer
-     *
      * @ORM\ManyToOne(targetEntity="UsersBundle\Entity\Users", inversedBy="delWord")
      * @ORM\JoinColumn(name="deleter_id", referencedColumnName="id", nullable=true)
      */
@@ -85,7 +79,7 @@ class Words
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -108,34 +102,11 @@ class Words
     /**
      * Get word
      *
-     * @return string
+     * @return string 
      */
     public function getWord()
     {
         return $this->word;
-    }
-
-    /**
-     * Set adder
-     *
-     * @param \UsersBundle\Entity\Users $adder
-     * @return Words
-     */
-    public function setAdder(\UsersBundle\Entity\Users $adder = null)
-    {
-        $this->adder = $adder;
-
-        return $this;
-    }
-
-    /**
-     * Get adder
-     *
-     * @return \UsersBundle\Entity\Users
-     */
-    public function getAdder()
-    {
-        return $this->adder;
     }
 
     /**
@@ -154,34 +125,11 @@ class Words
     /**
      * Get addTime
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getAddTime()
     {
         return $this->addTime;
-    }
-
-    /**
-     * Set deleter
-     *
-     * @param \UsersBundle\Entity\Users $deleter
-     * @return Words
-     */
-    public function setDeleter(\UsersBundle\Entity\Users $deleter = null)
-    {
-        $this->deleter = $deleter;
-
-        return $this;
-    }
-
-    /**
-     * Get deleter
-     *
-     * @return \UsersBundle\Entity\Users
-     */
-    public function getDeleter()
-    {
-        return $this->deleter;
     }
 
     /**
@@ -200,7 +148,7 @@ class Words
     /**
      * Get delTime
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getDelTime()
     {
@@ -223,7 +171,7 @@ class Words
     /**
      * Get del
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getDel()
     {
@@ -251,5 +199,51 @@ class Words
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * Set adder
+     *
+     * @param \UsersBundle\Entity\Users $adder
+     * @return Words
+     */
+    public function setAdder(\UsersBundle\Entity\Users $adder = null)
+    {
+        $this->adder = $adder;
+
+        return $this;
+    }
+
+    /**
+     * Get adder
+     *
+     * @return \UsersBundle\Entity\Users 
+     */
+    public function getAdder()
+    {
+        return $this->adder;
+    }
+
+    /**
+     * Set deleter
+     *
+     * @param \UsersBundle\Entity\Users $deleter
+     * @return Words
+     */
+    public function setDeleter(\UsersBundle\Entity\Users $deleter = null)
+    {
+        $this->deleter = $deleter;
+
+        return $this;
+    }
+
+    /**
+     * Get deleter
+     *
+     * @return \UsersBundle\Entity\Users 
+     */
+    public function getDeleter()
+    {
+        return $this->deleter;
     }
 }

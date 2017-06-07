@@ -103,34 +103,11 @@ class UploadFiles
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \UsersBundle\Entity\Users $user
-     * @return UploadFiles
-     */
-    public function setUser(\UsersBundle\Entity\Users $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \UsersBundle\Entity\Users
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -149,7 +126,7 @@ class UploadFiles
     /**
      * Get filename
      *
-     * @return string
+     * @return string 
      */
     public function getFilename()
     {
@@ -172,7 +149,7 @@ class UploadFiles
     /**
      * Get oldname
      *
-     * @return string
+     * @return string 
      */
     public function getOldname()
     {
@@ -195,7 +172,7 @@ class UploadFiles
     /**
      * Get uploadTime
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getUploadTime()
     {
@@ -218,7 +195,7 @@ class UploadFiles
     /**
      * Get state
      *
-     * @return string
+     * @return string 
      */
     public function getState()
     {
@@ -241,7 +218,7 @@ class UploadFiles
     /**
      * Get fileType
      *
-     * @return string
+     * @return string 
      */
     public function getFileType()
     {
@@ -264,11 +241,34 @@ class UploadFiles
     /**
      * Get del
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getDel()
     {
         return $this->del;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \UsersBundle\Entity\Users $user
+     * @return UploadFiles
+     */
+    public function setUser(\UsersBundle\Entity\Users $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UsersBundle\Entity\Users 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**
@@ -297,7 +297,7 @@ class UploadFiles
     /**
      * Get goods
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getGoods()
     {

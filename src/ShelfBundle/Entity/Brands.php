@@ -51,12 +51,12 @@ class Brands
     private $del = false;
 
     /**
-     * @ORM\OneToMany(targetEntity="Shops", mappedBy="brand")
+     * @ORM\OneToMany(targetEntity="ShelfBundle\Entity\Shops", mappedBy="brand")
      */
     private $shops;
 
     /**
-     * @ORM\OneToMany(targetEntity="ShelfUsers", mappedBy="brand")
+     * @ORM\OneToMany(targetEntity="ShelfBundle\Entity\ShelfUsers", mappedBy="brand")
      */
     private $shelfUsers;
 
@@ -74,7 +74,7 @@ class Brands
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -97,7 +97,7 @@ class Brands
     /**
      * Get brandname
      *
-     * @return string
+     * @return string 
      */
     public function getBrandname()
     {
@@ -120,7 +120,7 @@ class Brands
     /**
      * Get createTime
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreateTime()
     {
@@ -143,7 +143,7 @@ class Brands
     /**
      * Get active
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getActive()
     {
@@ -166,7 +166,7 @@ class Brands
     /**
      * Get del
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getDel()
     {
@@ -199,7 +199,7 @@ class Brands
     /**
      * Get shops
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getShops()
     {
@@ -232,7 +232,7 @@ class Brands
     /**
      * Get shelfUsers
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getShelfUsers()
     {

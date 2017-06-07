@@ -58,12 +58,12 @@ class Plats
     private $del = false;
 
     /**
-     * @ORM\OneToMany(targetEntity="Shops", mappedBy="plat")
+     * @ORM\OneToMany(targetEntity="ShelfBundle\Entity\Shops", mappedBy="plat")
      */
     private $shops;
 
     /**
-     * @ORM\OneToMany(targetEntity="ShelfUsers", mappedBy="plat")
+     * @ORM\OneToMany(targetEntity="ShelfBundle\Entity\ShelfUsers", mappedBy="plat")
      */
     private $shelfUsers;
 
@@ -81,7 +81,7 @@ class Plats
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -104,7 +104,7 @@ class Plats
     /**
      * Get platname
      *
-     * @return string
+     * @return string 
      */
     public function getPlatname()
     {
@@ -127,7 +127,7 @@ class Plats
     /**
      * Get url
      *
-     * @return string
+     * @return string 
      */
     public function getUrl()
     {
@@ -150,7 +150,7 @@ class Plats
     /**
      * Get createTime
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreateTime()
     {
@@ -173,7 +173,7 @@ class Plats
     /**
      * Get active
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getActive()
     {
@@ -196,7 +196,7 @@ class Plats
     /**
      * Get del
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getDel()
     {
@@ -229,7 +229,7 @@ class Plats
     /**
      * Get shops
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getShops()
     {
@@ -262,7 +262,7 @@ class Plats
     /**
      * Get shelfUsers
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getShelfUsers()
     {

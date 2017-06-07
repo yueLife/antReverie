@@ -22,8 +22,6 @@ class WordsResult
     private $id;
 
     /**
-     * @var integer
-     *
      * @ORM\ManyToOne(targetEntity="PublicBundle\Entity\UploadFiles", inversedBy="result")
      * @ORM\JoinColumn(name="fid", referencedColumnName="id")
      */
@@ -69,35 +67,13 @@ class WordsResult
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set file
-     *
-     * @param \PublicBundle\Entity\UploadFiles $file
-     * @return WordsResult
-     */
-    public function setFile(\PublicBundle\Entity\UploadFiles $file = null)
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    /**
-     * Get file
-     *
-     * @return \PublicBundle\Entity\UploadFiles
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
     /**
      * Set sheet
      *
@@ -114,7 +90,7 @@ class WordsResult
     /**
      * Get sheet
      *
-     * @return string
+     * @return string 
      */
     public function getSheet()
     {
@@ -137,7 +113,7 @@ class WordsResult
     /**
      * Get cell
      *
-     * @return string
+     * @return string 
      */
     public function getCell()
     {
@@ -160,7 +136,7 @@ class WordsResult
     /**
      * Get word
      *
-     * @return string
+     * @return string 
      */
     public function getWord()
     {
@@ -183,10 +159,33 @@ class WordsResult
     /**
      * Get createTime
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreateTime()
     {
         return $this->createTime;
+    }
+
+    /**
+     * Set file
+     *
+     * @param \PublicBundle\Entity\UploadFiles $file
+     * @return WordsResult
+     */
+    public function setFile(\PublicBundle\Entity\UploadFiles $file = null)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return \PublicBundle\Entity\UploadFiles 
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

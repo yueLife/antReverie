@@ -1,3 +1,8 @@
+michelin:
+    resource: "@MichelinBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 shelf:
     resource: "@ShelfBundle/Controller/"
     type:     annotation

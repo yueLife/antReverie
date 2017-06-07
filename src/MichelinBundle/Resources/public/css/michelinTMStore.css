@@ -1,0 +1,40 @@
+/**
+ * Created by PhpStorm.
+ * User: Yue
+ * Date: 2017/6/7
+ * Time: 14:07
+ */
+#mcl-store .clear{ clear:both; }
+#mcl-store .edit_tool{ border:1px solid red; }
+#mcl-store{ width:1015px;font-family:"Microsoft Yahei", 宋体, 黑体, Arial, serif; }
+#city{ display:none; }
+#province .btn, #city .btn{ margin:0 5px 5px 0; }
+#mcl .extend{ margin-bottom:5px; }
+#mcl .extend span{ margin-bottom:5px;font-weight:bold;cursor:default; }
+#mcl-store #preview{ width:992px;background:#F3F3F3;border:1px solid #CCC; }
+#mcl-store #preview .city-div{ margin:10px; }
+#mcl-store #preview .city-div-title div{ height:35px;line-height:35px;font-size:18px;font-weight:bold;font-family:"simhei", serif;text-align:center;background:#B4E4BE; }
+#mcl-store #preview .city-div-title .pro{ float:left;width:100px; }
+#mcl-store #preview .city-div-title .cit{ float:right;width:865px; }
+#mcl-store #preview .prov-table{ float:left;width:100px; }
+#mcl-store #preview .prov-table tr{ height:30px;font-size:14px;font-weight:bold;font-family:"simhei", serif;text-align:center;background:#E5E5E5;border-top:2px solid #FFF; }
+#mcl-store #preview .prov-table .prov-top{ border-top:2px solid #E5E5E5; }
+#mcl-store #preview .prov-table .prov-letter{ width:40px; }
+#mcl-store #preview .prov-table .prov-name{ width:60px; }
+#mcl-store #preview .city-table{ width:865px; }
+#mcl-store #preview .city-table .city-ck{ text-decoration:none;cursor:default; }
+#mcl-store #preview .city-table li{ display:inline-block;height:20px;line-height:20px;margin:5px 0;padding:0 4px;font-size:13px;font-family:"simhei", serif;color:#707070;border-right:2px solid #777;cursor:pointer; }
+#mcl-store #preview .city-table li:hover{ background:#B4E4BE; }
+#mcl-store #preview .city-table li[data-parent-id]{ display:none; }
+#mcl-store #preview .city-table .nobr{ border-right:none; }
+#mcl-store #preview .city_address{ height:1000px; }
+#mcl-store #preview .city_address li{ display:none;width:950px;height:inherit;margin:10px 20px 20px -20px;color:#555;border:2px solid #CCC; }
+#mcl-store #preview li .city-name{ float:left;height:30px;margin:20px 0 0 20px;padding:5px;font-size:16px;background:#B4E4BE; }
+#mcl-store #preview li .add .btn{ width:80px;margin:10px 20px 0 0; }
+#mcl-store #preview li .store{ float:left;margin:10px 0 0 35px; }
+#mcl-store #preview li dl{ float:left;width:390px;margin:2px 30px 0 0;padding:1px 5px;font-family:"simhei", serif; }
+#mcl-store #preview li dt{ font-size:16px;font-weight:bold;font-family:"simhei", serif; }
+#mcl-store #preview li dd{ height:40px;padding-left:5px;font-size:14px;font-weight:normal;font-family:"simhei", serif; }
+
+#mcl-store #preview .edit_tool{ text-align:right;position:absolute;left:0;top:0;z-index:100; }
+#mcl-store #preview .edit_tool .btn{ text-align:right;padding:0 5px;margin:3px; }

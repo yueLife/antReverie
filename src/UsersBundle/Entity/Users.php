@@ -82,7 +82,7 @@ class Users extends BaseUser
     /**
      * Get avatar
      *
-     * @return string
+     * @return string 
      */
     public function getAvatar()
     {
@@ -115,7 +115,7 @@ class Users extends BaseUser
     /**
      * Get files
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getFiles()
     {
@@ -148,7 +148,7 @@ class Users extends BaseUser
     /**
      * Get shops
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getShops()
     {
@@ -171,7 +171,7 @@ class Users extends BaseUser
     /**
      * Get shelfUser
      *
-     * @return \ShelfBundle\Entity\ShelfUsers
+     * @return \ShelfBundle\Entity\ShelfUsers 
      */
     public function getShelfUser()
     {

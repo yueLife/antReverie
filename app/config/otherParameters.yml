@@ -4,4 +4,4 @@ parameters:
         GLOBAL_TITLE:    "ShangHai Joywell"
         GLOBAL_TITLE_CH: "上海悦维广告"
         WEB_INTRODUCE:   "上海悦维工具系统——包含货架排版、门店管理和禁词管理等工具系统。"
-        VERSION:         "V0.0.33"
+        VERSION:         "V0.0.36"

@@ -30,13 +30,13 @@ class Shops
     private $shopname;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Brands", inversedBy="shops")
+     * @ORM\ManyToOne(targetEntity="ShelfBundle\Entity\Brands", inversedBy="shops")
      * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
      */
     private $brand;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Plats", inversedBy="shops")
+     * @ORM\ManyToOne(targetEntity="ShelfBundle\Entity\Plats", inversedBy="shops")
      * @ORM\JoinColumn(name="plat_id", referencedColumnName="id")
      */
     private $plat;
@@ -69,7 +69,7 @@ class Shops
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="ShelfModels", mappedBy="shop")
+     * @ORM\OneToMany(targetEntity="ShelfBundle\Entity\ShelfModels", mappedBy="shop")
      */
     private $models;
 
@@ -87,7 +87,7 @@ class Shops
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -110,57 +110,11 @@ class Shops
     /**
      * Get shopname
      *
-     * @return string
+     * @return string 
      */
     public function getShopname()
     {
         return $this->shopname;
-    }
-
-    /**
-     * Set brand
-     *
-     * @param \ShelfBundle\Entity\Brands $brand
-     * @return Shops
-     */
-    public function setBrand(\ShelfBundle\Entity\Brands $brand = null)
-    {
-        $this->brand = $brand;
-
-        return $this;
-    }
-
-    /**
-     * Get brand
-     *
-     * @return \ShelfBundle\Entity\Brands
-     */
-    public function getBrand()
-    {
-        return $this->brand;
-    }
-
-    /**
-     * Set plat
-     *
-     * @param \ShelfBundle\Entity\Plats $plat
-     * @return Shops
-     */
-    public function setPlat(\ShelfBundle\Entity\Plats $plat = null)
-    {
-        $this->plat = $plat;
-
-        return $this;
-    }
-
-    /**
-     * Get plat
-     *
-     * @return \ShelfBundle\Entity\Plats
-     */
-    public function getPlat()
-    {
-        return $this->plat;
     }
 
     /**
@@ -179,7 +133,7 @@ class Shops
     /**
      * Get createTime
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreateTime()
     {
@@ -202,7 +156,7 @@ class Shops
     /**
      * Get active
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getActive()
     {
@@ -225,11 +179,57 @@ class Shops
     /**
      * Get del
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getDel()
     {
         return $this->del;
+    }
+
+    /**
+     * Set brand
+     *
+     * @param \ShelfBundle\Entity\Brands $brand
+     * @return Shops
+     */
+    public function setBrand(\ShelfBundle\Entity\Brands $brand = null)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * Get brand
+     *
+     * @return \ShelfBundle\Entity\Brands 
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * Set plat
+     *
+     * @param \ShelfBundle\Entity\Plats $plat
+     * @return Shops
+     */
+    public function setPlat(\ShelfBundle\Entity\Plats $plat = null)
+    {
+        $this->plat = $plat;
+
+        return $this;
+    }
+
+    /**
+     * Get plat
+     *
+     * @return \ShelfBundle\Entity\Plats 
+     */
+    public function getPlat()
+    {
+        return $this->plat;
     }
 
     /**
@@ -258,7 +258,7 @@ class Shops
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getUsers()
     {
@@ -291,7 +291,7 @@ class Shops
     /**
      * Get models
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getModels()
     {

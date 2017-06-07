@@ -45,13 +45,13 @@ class ShelfUsers
     private $imgList;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Plats", inversedBy="shelfUsers")
+     * @ORM\ManyToOne(targetEntity="ShelfBundle\Entity\Plats", inversedBy="shelfUsers")
      * @ORM\JoinColumn(name="plat_id", referencedColumnName="id")
      */
     private $plat;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Brands", inversedBy="shelfUsers")
+     * @ORM\ManyToOne(targetEntity="ShelfBundle\Entity\Brands", inversedBy="shelfUsers")
      * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
      */
     private $brand;
@@ -69,34 +69,11 @@ class ShelfUsers
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \UsersBundle\Entity\Users $user
-     * @return ShelfUsers
-     */
-    public function setUser(\UsersBundle\Entity\Users $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \UsersBundle\Entity\Users
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -115,7 +92,7 @@ class ShelfUsers
     /**
      * Get personal
      *
-     * @return string
+     * @return string 
      */
     public function getPersonal()
     {
@@ -138,11 +115,34 @@ class ShelfUsers
     /**
      * Get imgList
      *
-     * @return string
+     * @return string 
      */
     public function getImgList()
     {
         return $this->imgList;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \UsersBundle\Entity\Users $user
+     * @return ShelfUsers
+     */
+    public function setUser(\UsersBundle\Entity\Users $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UsersBundle\Entity\Users 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**
@@ -161,7 +161,7 @@ class ShelfUsers
     /**
      * Get plat
      *
-     * @return \ShelfBundle\Entity\Plats
+     * @return \ShelfBundle\Entity\Plats 
      */
     public function getPlat()
     {
@@ -184,7 +184,7 @@ class ShelfUsers
     /**
      * Get brand
      *
-     * @return \ShelfBundle\Entity\Brands
+     * @return \ShelfBundle\Entity\Brands 
      */
     public function getBrand()
     {

@@ -22,7 +22,7 @@ class ShelfModels
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Shops", inversedBy="models")
+     * @ORM\ManyToOne(targetEntity="ShelfBundle\Entity\Shops", inversedBy="models")
      * @ORM\JoinColumn(name="shop_id", referencedColumnName="id")
      */
     private $shop;
@@ -74,34 +74,11 @@ class ShelfModels
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set shop
-     *
-     * @param \ShelfBundle\Entity\Shops $shop
-     * @return ShelfModels
-     */
-    public function setShop(\ShelfBundle\Entity\Shops $shop = null)
-    {
-        $this->shop = $shop;
-
-        return $this;
-    }
-
-    /**
-     * Get shop
-     *
-     * @return \ShelfBundle\Entity\Shops
-     */
-    public function getShop()
-    {
-        return $this->shop;
     }
 
     /**
@@ -120,7 +97,7 @@ class ShelfModels
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {
@@ -143,7 +120,7 @@ class ShelfModels
     /**
      * Get route
      *
-     * @return string
+     * @return string 
      */
     public function getRoute()
     {
@@ -166,7 +143,7 @@ class ShelfModels
     /**
      * Get style
      *
-     * @return string
+     * @return string 
      */
     public function getStyle()
     {
@@ -189,7 +166,7 @@ class ShelfModels
     /**
      * Get createTime
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreateTime()
     {
@@ -212,10 +189,33 @@ class ShelfModels
     /**
      * Get del
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getDel()
     {
         return $this->del;
+    }
+
+    /**
+     * Set shop
+     *
+     * @param \ShelfBundle\Entity\Shops $shop
+     * @return ShelfModels
+     */
+    public function setShop(\ShelfBundle\Entity\Shops $shop = null)
+    {
+        $this->shop = $shop;
+
+        return $this;
+    }
+
+    /**
+     * Get shop
+     *
+     * @return \ShelfBundle\Entity\Shops 
+     */
+    public function getShop()
+    {
+        return $this->shop;
     }
 }

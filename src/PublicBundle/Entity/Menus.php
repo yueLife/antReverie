@@ -3,6 +3,7 @@
 namespace PublicBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Menus
@@ -22,7 +23,7 @@ class Menus
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Menus", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="PublicBundle\Entity\Menus", inversedBy="children")
      * @ORM\JoinColumn(name="pid", referencedColumnName ="id")
      */
     private $pid;
@@ -77,7 +78,7 @@ class Menus
     private $sort;
 
     /**
-     * @ORM\OneToMany(targetEntity="Menus", mappedBy="pid")
+     * @ORM\OneToMany(targetEntity="PublicBundle\Entity\Menus", mappedBy="pid")
      */
     private  $children;
 
@@ -87,40 +88,17 @@ class Menus
      */
     public  function  __construct()
     {
-        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set pid
-     *
-     * @param \PublicBundle\Entity\Menus $pid
-     * @return Menus
-     */
-    public function setPid(\PublicBundle\Entity\Menus $pid = null)
-    {
-        $this->pid = $pid;
-
-        return $this;
-    }
-
-    /**
-     * Get pid
-     *
-     * @return \PublicBundle\Entity\Menus
-     */
-    public function getPid()
-    {
-        return $this->pid;
     }
 
     /**
@@ -139,7 +117,7 @@ class Menus
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {
@@ -162,7 +140,7 @@ class Menus
     /**
      * Get route
      *
-     * @return string
+     * @return string 
      */
     public function getRoute()
     {
@@ -185,7 +163,7 @@ class Menus
     /**
      * Get description
      *
-     * @return string
+     * @return string 
      */
     public function getDescription()
     {
@@ -208,7 +186,7 @@ class Menus
     /**
      * Get role
      *
-     * @return string
+     * @return string 
      */
     public function getRole()
     {
@@ -231,7 +209,7 @@ class Menus
     /**
      * Get action
      *
-     * @return string
+     * @return string 
      */
     public function getAction()
     {
@@ -254,7 +232,7 @@ class Menus
     /**
      * Get icon
      *
-     * @return string
+     * @return string 
      */
     public function getIcon()
     {
@@ -277,11 +255,34 @@ class Menus
     /**
      * Get sort
      *
-     * @return integer
+     * @return integer 
      */
     public function getSort()
     {
         return $this->sort;
+    }
+
+    /**
+     * Set pid
+     *
+     * @param \PublicBundle\Entity\Menus $pid
+     * @return Menus
+     */
+    public function setPid(\PublicBundle\Entity\Menus $pid = null)
+    {
+        $this->pid = $pid;
+
+        return $this;
+    }
+
+    /**
+     * Get pid
+     *
+     * @return \PublicBundle\Entity\Menus 
+     */
+    public function getPid()
+    {
+        return $this->pid;
     }
 
     /**

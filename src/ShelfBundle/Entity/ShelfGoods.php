@@ -120,34 +120,11 @@ class ShelfGoods
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set file
-     *
-     * @param \PublicBundle\Entity\UploadFiles $file
-     * @return ShelfGoods
-     */
-    public function setFile(\PublicBundle\Entity\UploadFiles $file = null)
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    /**
-     * Get file
-     *
-     * @return \PublicBundle\Entity\UploadFiles
-     */
-    public function getFile()
-    {
-        return $this->file;
     }
 
     /**
@@ -166,7 +143,7 @@ class ShelfGoods
     /**
      * Get goodsname
      *
-     * @return string
+     * @return string 
      */
     public function getGoodsname()
     {
@@ -189,7 +166,7 @@ class ShelfGoods
     /**
      * Get goodsnameSub
      *
-     * @return string
+     * @return string 
      */
     public function getGoodsnameSub()
     {
@@ -212,7 +189,7 @@ class ShelfGoods
     /**
      * Get goodsBn
      *
-     * @return string
+     * @return string 
      */
     public function getGoodsBn()
     {
@@ -235,7 +212,7 @@ class ShelfGoods
     /**
      * Get goodsId
      *
-     * @return string
+     * @return string 
      */
     public function getGoodsId()
     {
@@ -258,7 +235,7 @@ class ShelfGoods
     /**
      * Get introduce
      *
-     * @return string
+     * @return string 
      */
     public function getIntroduce()
     {
@@ -281,7 +258,7 @@ class ShelfGoods
     /**
      * Get detailIntroduce
      *
-     * @return string
+     * @return string 
      */
     public function getDetailIntroduce()
     {
@@ -304,7 +281,7 @@ class ShelfGoods
     /**
      * Get imgUrl
      *
-     * @return string
+     * @return string 
      */
     public function getImgUrl()
     {
@@ -327,7 +304,7 @@ class ShelfGoods
     /**
      * Get tagPrice
      *
-     * @return float
+     * @return float 
      */
     public function getTagPrice()
     {
@@ -350,7 +327,7 @@ class ShelfGoods
     /**
      * Get actPrice
      *
-     * @return float
+     * @return float 
      */
     public function getActPrice()
     {
@@ -373,7 +350,7 @@ class ShelfGoods
     /**
      * Get couPrice
      *
-     * @return float
+     * @return float 
      */
     public function getCouPrice()
     {
@@ -396,10 +373,33 @@ class ShelfGoods
     /**
      * Get unit
      *
-     * @return string
+     * @return string 
      */
     public function getUnit()
     {
         return $this->unit;
+    }
+
+    /**
+     * Set file
+     *
+     * @param \PublicBundle\Entity\UploadFiles $file
+     * @return ShelfGoods
+     */
+    public function setFile(\PublicBundle\Entity\UploadFiles $file = null)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return \PublicBundle\Entity\UploadFiles 
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

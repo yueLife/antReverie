@@ -31,6 +31,13 @@ class Users extends BaseUser
     protected $avatar = "avatar.png";
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createtime", type="datetime")
+     */
+    protected $createTime;
+
+    /**
      * @ORM\OneToMany(targetEntity="PublicBundle\Entity\UploadFiles", mappedBy="user")
      */
     protected $files;
@@ -62,6 +69,7 @@ class Users extends BaseUser
     public function __construct()
     {
         parent::__construct();
+        $this->createTime = new \DateTime;
         $this->files = new ArrayCollection();
         $this->shops = new ArrayCollection();
     }

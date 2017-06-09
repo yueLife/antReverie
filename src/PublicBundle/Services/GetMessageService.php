@@ -41,4 +41,13 @@ class GetMessageService
 
         return $message[$path];
     }
+
+    public function getGeneralMsg($title)
+    {
+        $message = array(
+            "unknown" => array("state" => "error", "message" => "未知错误，请重试!")
+        );
+
+        return $message[$title];
+    }
 }

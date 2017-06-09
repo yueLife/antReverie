@@ -28,18 +28,16 @@ security:
                 path:     /
 
     access_control:
-        - { path: ^/login$,    role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register,  role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/public,    role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/profile,   role: ROLE_USER }
-        - { path: ^/admin,     role: ROLE_ADMIN }
-        - { path: ^/shelf,     role: ROLE_SHELF }
-        - { path: ^/words,     role: ROLE_WORDS }
-        - { path: ^/michelin,  role: ROLE_MICHELIN }
+        - { path: ^/login$,        role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register,      role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting,     role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/public,        role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/profile$,      role: ROLE_USER } # The all user account
+        - { path: ^/profile/admin, role: ROLE_SUPER_ADMIN } # The administrator account
+        - { path: ^/profile/user,  role: ROLE_GENERAL } # The general account
+        - { path: ^/shelf,         role: ROLE_SHELF } # The shelf account
+        - { path: ^/words,         role: ROLE_WORDS } # The unused words account
+        - { path: ^/michelin,      role: ROLE_MICHELIN } # The michelin store account
 
-    role_hierarchy:
-        ROLE_ADMIN:    ROLE_SUPER_ADMIN
-        ROLE_WORDS:    [ROLE_WORDS, ROLE_USER, ROLE_SUPER_ADMIN]
-        ROLE_SHELF:    [ROLE_SHELF, ROLE_USER, ROLE_SUPER_ADMIN]
-        ROLE_MICHELIN: [ROLE_MICHELIN, ROLE_USER, ROLE_SUPER_ADMIN]
+#    role_hierarchy:
+#        ROLE_ADMIN: ROLE_SUPER_ADMIN

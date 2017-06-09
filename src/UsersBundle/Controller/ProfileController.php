@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * Class ProfileController
  *
  * @package UsersBundle\Controller
- * @Route("/profile")
+ * @Route("/profile/user")
  */
 class ProfileController extends BaseController
 {
@@ -31,16 +31,25 @@ class ProfileController extends BaseController
      */
     public function showAction()
     {
-        $usersRepo = $this->container->get("doctrine")->getRepository("UsersBundle:Users");
+        $doctrine = $this->container->get("doctrine");
         $user = $this->container->get('security.context')->getToken()->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException("当前用户没有访问权限！");
         }
 
-        $shopsData = $user->getShops();
-        $shop = $usersRepo->findCurrentShop($user);
+        if ($user->hasRole("ROLE_SUPER_ADMIN")) {
+            $count["users"] = count($doctrine->getRepository("UsersBundle:Users")->findAll());
+            $count["shops"] = count($doctrine->getRepository("ShelfBundle:Shops")->findAll());
+            $count["plats"] = count($doctrine->getRepository("ShelfBundle:Plats")->findAll());
+            $count["brands"] = count($doctrine->getRepository("ShelfBundle:Brands")->findAll());
 
-        return $this->container->get("templating")->renderResponse("FOSUserBundle:Profile:show.html.".$this->container->getParameter("fos_user.template.engine"), array("shops" => $shopsData, "currentShop" => $shop));
+            return $this->container->get("templating")->renderResponse("AdminBundle:Setting:dashboard.html.twig", array("count" => $count));
+        }
+
+        $shopsData = $user->getShops();
+        $shop = $doctrine->getRepository("UsersBundle:Users")->findCurrentShop($user);
+
+        return $this->container->get("templating")->renderResponse("FOSUserBundle::Profile/show.html.".$this->container->getParameter("fos_user.template.engine"), array("shops" => $shopsData, "currentShop" => $shop));
     }
 
     /**
@@ -57,15 +66,9 @@ class ProfileController extends BaseController
 
         $filesData = $user->getFiles();
         foreach ($filesData as $key => $file) {
-            if (!$user->hasRole("ROLE_SHELF") && $file->getFileType() == "goodsFile") {
-                unset($filesData[$key]);
-            }
-            if (!$user->hasRole("ROLE_WORDS") && $file->getFileType() == "detectionFile") {
-                unset($filesData[$key]);
-            }
-            if (!$user->hasRole("ROLE_WORDS") && $file->getFileType() == "wordsFile") {
-                unset($filesData[$key]);
-            }
+            if (!$user->hasRole("ROLE_SHELF") && $file->getFileType() == "goodsFile") unset($filesData[$key]);
+            if (!$user->hasRole("ROLE_WORDS") && $file->getFileType() == "detectionFile") unset($filesData[$key]);
+            if (!$user->hasRole("ROLE_WORDS") && $file->getFileType() == "wordsFile") unset($filesData[$key]);
         }
 
         $shop = $usersRepo->findCurrentShop($user);

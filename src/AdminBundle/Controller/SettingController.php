@@ -16,16 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * Class SettingController
  *
  * @package AdminBundle\Controller
- * @Route("/admin")
+ * @Route("/profile/admin")
  */
 class SettingController extends Controller
 {
-    /**
-     * @Route("/dashboard", name="dashboard")
-     * @Template("AdminBundle:Setting:dashboard.html.twig")
-     */
-    public function indexAction()
-    {
-        return array('name' => 'name');
-    }
+
 }

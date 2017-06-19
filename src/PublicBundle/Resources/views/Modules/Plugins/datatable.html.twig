@@ -16,6 +16,16 @@
 {% block datatableJavascripts %}
     <script type="text/javascript">
         function datatable(dom, order = "desc", scrollX = false) {
+
+            var fixedHeaderOffset = 0;
+            if (App.getViewPort().width < App.getResponsiveBreakpoint("md")) {
+                if ($(".page-header").hasClass("page-header-fixed-mobile")) {
+                    fixedHeaderOffset = $(".page-header").outerHeight(true);
+                }
+            } else if ($(".page-header").hasClass("navbar-fixed-top")) {
+                fixedHeaderOffset = $(".page-header").outerHeight(true);
+            }
+
             return dom.DataTable({
                 "language": {
                     "aria": {
@@ -42,6 +52,22 @@
                 "buttons": [],
                 "scrollX": scrollX,
                 "deferRender": true,
+
+                "fixedHeader": {
+                    "header": true,
+                    "headerOffset": fixedHeaderOffset
+                },
+
+                "responsive": {
+                    "details": {
+                        "type": "column"
+                    }
+                },
+                "columnDefs": [ {
+                    "className": "control",
+                    "orderable": false,
+                    "targets":   0
+                } ],
 
                 "order": [
                     [0, order]

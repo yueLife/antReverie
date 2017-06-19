@@ -78,13 +78,13 @@ class ProfileAjaxController extends Controller
     {
         $verification = password_verify($oldPasswd, $this->getUser()->getPassword());
         if (!$verification) {
-            return array('state' => 'error', 'msg' => '旧密码输入错误！请重新输入！');
+            return $this->get("getmessageservice")->getUserMsg("oldPasswordError");
         } else if ($newPasswd !== $rePasswd) {
-            return array('state' => 'error', 'msg' => '两次密码不一致！请重新输入！');
+            return $this->get("getmessageservice")->getUserMsg("passwordError");
         } else if (strlen($rePasswd) < 6 || strlen($rePasswd) > 12) {
-            return array('state' => 'error', 'msg' => '密码长度应为6-12位！请重新输入！');
+            return $this->get("getmessageservice")->getUserMsg("passwordLengthError");
         } else if (!preg_match("/^(\w)*$/", $rePasswd)) {
-            return array('state' => 'error', 'msg' => '密码长度必须为数字、字母或下划线!');
+            return $this->get("getmessageservice")->getUserMsg("passwordTypeError");
         } else {
             return array('state' => 'success');
         }

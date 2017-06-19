@@ -16,9 +16,16 @@ services:
     FileUtilService:
         class: PublicBundle\Services\FileUtilService
 
-    #UploadHandle
+    # UploadHandle
     UploadHandlerService:
         class: PublicBundle\Services\UploadHandlerService
 
     GetMessageService:
         class: PublicBundle\Services\GetMessageService
+
+    # Serializer
+    get_set_method_normalizer:
+        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+        public: false
+        tags:
+            - { name: serializer.normalizer }

@@ -35,3 +35,18 @@
     {{- forms.outlineBtn("", "dark btn-outline", "关闭", "", outlineData) -}}
 {%- endmacro -%}
 
+{# Circle button #}
+{%- macro circleBtn(size, color, title, class, data) -%}
+    {%- import _self as forms -%}
+    {{- forms.defaultBtn("btn-"~size, "btn-circle "~color, title, class, data) -}}
+{%- endmacro -%}
+
+{%- macro circleStripeBtn(size, color, title, class, data) -%}
+    {%- import _self as forms -%}
+    {{- forms.defaultBtn("btn-"~size, "btn-circle "~color~"-stripe", title, class, data) -}}
+{%- endmacro -%}
+
+{%- macro circleOutlineBtn(size, color, title, class, data) -%}
+    {%- import _self as forms -%}
+    {{- forms.defaultBtn("btn-"~size, "btn-circle "~color~" btn-outline", title, class, data) -}}
+{%- endmacro -%}

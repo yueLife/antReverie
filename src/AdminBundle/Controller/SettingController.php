@@ -20,5 +20,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class SettingController extends Controller
 {
+    /**
+     * Users List Index
+     *
+     * @Route("/usersList", name="usersList")
+     * @Template("AdminBundle::Main/usersList.html.twig")
+     * @return array
+     */
+    public function usersListAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $usersRepo = $em->getRepository("UsersBundle:Users");
+        $usersData = $usersRepo->findAll();
+        $shopsRepo = $em->getRepository("ShelfBundle:Shops");
+        $shopsData = $shopsRepo->findAll();
 
+
+        return array(
+            "users" => $usersData,
+            "shops" => $shopsData
+        );
+    }
 }

@@ -1,0 +1,414 @@
+{% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
+
+{% use "PublicBundle::Modules/Plugins/datatable.html.twig" %}
+{% use "PublicBundle::Modules/Plugins/confirmation.html.twig" %}
+
+{% block pagePluginsStyles %}{{- block("datatablePluginsStyles") -}}{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .form-group.form-md-line-input{ margin:0; }
+        .modal h5{ padding:0; }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption font-white">
+                        <i class="iconfont icon-user-list font-white font-size-20"></i>
+                        <span class="caption-subject bold uppercase">用户列表</span>
+                    </div>
+                    <div class="tools">
+                        <a href="#add-user-modal" class="font-white tool-tip" data-toggle="modal" data-placement="top" title="添加用户"><i class="iconfont icon-plus"></i></a>
+                        <a href="javascript:;" class="collapse" data-original-title="折叠/展开"> </a>
+                        <a href="javascript:;" class="reload display-none" data-original-title="刷新"> </a>
+                        <a href="javascript:;" class="fullscreen" data-original-title="全屏"> </a>
+                        <a href="javascript:;" class="remove" data-original-title="移除"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-striped table-hover order-column fl users-list-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th> ID </th>
+                                <th> 用户 </th>
+                                <th> 邮箱 </th>
+                                <th> 管理员 </th>
+                                <th> 状态 </th>
+                                <th> 操作 </th>
+                                <th class="none"> 用户身份 </th>
+                                <th class="none"> 邮箱验证 </th>
+                                <th class="none"> 创建时间 </th>
+                                <th class="none"> 上次登录 </th>
+                                <th class="none"> 拥有店铺 </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {%- for user in users -%}
+                            <tr>
+                                <td></td>
+                                <td> {{ user.id }} </td>
+                                <td> {{ user.username }} </td>
+                                <td> {{ user.email }} </td>
+                                <td>
+                                    {%- if user.hasRole("ROLE_SUPER_ADMIN") -%}
+                                        {{- forms.btn("xs", "red", "管理员", "cursor-default") -}}
+                                    {%- else -%}
+                                        {{- forms.btn("xs", "blue", "普通用户", "cursor-default") -}}
+                                    {%- endif %}
+                                </td>
+                                <td>
+                                    {%- if user.locked() -%}
+                                        {{- forms.btn("xs", "red", "锁定", "cursor-default", {"data-locked": "true"}) -}}
+                                    {%- else -%}
+                                        {{- forms.btn("xs", "green-meadow", "正常", "cursor-default", {"data-locked": "false"}) -}}
+                                    {%- endif %}
+                                </td>
+                                <td>
+                                    {{- forms.stripeBtn("xs", "green", "编辑", "edit-user-btn") -}}
+                                    {%- if user.hasRole("ROLE_SUPER_ADMIN") is sameas(false) -%}
+                                        {{- forms.stripeBtn("xs", "yellow-gold", "锁定", "user-locked-btn") -}}
+                                    {%- endif -%}
+                                </td>
+                                <td>
+                                    {%- if user.hasRole("ROLE_SUPER_ADMIN") -%}
+                                        {{- forms.circleOutlineBtn("xs", "purple-medium", "管理员", "cursor-default", {"data-role": "ROLE_SUPER_ADMIN"}) -}}
+                                    {%- else -%}
+                                        {{- forms.circleOutlineBtn("xs", "purple-medium", "普通用户", "cursor-default", {"data-role": "ROLE_GENERAL"}) -}}
+                                    {%- endif -%}
+                                    {%- for role in user.roles -%}
+                                        {%- if role == "ROLE_SHELF" -%}
+                                            {{- forms.circleOutlineBtn("xs", "purple-medium", "货架用户", "cursor-default", {"data-role": "ROLE_SHELF"}) -}}
+                                        {%- elseif role == "ROLE_WORDS" -%}
+                                            {{- forms.circleOutlineBtn("xs", "purple-medium", "禁词用户", "cursor-default", {"data-role": "ROLE_WORDS"}) -}}
+                                        {%- elseif role == "ROLE_MICHELIN" -%}
+                                            {{- forms.circleOutlineBtn("xs", "purple-medium", "米其林用户", "cursor-default", {"data-role": "ROLE_MICHELIN"}) -}}
+                                        {%- endif -%}
+                                    {%- endfor -%}
+                                    {{ forms.stripeBtn("xs", "grey-mint", "取消", "cancel-roles-btn display-hide") }}
+                                    {{ forms.stripeBtn("xs", "purple-medium", "添加", "show-roles-btn roles-btn-group") }}
+                                    {{ forms.stripeBtn("xs", "red-thunderbird", "删除", "del-roles-btn roles-btn-group") }}
+                                    <span class="display-hide">
+                                        {%- if user.hasRole("ROLE_SUPER_ADMIN") is sameas(false) -%}
+                                            {{- forms.circleStripeBtn("xs", "green-turquoise", "管理员", "new-role-btn", {"data-role": "ROLE_SUPER_ADMIN"}) -}}
+                                        {%- endif -%}
+                                        {%- if user.hasRole("ROLE_SHELF") is sameas(false) -%}
+                                            {{- forms.circleStripeBtn("xs", "green-turquoise", "货架用户", "new-role-btn", {"data-role": "ROLE_SHELF"}) -}}
+                                        {%- endif -%}
+                                        {%- if user.hasRole("ROLE_WORDS") is sameas(false) -%}
+                                            {{- forms.circleStripeBtn("xs", "green-turquoise", "禁词用户", "new-role-btn", {"data-role": "ROLE_WORDS"}) -}}
+                                        {%- endif -%}
+                                        {%- if user.hasRole("ROLE_MICHELIN") is sameas(false) -%}
+                                            {{- forms.circleStripeBtn("xs", "green-turquoise", "米其林用户", "new-role-btn", {"data-role": "ROLE_MICHELIN"}) -}}
+                                        {%- endif -%}
+                                    </span>
+                                </td>
+                                <td>
+                                    {%- if user.enabled -%}
+                                        {{- forms.btn("xs", "green-meadow", "正常", "cursor-default") -}}
+                                    {%- else -%}
+                                        {{- forms.btn("xs", "red", "未验证", "cursor-default") -}}
+                                    {%- endif %}
+                                </td>
+                                <td> {{ user.lastLogin.date|date("Y-m-d H:i:s") }} </td>
+                                <td> {{ user.createTime.date|date("Y-m-d H:i:s") }} </td>
+                                <td>
+                                    {%- if user.shops is not empty -%}
+                                        {%- for shop in user.shops -%}
+                                            {{- forms.outlineBtn("xs", "red-flamingo", shop.shopname, "cursor-default") -}}
+                                        {%- endfor -%}
+                                    {% else %}
+                                        没有店铺
+                                    {%- endif -%}
+                                </td>
+                            </tr>
+                        {%- endfor -%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit-user-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title"> 用户编辑 </h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="display-none">
+                                    {{- metronic.input("edit-id", "", "id") -}}
+                                </div>
+                                {{- metronic.FlInput("用户名", "edit-username", "", "username", " ") -}}
+                                {{- metronic.FlInput("邮箱", "edit-email", "", "email", " ") -}}
+                                {{- metronic.FlInput("密码", "edit-password", "password", "password", "") -}}
+                                {{- metronic.FlInput("确认密码", "edit-rePassword", "password", "rePassword", "") -}}
+                                <h5 class="block"> 拥有店铺 </h5>
+                                <div class="col-md-6">
+                                    {%- for shop in shops if shop.id % 2 == 1 -%}
+                                        {{- metronic.FlCheckbox(shop.shopname, "shop_"~shop.id, "shops[]", shop.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                                <div class="col-md-6">
+                                    {%- for shop in shops if shop.id % 2 == 0 -%}
+                                        {{- metronic.FlCheckbox(shop.shopname, "shop_"~shop.id, "shops[]", shop.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    {{- forms.outlineBtn("", "dark btn-outline", "修改", "edit-user-put-btn") -}}
+                    {{- forms.closeModalBtn() -}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add-user-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title"> 添加用户 </h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="display-none">
+                                    {{- metronic.input("add-id", "", "id") -}}
+                                </div>
+                                {{- metronic.FlInput("用户名", "add-username", "", "username", "") -}}
+                                {{- metronic.FlInput("邮箱", "add-email", "", "email", "") -}}
+                                {{- metronic.FlInput("密码", "add-password", "password", "password", "") -}}
+                                {{- metronic.FlInput("确认密码", "add-rePassword", "password", "rePassword", "") -}}
+                                <h5 class="block"> 拥有店铺 </h5>
+                                <div class="col-md-6">
+                                    {%- for shop in shops if shop.id % 2 == 1 -%}
+                                        {{- metronic.FlCheckbox(shop.shopname, "new_shop_"~shop.id, "shops[]", shop.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                                <div class="col-md-6">
+                                    {%- for shop in shops if shop.id % 2 == 0 -%}
+                                        {{- metronic.FlCheckbox(shop.shopname, "new_shop_"~shop.id, "shops[]", shop.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    {{- forms.outlineBtn("", "dark btn-outline", "添加", "add-user-put-btn") -}}
+                    {{- forms.closeModalBtn() -}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pagePluginsScripts %}
+    {{- block("datatablePluginsScripts") -}}
+    {{- block("confirmPluginsScripts") -}}
+{% endblock %}
+
+{% block javascripts %}
+    {{- block("datatableJavascripts") -}}
+    {{- block("confirmJavascripts") -}}
+    <script type="text/javascript">
+        var table = datatable($(".users-list-table"));
+        $(function(){
+            {# Locked/Unlocked user #}
+            $(document).on("click", ".user-locked-btn", function () {
+                var td = $(this).closest("tr").find("td");
+
+                $.ajax({
+                    url: "{{ path("lockUserAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": td.eq(1).html() }
+                }).done(function (data) {
+                    switch (data["state"]) {
+                        case "error":
+                            toastr.error(data["message"], "提示"); break;
+                        case "success":
+                            if (td.eq(5).find("button").attr("data-locked") === "true") {
+                                locked = '{{- forms.btn("xs", "green-meadow", "正常", "cursor-default", {"data-locked": "false"}) -}}';
+                            } else {
+                                locked = '{{- forms.btn("xs", "red", "锁定", "cursor-default", {"data-locked": "true"}) -}}';
+                            }
+                            table.cell(td.eq(5)).data(locked);
+                            toastr.success(data["message"], "提示"); break;
+                    }
+                }).fail(function () {
+                    toastr.error("未知错误！请重试！", "提示");
+                });
+            });
+            {# Add user roles #}
+            $(document).on("click", ".show-roles-btn", function () {
+                $(this).hide().next(".del-roles-btn").hide().next("span").fadeIn();
+                $(this).prev(".cancel-roles-btn").fadeIn();
+            });
+            $(document).on("click", ".new-role-btn", function () {
+                var newRole = $(this).removeClass("green-turquoise-stripe new-role-btn").addClass("purple-medium btn-outline cursor-default");
+                var showRole = $(this).closest(".dtr-data").find(".cancel-roles-btn");
+                var td = $(this).closest("tr").prev(".parent").find("td");
+
+                if (newRole.attr("data-role") === "ROLE_SUPER_ADMIN") {
+                    showRole.parent("span").prepend(newRole).find("button[data-role='ROLE_GENERAL']").remove();
+                    td.eq(4).find("button").removeClass("blue").addClass("red").html("管理员");
+                } else {
+                    showRole.before(newRole);
+                }
+
+                $.ajax({
+                    url: "{{ path("setRoleAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": td.eq(1).html(), "role": newRole.attr("data-role"), "action": "add" }
+                }).done(function (data) {
+                    switch (data["state"]) {
+                        case "error":
+                            toastr.error(data["message"], "提示"); break;
+                        case "success":
+                            toastr.success(data["message"], "提示"); break;
+                    }
+                }).fail(function () {
+                    toastr.error("未知错误！请重试！", "提示");
+                });
+            });
+            {# Delete user roles #}
+            $(document).on("click", ".del-roles-btn", function () {
+                $(this).hide().prev(".show-roles-btn").hide().prev(".cancel-roles-btn").fadeIn().prevAll("button.btn-circle").addClass("shake shake-constant shake-constant--hover").removeClass("cursor-default");
+            });
+            $(document).on("click", ".shake", function () {
+                var td = $(this).closest("tr").prev(".parent").find("td");
+
+                if ($(this).attr("data-role") === "ROLE_SUPER_ADMIN") {
+                    td.eq(4).find("button").removeClass("red").addClass("blue").html("普通用户");
+                    delRole = $(this).clone();
+                    $(this).attr("data-role", "ROLE_GENERAL").html("普通用户");
+                } else if ($(this).attr("data-role") === "ROLE_GENERAL") {
+                    return false;
+                } else {
+                    delRole = $(this);
+                }
+                delRole.addClass("green-turquoise-stripe new-role-btn").removeClass("purple-medium btn-outline cursor-default");
+                $(this).parent(".dtr-data").find("span").append(delRole);
+
+                $.ajax({
+                    url: "{{ path("setRoleAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": td.eq(1).html(), "role": delRole.attr("data-role"), "action": "del" }
+                }).done(function (data) {
+                    switch (data["state"]) {
+                        case "error":
+                            toastr.error(data["message"], "提示"); break;
+                        case "success":
+                            toastr.success(data["message"], "提示"); break;
+                    }
+                }).fail(function () {
+                    toastr.error("未知错误！请重试！", "提示");
+                });
+            });
+            $(document).on("click", ".cancel-roles-btn", function () {
+                $(this).hide().nextAll(".roles-btn-group").fadeIn();
+                $(".shake").removeClass("shake shake-constant shake-constant--hover");
+                $(this).parent(".dtr-data").find("span").hide();
+            });
+            {# Edit user info #}
+            $(document).on("click", ".edit-user-btn", function () {
+                $(".reload").click();
+                $("#edit-user-modal").find(".role-btn").hide();
+                var td = $(this).closest("tr").find("td");
+
+                $.ajax({
+                    url: "{{ path("getEditUserAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": td.eq(1).html() }
+                }).done(function (data) {
+                    var user = data.user;
+                    var form = $("#edit-user-modal").modal("show").find("form");
+                    form.find("input[type='checkbox']").removeAttr("checked");
+                    form.find("#edit-username").val(user.username);
+                    form.find("#edit-email").val(user.email);
+                    form.find("#edit-id").val(user.id);
+                    for (var i = 0; i < user.roles.length; i++) {
+                        form.find(".role-btn[data-role='" + user.roles[i] + "']").show();
+                    }
+                    if (data.shops) {
+                        for (var i = 0; i < data.shops.length; i++) {
+                            form.find("input[type='checkbox'][id='shop_" + data.shops[i] + "']").click();
+                        }
+                    }
+                }).fail(function () {
+                    toastr.error("未知错误！请重试！", "提示");
+                });
+            });
+            $(document).on("click", ".edit-user-put-btn", function () {
+                var form = $("#edit-user-modal").modal("show").find("form");
+
+                if (form.find("#edit-password").val() !== form.find("#edit-rePassword").val()) {
+                    toastr.error("两次密码不一致，请重新输入", "提示");
+                } else {
+                    $.ajax({
+                        url: "{{ path("putEditUserAjax") }}",
+                        type: "post",
+                        dataType: "json",
+                        data: form.serialize()
+                    }).done(function (data) {
+                        switch (data["state"]) {
+                            case "error":
+                                toastr.error(data["message"], "提示");
+                                break;
+                            case "success":
+                                toastr.success(data["message"], "提示");
+                                break;
+                        }
+                    }).fail(function () {
+                        toastr.error("未知错误！请重试！", "提示");
+                    });
+                }
+            });
+            {# Add user info #}
+            $(document).on("click", ".add-user-put-btn", function () {
+                var form = $("#add-user-modal").find("form");
+
+                console.log(form.serialize());
+                if (form.find("#add-password").val() !== form.find("#add-rePassword").val()) {
+                    toastr.error("两次密码不一致，请重新输入", "提示");
+                } else {
+                    $.ajax({
+                        url: "{{ path("addNewUserAjax") }}",
+                        type: "post",
+                        dataType: "json",
+                        data: form.serialize()
+                    }).done(function (data) {
+                        switch (data["state"]) {
+                            case "error":
+                                toastr.error(data["message"], "提示"); break;
+                            case "success":
+                                $("#add-user-modal").modal("hide");
+                                toastr.success(data["message"], "提示");
+                                form.find("input").val("");
+                                break;
+                        }
+                    }).fail(function () {
+                        toastr.error("未知错误！请重试！", "提示");
+                    });
+                }
+            });
+        })
+    </script>
+{% endblock %}

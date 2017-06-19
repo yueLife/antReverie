@@ -8,6 +8,7 @@
 
 namespace PublicBundle\Menu;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Knp\Menu\FactoryInterface;
 
 /**
@@ -16,21 +17,14 @@ use Knp\Menu\FactoryInterface;
  */
 class MenuBuilder
 {
-    /**
-     * @var FactoryInterface
-     */
     private $factory;
-    /**
-     * @var Doctrine
-     */
     private $doctrine;
-
 
     /**
      * MenuBuilder constructor.
      *
      * @param FactoryInterface $factory
-     * @param Doctrine $doctrine
+     * @param \Doctrine\Bundle\DoctrineBundle\Registry $doctrine
      */
     public function __construct(FactoryInterface $factory, $doctrine)
     {

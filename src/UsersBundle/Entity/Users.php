@@ -70,6 +70,7 @@ class Users extends BaseUser
     {
         parent::__construct();
         $this->createTime = new \DateTime;
+        $this->lastLogin = new \DateTime;
         $this->files = new ArrayCollection();
         $this->shops = new ArrayCollection();
     }
@@ -95,6 +96,29 @@ class Users extends BaseUser
     public function getAvatar()
     {
         return $this->avatar;
+    }
+
+    /**
+     * Set createTime
+     *
+     * @param \DateTime $createTime
+     * @return Users
+     */
+    public function setCreateTime($createTime)
+    {
+        $this->createTime = $createTime;
+
+        return $this;
+    }
+
+    /**
+     * Get createTime
+     *
+     * @return \DateTime 
+     */
+    public function getCreateTime()
+    {
+        return $this->createTime;
     }
 
     /**

@@ -50,16 +50,12 @@
                                 <td data-filename="{{ file.filename }}"> {{ file.oldname }} </td>
                                 <td>
                                     {%- if file.state == "read" -%}
-                                        {%- set state = "green-meadow" -%}
-                                        {%- set title = "已读" -%}
+                                        {{- forms.btn("xs", "green-meadow", "已读", "cursor-default") -}}
                                     {%- elseif file.state == "unread" -%}
-                                        {%- set state = "yellow-lemon" -%}
-                                        {%- set title = "未读" -%}
+                                        {{- forms.btn("xs", "yellow-lemon", "未读", "cursor-default") -}}
                                     {%- elseif file.state == "wrong" -%}
-                                        {%- set state = "red" -%}
-                                        {%- set title = "错误" -%}
+                                        {{- forms.btn("xs", "red", "错误", "cursor-default") -}}
                                     {%- endif -%}
-                                    {{- forms.btn("xs", state, title, "cursor-default") -}}
                                 </td>
                                 <td>
                                     {%- if file.fileType == "goodsFile" -%}

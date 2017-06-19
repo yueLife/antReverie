@@ -14,7 +14,7 @@
             <div class="portlet box blue">
                 <div class="portlet-title">
                     <div class="caption font-white">
-                        <i class="iconfont icon-file font-white"></i>
+                        <i class="iconfont icon-file font-white font-size-20"></i>
                         <span class="caption-subject bold uppercase">所有文件</span>
                     </div>
                     <div class="tools">
@@ -46,16 +46,12 @@
                                 <td>{{ file.uploadTime.date|date("Y-m-d H:i:s") }}</td>
                                 <td>
                                     {%- if file.state == "read" -%}
-                                        {%- set state = "success" -%}
-                                        {%- set title = "已读" -%}
+                                        {{- forms.btn("xs", "green-meadow", "已读", "cursor-default") -}}
                                     {%- elseif file.state == "unread" -%}
-                                        {%- set state = "warning" -%}
-                                        {%- set title = "未读" -%}
+                                        {{- forms.btn("xs", "yellow-lemon", "未读", "cursor-default") -}}
                                     {%- elseif file.state == "wrong" -%}
-                                        {%- set state = "danger" -%}
-                                        {%- set title = "错误" -%}
+                                        {{- forms.btn("xs", "red", "错误", "cursor-default") -}}
                                     {%- endif %}
-                                    {{- forms.btn("xs", "btn-"~state, title, "cursor-default") -}}
                                 </td>
                                 <td>
                                     {{- forms.stripeBtn("xs", "green-meadow", "下载", "download-file-btn") -}}

@@ -1,0 +1,24 @@
+{# bootstrap-confirmation.js Plugin twig #}
+{# pagePluginsScripts #}
+{% block confirmPluginsScripts %}
+    <script src="{{ asset("Metronic/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js") }}" type="text/javascript"></script>
+{% endblock %}
+
+{# javascripts #}
+{% block confirmJavascripts %}
+    <script type="text/javascript">
+        $(function (){
+            $("[data-toggle='confirmation']").confirmation({
+                popout: "true",
+                placement: "right",
+                btnOkLabel: "确定",
+                btnOkIcon: "iconfont icon-ok font-size-12",
+                btnOkClass: "btn-success",
+                btnCancelLabel: "取消",
+                btnCancelIcon: "iconfont icon-remove font-size-12",
+                btnCancelClass: "btn-danger"
+            });
+        })
+        {#{{- forms.outlineBtn("xs", "red-mint", "管理员", "", {"data-toggle": "confirmation", "data-original-title": "确定添加【管理员】权限么？", "data-placement": "top", "data-btn-ok-label": "确定", "data-btn-ok-icon": "iconfont icon-ok font-size-12", "data-btn-ok-class": "btn-success", "data-btn-cancel-label": "取消", "data-btn-cancel-icon": "iconfont icon-remove font-size-12", "data-btn-cancel-class": "btn-danger" }) -}}#}
+    </script>
+{% endblock %}

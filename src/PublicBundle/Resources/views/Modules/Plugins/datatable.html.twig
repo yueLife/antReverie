@@ -15,7 +15,7 @@
 {# javascripts #}
 {% block datatableJavascripts %}
     <script type="text/javascript">
-        function datatable(dom, order = "desc", scrollX = false) {
+        function datatable(dom, order = "desc", scrollX = false, resp = false) {
 
             var fixedHeaderOffset = 0;
             if (App.getViewPort().width < App.getResponsiveBreakpoint("md")) {
@@ -25,7 +25,11 @@
             } else if ($(".page-header").hasClass("navbar-fixed-top")) {
                 fixedHeaderOffset = $(".page-header").outerHeight(true);
             }
-
+            if (resp) {
+                respVal = { "details": { "type": "column" } };
+            } else {
+                respVal = false;
+            }
             return dom.DataTable({
                 "language": {
                     "aria": {
@@ -58,11 +62,7 @@
                     "headerOffset": fixedHeaderOffset
                 },
 
-                "responsive": {
-                    "details": {
-                        "type": "column"
-                    }
-                },
+                "responsive": respVal,
                 "columnDefs": [ {
                     "className": "control",
                     "orderable": false,

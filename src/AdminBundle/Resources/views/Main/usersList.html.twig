@@ -185,9 +185,6 @@
                     <form role="form">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="display-none">
-                                    {{- metronic.input("add-id", "", "id") -}}
-                                </div>
                                 {{- metronic.FlInput("用户名", "add-username", "", "username", "") -}}
                                 {{- metronic.FlInput("邮箱", "add-email", "", "email", "") -}}
                                 {{- metronic.FlInput("密码", "add-password", "password", "password", "") -}}
@@ -225,7 +222,7 @@
     {{- block("datatableJavascripts") -}}
     {{- block("confirmJavascripts") -}}
     <script type="text/javascript">
-        var table = datatable($(".users-list-table"));
+        var table = datatable($(".users-list-table"), "", "", true);
         $(function(){
             {# Locked/Unlocked user #}
             $(document).on("click", ".user-locked-btn", function () {
@@ -385,7 +382,6 @@
             $(document).on("click", ".add-user-put-btn", function () {
                 var form = $("#add-user-modal").find("form");
 
-                console.log(form.serialize());
                 if (form.find("#add-password").val() !== form.find("#add-rePassword").val()) {
                     toastr.error("两次密码不一致，请重新输入", "提示");
                 } else {
@@ -402,6 +398,7 @@
                                 $("#add-user-modal").modal("hide");
                                 toastr.success(data["message"], "提示");
                                 form.find("input").val("");
+                                form.find("input[type='checkbox']").removeAttr("checked");
                                 break;
                         }
                     }).fail(function () {

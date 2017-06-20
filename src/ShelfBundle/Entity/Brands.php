@@ -25,7 +25,7 @@ class Brands
     /**
      * @var string
      *
-     * @ORM\Column(name="brandname", type="string", length=255)
+     * @ORM\Column(name="brandname", type="string", length=255, unique=true)
      */
     private $brandname;
 

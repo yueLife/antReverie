@@ -1,0 +1,268 @@
+{% extends "PublicBundle::Layouts/baseLayout.html.twig" %}
+
+{% use "PublicBundle::Modules/Plugins/datatable.html.twig" %}
+
+{% block pagePluginsStyles %}{{- block("datatablePluginsStyles") -}}{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .form-group.form-md-line-input{ margin:0; }
+        .modal h5{ padding:0; }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption font-white">
+                        <i class="iconfont icon-file font-white font-size-20"></i>
+                        <span class="caption-subject bold uppercase">店铺列表</span>
+                    </div>
+                    <div class="tools">
+                        <a href="#add-shop-modal" class="font-white tool-tip" data-toggle="modal" data-placement="top" title="添加店铺"><i class="iconfont icon-plus"></i></a>
+                        <a href="javascript:;" class="collapse" data-original-title="折叠/展开"> </a>
+                        <a href="javascript:;" class="reload display-none" data-original-title="刷新"> </a>
+                        <a href="javascript:;" class="fullscreen" data-original-title="全屏"> </a>
+                        <a href="javascript:;" class="remove" data-original-title="移除"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-striped table-hover order-column fl shops-list-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>店铺名</th>
+                            <th>品牌</th>
+                            <th>所在平台</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {%- for shop in shops  -%}
+                            <tr>
+                                <td>{{ shop.id }}</td>
+                                <td>{{ shop.shopname }}</td>
+                                <td data-id="{{ shop.brand.id }}">{{ shop.brand.brandname }}</td>
+                                <td data-id="{{ shop.plat.id }}">{{ shop.plat.platname }}</td>
+                                <td> {{ shop.createTime.date|date("Y-m-d H:i:s") }} </td>
+                                <td>
+                                    {%- if shop.active() -%}
+                                        {{- forms.btn("xs", "green-meadow", "正常", "cursor-default", {"data-locked": "false"}) -}}
+                                    {%- else -%}
+                                        {{- forms.btn("xs", "red", "锁定", "cursor-default", {"data-locked": "true"}) -}}
+                                    {%- endif %}
+                                </td>
+                                <td>
+                                    {{- forms.stripeBtn("xs", "green", "编辑", "edit-shop-btn") -}}
+                                    {{- forms.stripeBtn("xs", "yellow-gold", "锁定", "locked-shop-btn") -}}
+                                </td>
+                            </tr>
+                        {%- endfor -%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="edit-shop-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title"> 编辑店铺 </h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="display-none">
+                                    {{- metronic.input("edit-id", "", "id") -}}
+                                </div>
+                                {{- metronic.FlInput("店铺名", "edit-shopname", "", "shopname", " ") -}}
+                                <h5 class="block"> 选择平台 </h5>
+                                <div class="col-md-6">
+                                    {%- for plat in plats if plat.id % 2 == 1 -%}
+                                        {{- metronic.FlRadio(plat.platname, "edit-plat_"~plat.id, "plat", plat.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                                <div class="col-md-6">
+                                    {%- for plat in plats if plat.id % 2 == 0 -%}
+                                        {{- metronic.FlRadio(plat.platname, "edit-plat_"~plat.id, "plat", plat.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                                <h5 class="block"> 选择品牌 </h5>
+                                <div class="col-md-6">
+                                    {%- for brand in brands if brand.id % 2 == 1 -%}
+                                        {{- metronic.FlRadio(brand.brandname, "edit-brand_"~brand.id, "brand", brand.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                                <div class="col-md-6">
+                                    {%- for brand in brands if brand.id % 2 == 0 -%}
+                                        {{- metronic.FlRadio(brand.brandname, "edit-brand_"~brand.id, "brand", brand.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    {{- forms.outlineBtn("", "dark btn-outline", "修改", "edit-shop-put-btn") -}}
+                    {{- forms.closeModalBtn() -}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add-shop-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title"> 添加店铺 </h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                {{- metronic.FlInput("店铺名", "add-shopname", "", "shopname") -}}
+                                <h5 class="block"> 选择平台 </h5>
+                                <div class="col-md-6">
+                                    {%- for plat in plats if plat.id % 2 == 1 -%}
+                                        {{- metronic.FlRadio(plat.platname, "add-plat_"~plat.id, "plat", plat.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                                <div class="col-md-6">
+                                    {%- for plat in plats if plat.id % 2 == 0 -%}
+                                        {{- metronic.FlRadio(plat.platname, "add-plat_"~plat.id, "plat", plat.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                                <h5 class="block"> 选择品牌 </h5>
+                                <div class="col-md-6">
+                                    {%- for brand in brands if brand.id % 2 == 1 -%}
+                                        {{- metronic.FlRadio(brand.brandname, "add-brand_"~brand.id, "brand", brand.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                                <div class="col-md-6">
+                                    {%- for brand in brands if brand.id % 2 == 0 -%}
+                                        {{- metronic.FlRadio(brand.brandname, "add-brand_"~brand.id, "brand", brand.id) -}}
+                                    {%- endfor -%}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    {{- forms.outlineBtn("", "dark btn-outline", "添加", "add-shop-put-btn") -}}
+                    {{- forms.closeModalBtn() -}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pagePluginsScripts %}{{- block("datatablePluginsScripts") -}}{% endblock %}
+
+{% block javascripts %}
+    {{- block("datatableJavascripts") -}}
+    <script type="text/javascript">
+        var table = datatable($(".shops-list-table"), "asc");
+        var state = '{{- forms.btn("xs", "green-meadow", "正常", "cursor-default", {"data-locked": "false"}) -}}';
+        var operate = '{{- forms.stripeBtn("xs", "green", "编辑", "edit-shop-btn") -}}{{- forms.stripeBtn("xs", "yellow-gold", "锁定", "locked-shop-btn") -}}';
+        $(function(){
+            {# Lock shop #}
+            $(document).on("click", ".locked-shop-btn", function () {
+                var td = $(this).closest("tr").find("td");
+
+                $.ajax({
+                    url: "{{ path("lockShopAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: { "id": td.eq(0).html() }
+                }).done(function (data) {
+                    switch (data["state"]) {
+                        case "error":
+                            toastr.error(data["message"], "提示"); break;
+                        case "success":
+                            if (td.eq(5).find("button").attr("data-locked") === "true") {
+                                locked = '{{- forms.btn("xs", "green-meadow", "正常", "cursor-default", {"data-locked": "false"}) -}}';
+                            } else {
+                                locked = '{{- forms.btn("xs", "red", "锁定", "cursor-default", {"data-locked": "true"}) -}}';
+                            }
+                            table.cell(td.eq(5)).data(locked);
+                            toastr.success(data["message"], "提示"); break;
+                    }
+                }).fail(function () {
+                    toastr.error("未知错误！请重试！", "提示");
+                });
+            });
+            {# Edit shop #}
+            $(document).on("click", ".edit-shop-btn", function () {
+                var td = $(this).closest("tr").find("td");
+                var form = $("#edit-shop-modal").modal("show").find("form");
+                form.find("#edit-id").val(td.eq(0).html());
+                form.find("#edit-shopname").val(td.eq(1).html());
+                form.find("#edit-plat_" + td.eq(3).attr("data-id")).click();
+                form.find("#edit-brand_" + td.eq(2).attr("data-id")).click();
+            });
+            $(document).on("click", ".edit-shop-put-btn", function () {
+                var form = $("#edit-shop-modal").find("form");
+    
+                $.ajax({
+                    url: "{{ path("editShopAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: form.serialize()
+                }).done(function (data) {
+                    switch (data["state"]) {
+                        case "error":
+                            toastr.error(data["message"], "提示"); break;
+                        case "success":
+                            toastr.success(data["message"], "提示");
+                            $(".shops-list-table").find("tr").each(function () {
+                                if ($(this).find("td").eq(0).html() == data["shop"]) {
+                                    $(this).find("td").eq(1).html(form.find("#edit-shopname").val());
+                                    $(this).find("td").eq(2).attr("data-id", data["brandId"]).html(data["brandname"]);
+                                    $(this).find("td").eq(3).attr("data-id", data["platId"]).html(data["platname"]);
+                                }
+                            });
+                            $("#edit-plat-modal").modal("hide");
+                            break;
+                    }
+                    console.log(data);
+                }).fail(function () {
+                    toastr.error("未知错误！请重试！", "提示");
+                });
+            });
+            $(document).on("click", ".add-shop-put-btn", function () {
+                var form = $("#add-shop-modal").find("form");
+
+                console.log(form.serialize());
+                $.ajax({
+                    url: "{{ path("addShopAjax") }}",
+                    type: "post",
+                    dataType: "json",
+                    data: form.serialize()
+                }).done(function (data) {
+                    switch (data["state"]) {
+                        case "error":
+                            toastr.error(data["message"], "提示"); break;
+                        case "success":
+                            toastr.success(data["message"], "提示");
+                            $("#add-shop-modal").modal("hide");
+                            form.find("#add-shopname").val("");
+                            var tr = addRow(table, [data["shop"], data["shopname"], data["brandname"], data["platname"], data["createTime"], state, operate]);
+                            tr.find("td:eq(2)").attr("data-id", data["brandId"]);
+                            tr.find("td:eq(3)").attr("data-id", data["platId"]);
+                            break;
+                    }
+                }).fail(function () {
+                    toastr.error("未知错误！请重试！", "提示");
+                });
+            });
+        })
+    </script>
+{% endblock %}

@@ -9,7 +9,6 @@
 namespace AdminBundle\Controller;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use JMS\Serializer\SerializerBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

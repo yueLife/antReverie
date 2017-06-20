@@ -65,7 +65,20 @@ class GetMessageService
             "passwordError" => array("state" => "error", "message" => "两次密码不一致，请重新输入!"),
             "oldPasswordError" => array("state" => "error", "message" => "旧密码输入错误！请重新输入！"),
             "passwordLengthError" => array("state" => "error", "message" => "密码长度应为6-12位！请重新输入！"),
-            "passwordTypeError" => array("state" => "error", "message" => "密码长度必须为数字、字母或下划线!"),
+            "passwordTypeError" => array("state" => "error", "message" => "密码长度必须为数字、字母或下划线!")
+        );
+
+        return $message[$title];
+    }
+
+    public function getShelfMsg($title)
+    {
+        $message = array(
+            "uniqueBrandname" => array("state" => "error", "message" => "该品牌已存在，请重新输入!"),
+            "uniquePlatname" => array("state" => "error", "message" => "该平台已存在，请重新输入!"),
+            "uniqueshopname" => array("state" => "error", "message" => "该店铺已存在，请重新输入!"),
+            "addSuccess" => array("state" => "success", "message" => "添加成功!"),
+            "editSuccess" => array("state" => "success", "message" => "修改成功!"),
         );
 
         return $message[$title];
